@@ -68,6 +68,14 @@ export default {
   'component.noticeIcon.clear': 'Clear',
   'component.noticeIcon.cleared': 'Cleared',
   'component.noticeIcon.empty': 'No notifications',
+
+  'menu.memberlist':'Member management',
+  'menu.datalist':'Data center',
+  'menu.eliminatelist':'Elimination data',
+  'menu.achievementlist':'Performance data',
+  'menu.financelist':'Financial module',
+  'menu.configurelist':'Configure',
+
   'menu.home': 'Home',
   'menu.dashboard': 'Dashboard',
   'menu.dashboard.analysis': 'Analysis',
