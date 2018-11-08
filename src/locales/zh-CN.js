@@ -66,6 +66,15 @@ export default {
   'component.noticeIcon.clear': '清空',
   'component.noticeIcon.cleared': '清空了',
   'component.noticeIcon.empty': '暂无数据',
+
+  'menu.memberlist':'会员管理',
+  'menu.datalist':'数据中心',
+  'menu.eliminatelist':'消课数据',
+  'menu.achievementlist':'业绩数据',
+  'menu.financelist':'财务模块',
+  'menu.configurelist':'配置',
+
+
   'menu.home': '首页',
   'menu.dashboard': 'Dashboard',
   'menu.dashboard.analysis': '分析页',
@@ -98,6 +107,7 @@ export default {
   'menu.exception.server-error': '500',
   'menu.exception.trigger': '触发错误',
   'menu.account': '个人页',
+
   'menu.account.center': '个人中心',
   'menu.account.settings': '个人设置',
   'menu.account.trigger': '触发报错',
