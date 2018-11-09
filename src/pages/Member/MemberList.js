@@ -10,7 +10,7 @@ class MemberList extends Component {
 
   render() {
     return (
-      <div className={styles.test}>会员管理</div>
+      <div>会员管理</div>
     );
   }
 }

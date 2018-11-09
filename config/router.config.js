@@ -18,18 +18,18 @@ export default [
     authority: ['admin', 'user'],
     routes: [
       // Member
-      { path: '/', redirect: '/member/member-list' },
-      {
-        path:'/member/member-list',
-        name:'memberlist',
-        icon:'',
-        component:'./Member/MemberList'
-      },
+      { path: '/', redirect: '/data/data-center' },
       {
         path:'/data/data-center',
         name:'datalist',
         icon:'',
         component:'./Data/DataCenter'
+      },
+      {
+        path:'/member/member-list',
+        name:'memberlist',
+        icon:'',
+        component:'./Member/MemberList'
       },
       {
         path:'/eliminate/eliminate-list',
