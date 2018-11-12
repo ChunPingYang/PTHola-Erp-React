@@ -7,12 +7,8 @@ import {
   Icon,
   Card,
   Tabs,
-  Table,
-  Radio,
   DatePicker,
   Tooltip,
-  Menu,
-  Dropdown,
 } from 'antd';
 import {
   ChartCard,
@@ -24,7 +20,6 @@ import {
   Pie,
   TimelineChart,
 } from '@/components/Charts';
-import Yuan from '@/utils/Yuan';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 
 const { TabPane } = Tabs;
