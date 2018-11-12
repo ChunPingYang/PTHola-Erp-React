@@ -35,10 +35,11 @@ import styles from './DataCenter.less';
 class DataCenter extends Component {
   constructor(props) {
     super(props);
-    this.rankListData = []
-    for (let i = 0; i < 8; i += 1) {
-      this.rankListData.push({
+    this.rankingListData = []
+    for (let i = 0; i < 5; i += 1) {
+      this.rankingListData.push({
         title: `工专路 ${i} 号店`,
+        src:'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
         total: 323234,
       });
     }
@@ -65,16 +66,16 @@ class DataCenter extends Component {
 
     const salesPieData = [
       {
-        x: '私教销售',
-        y: 15200,
+        title: '私教销售',
+        value: 15200,
       },
       {
-        x: '会籍销售',
-        y: 10000,
+        title: '会籍销售',
+        value: 10000,
       },
       {
-        x: '其他销售',
-        y: 10000,
+        title: '其他销售',
+        value: 10000,
       },
     ];
 
@@ -91,7 +92,7 @@ class DataCenter extends Component {
       sm: 12,
       md: 12,
       lg: 12,
-      xl: 8,
+      xl: 6,
       style: { marginBottom: 24 },
     };
 
@@ -179,16 +180,45 @@ class DataCenter extends Component {
               />
             </ChartCard>
           </Col>
+
+          <Col {...topColResponsiveProps}>
+            <ChartCard
+              bordered={false}
+              title="今日销售额"
+              total={numeral(24800).format('0,0')}
+              contentHeight={77}
+              action={
+                <Tooltip title="详情">
+                  <Icon type="info-circle-o"/>
+                </Tooltip>
+              }
+            >
+
+            <ul className={styles.salesLis}>
+              {salesPieData.map((item,index)=>(
+                <li key={index}>
+                  <span className={styles.salesDot + ' ' + styles.salesDot+index}></span>
+                  <span className={styles.legendTitle}>{item.title}</span>
+                  <span className={styles.divider}></span>
+                  <span className={styles.percent}>42.31%</span>
+                  <span className={styles.salesValue}>{item.value}</span>
+                </li>
+              ))}
+            </ul>
+
+            </ChartCard>
+          </Col>
         </Row>
+
         <Row gutter={24}>
-          <Col xl={12} lg={24} md={24} sm={24} xs={24}>
+          <Col xl={24} lg={24} md={24} sm={24} xs={24}>
             <div className={styles.salesCard}>
               <Tabs defaultActiveKey="1" tabBarStyle={{ marginBottom: 24 }} tabBarGutter={10}>
                 <TabPane tab="总销售额" key="1">
                   <div className={styles.barPad}>
                     <Bar
                       style={{marginRight:24}}
-                      height={300}
+                      height={346}
                       title="总销售额"
                       data={salesData}
                     />
@@ -219,24 +249,126 @@ class DataCenter extends Component {
               </Tabs>
             </div>
           </Col>
+        </Row>
+
+        <Row gutter={24}>
           <Col xl={12} lg={24} md={24} sm={24} xs={24}>
             <Card
-              className={styles.salesCard}
               bordered={false}
-              title="今日销售额"
-              bodyStyle={{ padding: 24 }}
+              title="当月私教业绩排行"
+              extra={<MonthPicker onChange={this.onChange} placeholder="请选择月份" />}
+              style={{ marginTop: 24 }}
             >
-              <h4 style={{ marginBottom: 32 }}>
-                销售额
-              </h4>
-              <Pie
-                hasLegend
-                subTitle="销售额"
-                total={() => <Yuan>{salesPieData.reduce((pre, now) => now.y + pre, 0)}</Yuan>}
-                data={salesPieData}
-                height={248}
-                valueFormat={value => <Yuan>{value}</Yuan>}
-              />
+              <ul className={styles.rankingList}>
+                {this.rankingListData.map((item, i) => (
+                  <li key={item.title}>
+                    <span
+                      className={`${styles.rankingItemNumber} ${
+                        i < 3 ? styles.active : ''
+                        }`}
+                    >
+                      {i + 1}
+                    </span>
+                    <div className={styles.coachImg}>
+                      <img src={item.src}/>
+                    </div>
+                    <span className={styles.rankingItemTitle} title={item.title}>
+                      {item.title}
+                    </span>
+                    <span>{'¥' + numeral(item.total).format('0,0')}</span>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          </Col>
+          <Col xl={12} lg={24} md={24} sm={24} xs={24}>
+            <Card
+              bordered={false}
+              title="当月会籍业绩排行"
+              extra={<MonthPicker onChange={this.onChange} placeholder="请选择月份" />}
+              style={{ marginTop: 24 }}
+            >
+              <ul className={styles.rankingList}>
+                {this.rankingListData.map((item, i) => (
+                  <li key={item.title}>
+                    <span
+                      className={`${styles.rankingItemNumber} ${
+                        i < 3 ? styles.active : ''
+                        }`}
+                    >
+                      {i + 1}
+                    </span>
+                    <div className={styles.coachImg}>
+                      <img src={item.src}/>
+                    </div>
+                    <span className={styles.rankingItemTitle} title={item.title}>
+                      {item.title}
+                    </span>
+                    <span>{'¥' + numeral(item.total).format('0,0')}</span>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          </Col>
+        </Row>
+
+        <Row gutter={24}>
+          <Col xl={12} lg={24} md={24} sm={24} xs={24}>
+            <Card
+              bordered={false}
+              title="当月消课教练排行"
+              extra={<MonthPicker onChange={this.onChange} placeholder="请选择月份" />}
+              style={{ marginTop: 24 }}
+            >
+              <ul className={styles.rankingList}>
+                {this.rankingListData.map((item, i) => (
+                  <li key={item.title}>
+                    <span
+                      className={`${styles.rankingItemNumber} ${
+                        i < 3 ? styles.active : ''
+                        }`}
+                    >
+                      {i + 1}
+                    </span>
+                    <div className={styles.coachImg}>
+                      <img src={item.src}/>
+                    </div>
+                    <span className={styles.rankingItemTitle} title={item.title}>
+                      {item.title}
+                    </span>
+                    <span>{numeral(item.total).format('0,0') + '节'}</span>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          </Col>
+          <Col xl={12} lg={24} md={24} sm={24} xs={24}>
+            <Card
+              bordered={false}
+              title="当月消课会员排行"
+              extra={<MonthPicker onChange={this.onChange} placeholder="请选择月份" />}
+              style={{ marginTop: 24 }}
+            >
+              <ul className={styles.rankingList}>
+                {this.rankingListData.map((item, i) => (
+                  <li key={item.title}>
+                    <span
+                      className={`${styles.rankingItemNumber} ${
+                        i < 3 ? styles.active : ''
+                        }`}
+                    >
+                      {i + 1}
+                    </span>
+                    <div className={styles.coachImg}>
+                      <img src={item.src}/>
+                    </div>
+                    <span className={styles.rankingItemTitle} title={item.title}>
+                      {item.title}
+                    </span>
+                    <span>{numeral(item.total).format('0,0') + '节'}</span>
+                  </li>
+                ))}
+              </ul>
             </Card>
           </Col>
         </Row>

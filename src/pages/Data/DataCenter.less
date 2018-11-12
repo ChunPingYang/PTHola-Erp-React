@@ -14,7 +14,7 @@
     margin-bottom: 0;
   }
 }
-.rankList{
+.rankingList{
   list-style: none;
   padding: 0;
   li {
@@ -27,7 +27,18 @@
       font-size: 14px;
       line-height: 22px;
     }
-    .rankItemNumber {
+    .coachImg{
+      display: inline-block;
+      vertical-align: middle;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+      img{
+        width: 100%;
+      }
+    }
+    .rankingItemNumber {
       background-color: @background-color-base;
       border-radius: 20px;
       display: inline-block;
@@ -44,12 +55,15 @@
         color: #fff;
       }
     }
-    .rankItemTitle {
+    .rankingItemTitle {
       flex: 1;
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
       margin-right: 8px;
+    }
+    &:first-child{
+      margin-top: 0;
     }
   }
 }
@@ -98,6 +112,59 @@
     .ant-card-head-title {
       align-items: normal;
       padding: 14px 0;
+    }
+  }
+}
+
+.salesLis{
+  padding: 0;
+  margin-bottom: 0;
+  position: absolute;
+  top: -68px;
+  li{
+    margin-bottom: 6px;
+    height: 22px;
+    line-height: 22px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    .divider{
+      margin: 0 8px;
+      display: inline-block;
+      height: 0.9em;
+      width: 1px;
+      background: #e8e8e8;
+    }
+    .legendTitle{
+      color: rgba(0, 0, 0, 0.65);
+    }
+    .percent{
+      color: rgba(0, 0, 0, 0.45);
+      margin-right: 8px;
+    }
+    .salesDot{
+      border-radius: 50%;
+      margin-right: 8px;
+      position: relative;
+      height: 8px;
+      width: 8px;
+    }
+    .salesDot0{
+      background-color: #1890ff;
+    }
+    .salesDot1{
+      background-color: #13c2c2;
+    }
+    .salesDot2{
+      background-color: rgb(47, 194, 91);
+    }
+  }
+}
+
+.salesPie{
+  :global{
+    .antd-pro-components-charts-pie-index-legend{
+      min-width: 210px;
     }
   }
 }
