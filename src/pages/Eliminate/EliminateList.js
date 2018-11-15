@@ -68,7 +68,7 @@ class EliminateList extends PureComponent {
       key:'dutyName'
     },
     {
-      title:'操作时间',
+      title:'操作日期(操作时间)',
       dataIndex:'operDate',
       key:'operDate',
       sorter: true,
@@ -227,11 +227,11 @@ class EliminateList extends PureComponent {
         key:1,
         name:'陈鑫1',
         coach:'甜心教练',
-        classDate:1542000600,
+        classDate:1542000600000,
         type:'常规私教课',
         price:'196',
         dutyName:'李四',
-        operDate:1542087000,
+        operDate:1542087000000,
         status:1,
         authority:1
       },
@@ -239,12 +239,12 @@ class EliminateList extends PureComponent {
         key:2,
         name:'陈鑫2',
         coach:'甜心教练',
-        classDate:1539234000,
+        classDate:1539234000000,
         type:'常规私教课',
         price:'196',
         dutyName:'李四',
-        operDate:1539322200,
-        status:1,
+        operDate:1539322200000,
+        status:2,
         authority:1
       }
     ]
