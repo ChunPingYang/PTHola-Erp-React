@@ -73,6 +73,7 @@ export default {
   'menu.achievementlist':'业绩数据',
   'menu.financelist':'财务模块',
   'menu.configurelist':'配置',
+  'menu.memberSignIn':'会员签到',
 
 
   'menu.home': '首页',

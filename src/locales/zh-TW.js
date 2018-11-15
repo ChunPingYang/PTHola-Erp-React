@@ -72,6 +72,7 @@ export default {
   'menu.achievementlist':'業績數據',
   'menu.financelist':'財務模塊',
   'menu.configurelist':'配置',
+  'menu.memberSignIn':'會員簽到',
 
   'menu.home': '首頁',
   'menu.dashboard': 'Dashboard',

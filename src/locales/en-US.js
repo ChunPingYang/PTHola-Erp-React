@@ -75,6 +75,7 @@ export default {
   'menu.achievementlist':'Performance data',
   'menu.financelist':'Financial module',
   'menu.configurelist':'Configure',
+  'menu.memberSignIn':'Member signIn',
 
   'menu.home': 'Home',
   'menu.dashboard': 'Dashboard',

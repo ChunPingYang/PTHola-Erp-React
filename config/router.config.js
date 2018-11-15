@@ -32,6 +32,12 @@ export default [
         component:'./Member/MemberList'
       },
       {
+        path:'/member/member-sign',
+        name:'memberSignIn',
+        icon:'',
+        component:'./MemberSignIn/MemberSignIn'
+      },
+      {
         path:'/eliminate/eliminate-list',
         name:'eliminatelist',
         icon:'',
