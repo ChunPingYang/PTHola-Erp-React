@@ -18,12 +18,20 @@
     line-height: 32px;
     margin-bottom: 4px;
   }
-  & > em {
+  em {
     background-color: @border-color-split;
     position: absolute;
     height: 80px;
     width: 1px;
     top: 0;
     right: 0;
+  }
+}
+
+@media screen and (max-width: @screen-xs) {
+  .headerInfo{
+    em{
+      display: none;
+    }
   }
 }

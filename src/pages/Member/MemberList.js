@@ -582,15 +582,6 @@ class MemberList extends PureComponent {
   render() {
     const {modalVisible} = this.state
 
-    /*const Info = ({ subTitle1, title, subTitle2, bordered }) => (
-      <div className={styles.headerInfo}>
-        <span>{subTitle1}</span>
-        <p>{title}</p>
-        <span>{subTitle2}</span>
-        {bordered && <em/>}
-      </div>
-    );*/
-
     const MoreBtn = props => (
       <Dropdown
         overlay={
@@ -711,34 +702,32 @@ class MemberList extends PureComponent {
         </div>
 
         <Card bordered={false}>
-          <div className={styles.tableList}>
-            <div className={styles.tableListForm}>{this.renderForm()}</div>
-            <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
-                新建
-              </Button>
-              <div className={styles.memberList}>
-                {this.renderSelfThead()}
+          <div className={styles.tableListForm}>{this.renderForm()}</div>
+          <div className={styles.tableListOperator}>
+            <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
+              新建
+            </Button>
+            <div className={styles.memberList}>
+              {this.renderSelfThead()}
 
-                <List
-                  pagination={paginationProps}
-                  dataSource={listTestData}
-                  renderItem={item => (
-                    <List.Item
-                      actions={[
-                        <MoreBtn current={item}/>,
-                      ]}
-                    >
+              <List
+                pagination={paginationProps}
+                dataSource={listTestData}
+                renderItem={item => (
+                  <List.Item
+                    actions={[
+                      <MoreBtn current={item}/>,
+                    ]}
+                  >
 
-                      <List.Item.Meta
-                        avatar={<Avatar src={item.avatar} shape="square" size="large"/>}
-                        title={<span>{item.name} {item.age}</span>}
-                        description={item.phone}
-                      />
-                      <ListContent item={item}/>
-                    </List.Item>
-                  )}/>
-              </div>
+                    <List.Item.Meta
+                      avatar={<Avatar src={item.avatar} shape="square" size="large"/>}
+                      title={<span>{item.name} {item.age}</span>}
+                      description={item.phone}
+                    />
+                    <ListContent item={item}/>
+                  </List.Item>
+                )}/>
             </div>
           </div>
         </Card>
