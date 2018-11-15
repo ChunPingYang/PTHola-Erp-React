@@ -136,7 +136,7 @@ class DataCenter extends Component {
                   <span>
                     当前在场：100
                   </span>
-                  <span style={{ marginLeft: 16 }}>
+                  <span style={{ marginLeft: 12 }}>
                     已离场：150
                   </span>
                 </div>
@@ -162,7 +162,7 @@ class DataCenter extends Component {
                   <span>
                     本月新增：26位
                   </span>
-                  <span style={{ marginLeft: 16 }}>
+                  <span style={{ marginLeft: 12 }}>
                     上月新增：38位
                   </span>
                 </div>

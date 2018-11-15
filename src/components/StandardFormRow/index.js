@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import styles from './index.less';
 
-const StandardFormRow = ({ title, children, last, block, grid, ...rest }) => {
+const StandardFormRow = ({ title,labelCol,wrapperCol, children, last, block, grid, ...rest }) => {
   const cls = classNames(styles.standardFormRow, {
     [styles.standardFormRowBlock]: block,
     [styles.standardFormRowLast]: last,
@@ -12,11 +12,11 @@ const StandardFormRow = ({ title, children, last, block, grid, ...rest }) => {
   return (
     <div className={cls} {...rest}>
       {title && (
-        <div className={styles.label}>
-          <span>{title}</span>
+        <div className={`ant-col-${labelCol} ant-form-item-label`}>
+          <label>{title}</label>
         </div>
       )}
-      <div className={styles.content}>{children}</div>
+      <div className={`ant-col-${wrapperCol} ant-form-item-control-wrapper ${styles.content}`}>{children}</div>
     </div>
   );
 };

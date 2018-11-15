@@ -27,32 +27,6 @@
       line-height: 48px;
     }
   }
-  .headerInfo {
-    position: relative;
-    text-align: center;
-    margin-bottom: 10px;
-    & > span {
-      color: @text-color-secondary;
-      display: inline-block;
-      font-size: @font-size-base;
-      line-height: 22px;
-      margin-bottom: 4px;
-    }
-    & > p {
-      color: @heading-color;
-      font-size: 24px;
-      line-height: 32px;
-      margin-bottom: 4px;
-    }
-    & > em {
-      background-color: @border-color-split;
-      position: absolute;
-      height: 80px;
-      width: 1px;
-      top: 0;
-      right: 0;
-    }
-  }
 }
 
 .tableList {
@@ -87,6 +61,185 @@
     display: block;
     white-space: nowrap;
     margin-bottom: 24px;
+  }
+}
+
+.memberList{
+  background: #fff;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 24px;
+  :global{
+    .ant-list-item{
+      padding: 12px 16px;
+    }
+    .ant-list-item-meta-avatar{
+      margin-right: 8px;
+    }
+    .ant-list-item-meta-title{
+      margin-bottom: 0;
+    }
+    .ant-list-item-meta{
+      flex: none;
+      width: 16%;
+    }
+    .ant-list-item-action{
+      margin-left: 0;
+    }
+  }
+  .memberThead{
+    background: #fafafa;
+    padding: 14px 20px;
+    margin-bottom: 0;
+    li{
+      display: inline-block;
+      vertical-align: middle;
+      &:nth-child(1){
+        width: 16%;
+      }
+      &:nth-child(2){
+        width: 15%;
+      }
+      &:nth-child(3){
+        width: 14%;
+      }
+      &:nth-child(4){
+        width: 13%;
+      }
+      &:nth-child(5){
+        width: 12%;
+      }
+      &:nth-child(6){
+        width: 12%;
+      }
+      &:nth-child(7){
+        width: 12%;
+      }
+      .title{
+        font-size: 14px;
+        color: rgba(0, 0, 0, 0.85);
+        margin-bottom: 3px;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: flex-start;
+        align-items: center;
+        font-weight: bold;
+      }
+      .info{
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: flex-start;
+      }
+      .sortItem{
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 13px;
+        color: rgba(0,0,0,0.6);
+        margin-right: 10px;
+      }
+      .sorters{
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: flex-start;
+        margin-bottom: 0;
+        margin-top: -4px;
+        i{
+          font-size: 12px;
+          height: 7px;
+          transition: all .3s;
+          display: block;
+          margin-left: 3px;
+          color: #bfbfbf;
+        }
+      }
+    }
+  }
+  .listContent{
+    float: left;
+    width: 100%;
+  }
+  .messInfo{
+    float: left;
+    p{
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.65);
+      margin-bottom: 0;
+      &.inTime{
+        color: rgba(0, 0, 0, 0.45);
+      }
+    }
+  }
+  .dateInfo{
+    float: left;
+    .date{
+      padding: 3px 10px;
+      border-radius: 20px;
+      color: #fff;
+      font-size: 13px;
+      margin-bottom: 0;
+      background-color: #03ccfb;
+      display: inline-block;
+    }
+    .title{
+      color: rgba(0, 0, 0, 0.45);
+      font-size: 14px;
+      margin-bottom: 0;
+    }
+  }
+  .totalMoney{
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.65);
+  }
+}
+
+.memberModal{
+  .operList{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    .avatar{
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin-right: 30px;
+      img{
+        width: 100%;
+      }
+    }
+    .btns{
+      button{
+        margin-right: 10px;
+      }
+    }
+  }
+  .cardInfo{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    .inp{
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+      button{
+        margin-left: 20px;
+      }
+    }
+  }
+  .membership{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+  }
+  .msg{
+    font-size: 13px;
+    color: rgba(0,0,0,.45);
+    margin-bottom: 0;
+    line-height: normal;
+    margin-top: 5px;
   }
 }
 
