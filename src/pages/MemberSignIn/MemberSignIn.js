@@ -8,10 +8,14 @@ import {
   Icon,
   Button,
   Tabs,
+  Menu,
+  Dropdown,
+  Divider
 } from 'antd'
 
 import styles from './MemberSignIn.less'
 import PageHeaderMain from '@/components/PageHeaderMain'
+import AddMemberForm from './AddMemberForm'
 
 const FormItem = Form.Item;
 const Option = Select.Option
@@ -25,6 +29,7 @@ class MemberSignIn extends PureComponent{
     data: [],
     value: [],
     fetching: false,
+    addModalVisible:false
   }
 
   columns = [
@@ -132,6 +137,25 @@ class MemberSignIn extends PureComponent{
     console.log(key)
   }
 
+  renderMenu(){
+    return (
+      <Menu>
+        <Menu.Item>
+          <a target="_blank" rel="noopener noreferrer" href="#">私教消课</a>
+        </Menu.Item>
+        <Menu.Item>
+          <a target="_blank" rel="noopener noreferrer" href="#">会籍续费</a>
+        </Menu.Item>
+        <Menu.Item>
+          <a target="_blank" rel="noopener noreferrer" href="#">买私教课</a>
+        </Menu.Item>
+        <Menu.Item>
+          <a target="_blank" rel="noopener noreferrer" href="#">会籍请假</a>
+        </Menu.Item>
+      </Menu>
+    );
+  }
+
   renderThead(){
     return(
       <thead>
@@ -187,18 +211,7 @@ class MemberSignIn extends PureComponent{
             <p className={styles.signNum}>15</p>
           </td>
           <td>
-            <div className={styles.memberInfo}>
-              <p className={styles.avatar}>
-                <img src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"/>
-              </p>
-              <div className={styles.baseInfo}>
-                <p className={styles.title}>
-                  <span>陈鑫</span>
-                  <span>24</span>
-                </p>
-                <p className={styles.subTitle}>180340431333</p>
-              </div>
-            </div>
+            {this.renderMemberInfo('https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png','陈鑫',28,180340431333)}
           </td>
           <td>
             <div className={styles.cardInfo}>
@@ -222,6 +235,27 @@ class MemberSignIn extends PureComponent{
             <div className={styles.status}>
               <p className={styles.statusTxt}>已入场</p>
               <p className={styles.subTitle}>11-09</p>
+            </div>
+          </td>
+          <td>
+            <div className={styles.timeOrder}>
+              <p className={styles.statusSign}>入</p>
+              <p className={styles.time}>10:00</p>
+            </div>
+            <div className={styles.timeOrder}>
+              <p className={styles.statusSign}>离</p>
+              <p className={styles.time}>11:00</p>
+            </div>
+          </td>
+          <td>
+            <div className={styles.opers}>
+              <a href="#">签退</a>
+              <Divider type="vertical" />
+              <Dropdown overlay={this.renderMenu()}>
+                <a className="ant-dropdown-link" href="#">
+                  更多 <Icon type="down" />
+                </a>
+              </Dropdown>
             </div>
           </td>
         </tr>
@@ -260,9 +294,36 @@ class MemberSignIn extends PureComponent{
     );
   }
 
+  renderMemberInfo(avatar,name,age,phone){
+    return(
+      <div className={styles.memberInfo}>
+        <p className={styles.avatar}>
+          <img src={avatar}/>
+        </p>
+        <div className={styles.baseInfo}>
+          <p className={styles.title}>
+            <span>{name}</span>
+            <span>{age}</span>
+          </p>
+          <p className={styles.subTitle}>{phone}</p>
+        </div>
+      </div>
+    );
+  }
+
+  handleAddModalVisible = flag => {
+    this.setState({
+      addModalVisible: !!flag,
+    });
+  };
+
 
   render(){
-    const { fetching, data, value } = this.state;
+    const { fetching, data, value, addModalVisible } = this.state;
+    const addMemberMethods = {
+      handleAddModalVisible: this.handleAddModalVisible,
+      renderMemberInfo:this.renderMemberInfo
+    };
 
     return(
       <div className={styles.signBox}>
@@ -283,7 +344,7 @@ class MemberSignIn extends PureComponent{
               >
                 {data.map(d => <Option key={d.value}>{d.text}</Option>)}
               </Select>
-              <Button type="primary" className={styles.signBtn} size={'large'}>签到</Button>
+              <Button type="primary" className={styles.signBtn} size={'large'} onClick={()=>this.handleAddModalVisible(true)}>签到</Button>
               <Button size={'large'} style={{marginLeft:'10px'}}>访客签到</Button>
             </div>
             <div className={styles.descTxt}>
@@ -299,10 +360,12 @@ class MemberSignIn extends PureComponent{
               <Card bordered={false}>
                 <div className={styles.tableListForm}>{this.renderForm()}</div>
 
-                <table>
-                  {this.renderThead()}
-                  {this.renderTbody()}
-                </table>
+                <div className={styles.tableList}>
+                  <table>
+                    {this.renderThead()}
+                    {this.renderTbody()}
+                  </table>
+                </div>
 
               </Card>
             </TabPane>
@@ -311,6 +374,10 @@ class MemberSignIn extends PureComponent{
           </Tabs>
         </div>
 
+        <AddMemberForm
+          {...addMemberMethods}
+          addModalVisible={addModalVisible}
+        />
       </div>
     )
   }
