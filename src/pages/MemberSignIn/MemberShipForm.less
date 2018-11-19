@@ -1,0 +1,103 @@
+.baseInfo{
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+  .divider{
+    background: #e8e8e8;
+    margin-left: 40px;
+    margin-right: 40px;
+    width: 1px;
+    height: 45px;
+  }
+  .ship{
+    color: rgba(0,0,0,.65);
+    font-size: 14px;
+    p{
+      margin: 0;
+    }
+    .name{
+      color: rgba(0,0,0,.85);
+    }
+  }
+}
+.datePeriod{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-flow: row wrap;
+  margin-top: 24px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #e8e8e8;
+  p{
+    margin: 0;
+  }
+  .title{
+    margin-right: 20px;
+    color: rgba(0,0,0,.85);
+    font-size: 16px;
+    margin-bottom: 14px;
+  }
+  .dateBox{
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-flow: row wrap;
+    .dateInfo{
+      display: flex;
+      flex-flow: column wrap;
+      justify-content: flex-start;
+      .date{
+        padding: 3px 10px;
+        border-radius: 20px;
+        color: #fff;
+        font-size: 13px;
+        margin-bottom: 0;
+        background-color: #03ccfb;
+        display: inline-block;
+      }
+      .txt{
+        font-size: 13px;
+        color: rgba(0,0,0,.65);
+      }
+    }
+    .divider{
+      width: 20px;
+      height: 1px;
+      background: #e8e8e8;
+      margin-top: -18px;
+    }
+  }
+}
+.tabGroup{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+.chargeDays{
+  display: flex;
+  flex-flow: row nowrap;
+}
+.msg{
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.45);
+  margin-bottom: 0;
+  line-height: normal;
+  margin-top: 5px;
+}
+
+@media screen and (max-width: 414px) {
+  :global{
+    .ant-modal-body{
+      padding: 32px 20px 30px;
+    }
+  }
+  .baseInfo{
+    .divider{
+      margin-right: 20px;
+      margin-left: 20px;
+    }
+  }
+}

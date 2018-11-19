@@ -16,6 +16,7 @@ import {
 import styles from './MemberSignIn.less'
 import PageHeaderMain from '@/components/PageHeaderMain'
 import AddMemberForm from './AddMemberForm'
+import MemberShipForm from './MemberShipForm'
 
 const FormItem = Form.Item;
 const Option = Select.Option
@@ -29,7 +30,8 @@ class MemberSignIn extends PureComponent{
     data: [],
     value: [],
     fetching: false,
-    addModalVisible:false
+    addModalVisible:false,
+    shipModelVisible:false
   }
 
   columns = [
@@ -141,16 +143,16 @@ class MemberSignIn extends PureComponent{
     return (
       <Menu>
         <Menu.Item>
-          <a target="_blank" rel="noopener noreferrer" href="#">私教消课</a>
+          <span>私教消课</span>
         </Menu.Item>
         <Menu.Item>
-          <a target="_blank" rel="noopener noreferrer" href="#">会籍续费</a>
+          <span onClick={this.handleShipModalVisible.bind(this,true)}>会籍续费</span>
         </Menu.Item>
         <Menu.Item>
-          <a target="_blank" rel="noopener noreferrer" href="#">买私教课</a>
+          <span>买私教课</span>
         </Menu.Item>
         <Menu.Item>
-          <a target="_blank" rel="noopener noreferrer" href="#">会籍请假</a>
+          <span>会籍请假</span>
         </Menu.Item>
       </Menu>
     );
@@ -252,7 +254,7 @@ class MemberSignIn extends PureComponent{
               <a href="#">签退</a>
               <Divider type="vertical" />
               <Dropdown overlay={this.renderMenu()}>
-                <a className="ant-dropdown-link" href="#">
+                <a className="ant-dropdown-link" href="javascript:;">
                   更多 <Icon type="down" />
                 </a>
               </Dropdown>
@@ -315,13 +317,20 @@ class MemberSignIn extends PureComponent{
     this.setState({
       addModalVisible: !!flag,
     });
-  };
+  }
+
+  handleShipModalVisible = flag =>{
+    this.setState({
+      shipModelVisible: !!flag,
+    })
+  }
 
 
   render(){
-    const { fetching, data, value, addModalVisible } = this.state;
-    const addMemberMethods = {
+    const { fetching, data, value, addModalVisible, shipModelVisible } = this.state;
+    const memberMethods = {
       handleAddModalVisible: this.handleAddModalVisible,
+      handleShipModalVisible:this.handleShipModalVisible,
       renderMemberInfo:this.renderMemberInfo
     };
 
@@ -375,8 +384,13 @@ class MemberSignIn extends PureComponent{
         </div>
 
         <AddMemberForm
-          {...addMemberMethods}
+          {...memberMethods}
           addModalVisible={addModalVisible}
+        />
+
+        <MemberShipForm
+          {...memberMethods}
+          shipModelVisible={shipModelVisible}
         />
       </div>
     )

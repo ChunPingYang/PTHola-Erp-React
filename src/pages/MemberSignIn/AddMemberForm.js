@@ -1,19 +1,9 @@
 import React, {PureComponent} from 'react';
 import {
-  Card,
   Form,
   Input,
-  Select,
-  Icon,
   Button,
-  List,
-  Avatar,
-  Dropdown,
-  Menu,
-  DatePicker,
-  Modal,
-  Steps,
-  Radio,
+  Modal
 } from 'antd';
 import MemberHeader from '@/components/MemberHeader'
 import styles from './AddMemberForm.less'
@@ -65,7 +55,7 @@ class AddMemberForm extends PureComponent{
   }
 
   render(){
-    const { addModalVisible, handleAddModalVisible, renderMemberInfo } = this.props;
+    const { addModalVisible, handleAddModalVisible } = this.props;
 
     return(
       <Modal
