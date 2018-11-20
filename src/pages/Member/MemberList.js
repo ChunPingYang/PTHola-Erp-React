@@ -171,7 +171,7 @@ class AddMemberForm extends PureComponent{
     }
     if (currentStep === 2) {
       return [
-        <StandardFormRow title="维护会籍" labelCol={5} wrapperCol={15}>
+        <StandardFormRow title="维护会籍" labelCol={5} wrapperCol={15} key="1">
           <FormItem key="membership">
             {form.getFieldDecorator('membership', {
               initialValue: formVals.membership,
@@ -192,7 +192,7 @@ class AddMemberForm extends PureComponent{
             仅为方便管理，与业绩划分并无直接关系最多可选1位会籍
           </p>
         </StandardFormRow>,
-        <StandardFormRow title="维护教练" labelCol={5} wrapperCol={15}>
+        <StandardFormRow title="维护教练" labelCol={5} wrapperCol={15} key="2">
           <FormItem key="coach">
             {form.getFieldDecorator('coach', {
               initialValue: formVals.coach,

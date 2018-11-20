@@ -29,6 +29,9 @@
   margin-top: 24px;
   padding-bottom: 30px;
   border-bottom: 1px solid #e8e8e8;
+  margin-bottom: 24px;
+  padding-left: 40px;
+  padding-right: 40px;
   p{
     margin: 0;
   }
@@ -56,6 +59,7 @@
         margin-bottom: 0;
         background-color: #03ccfb;
         display: inline-block;
+        text-align: center;
       }
       .txt{
         font-size: 13px;
@@ -74,7 +78,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
 }
 .chargeDays{
   display: flex;
@@ -87,12 +90,41 @@
   line-height: normal;
   margin-top: 5px;
 }
+.moneyInfo{
+  display: flex;
+  flex-flow: row nowrap;
+  line-height: 32px;
+  .price{
+    font-size: 16px;
+    color: #03ccfb;
+    margin-left: 10px;
+    margin-bottom: 0;
+  }
+}
+.attribution{
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  margin-bottom: 15px;
+  .attr{
+    width: 50%;
+    margin-right: 10px;
+  }
+  .per{
+    width: 30%;
+    margin-right: 15px;
+  }
+}
 
 @media screen and (max-width: 414px) {
   :global{
     .ant-modal-body{
       padding: 32px 20px 30px;
     }
+  }
+  .datePeriod{
+    padding-left: 0;
+    padding-right: 0;
   }
   .baseInfo{
     .divider{

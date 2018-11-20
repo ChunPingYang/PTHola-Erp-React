@@ -16,7 +16,9 @@ import {
 import styles from './MemberSignIn.less'
 import PageHeaderMain from '@/components/PageHeaderMain'
 import AddMemberForm from './AddMemberForm'
-import MemberShipForm from './MemberShipForm'
+import MemberShipForm from '@/components/Member/MemberShipForm'
+import MemberLeave from '@/components/Member/MemberLeave'
+import MemberPayCourse from '@/components/Member/MemberPayCourse'
 
 const FormItem = Form.Item;
 const Option = Select.Option
@@ -30,8 +32,10 @@ class MemberSignIn extends PureComponent{
     data: [],
     value: [],
     fetching: false,
-    addModalVisible:false,
-    shipModelVisible:false
+    addModalVisible:false,  //会员签到
+    shipModelVisible:false, //会籍续费
+    leaveModelVisible:false,  //请假
+    payModelVisible:false,  //买私教课
   }
 
   columns = [
@@ -149,10 +153,10 @@ class MemberSignIn extends PureComponent{
           <span onClick={this.handleShipModalVisible.bind(this,true)}>会籍续费</span>
         </Menu.Item>
         <Menu.Item>
-          <span>买私教课</span>
+          <span onClick={this.handlePayModalVisible.bind(this,true)}>买私教课</span>
         </Menu.Item>
         <Menu.Item>
-          <span>会籍请假</span>
+          <span onClick={this.handleLeaveModalVisible.bind(this,true)}>会籍请假</span>
         </Menu.Item>
       </Menu>
     );
@@ -325,12 +329,26 @@ class MemberSignIn extends PureComponent{
     })
   }
 
+  handleLeaveModalVisible = flag =>{
+    this.setState({
+      leaveModelVisible: !!flag,
+    })
+  }
+
+  handlePayModalVisible = flag =>{
+    this.setState({
+      payModelVisible: !!flag,
+    })
+  }
+
 
   render(){
-    const { fetching, data, value, addModalVisible, shipModelVisible } = this.state;
+    const { fetching, data, value, addModalVisible, shipModelVisible, leaveModelVisible, payModelVisible } = this.state;
     const memberMethods = {
       handleAddModalVisible: this.handleAddModalVisible,
       handleShipModalVisible:this.handleShipModalVisible,
+      handleLeaveModalVisible:this.handleLeaveModalVisible,
+      handlePayModalVisible:this.handlePayModalVisible,
       renderMemberInfo:this.renderMemberInfo
     };
 
@@ -391,6 +409,16 @@ class MemberSignIn extends PureComponent{
         <MemberShipForm
           {...memberMethods}
           shipModelVisible={shipModelVisible}
+        />
+
+        <MemberLeave
+          {...memberMethods}
+          leaveModelVisible={leaveModelVisible}
+        />
+
+        <MemberPayCourse
+          {...memberMethods}
+          payModelVisible={payModelVisible}
         />
       </div>
     )
