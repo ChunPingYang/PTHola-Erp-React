@@ -22,6 +22,7 @@ import {
 import styles from './MemberList.less';
 import StandardFormRow from '@/components/StandardFormRow';
 import StandarInfoData from '@/components/StandarInfoData'
+import AdvancedTable from '@/components/AdvancedTable'
 
 const FormItem = Form.Item;
 const { Step } = Steps;
@@ -348,7 +349,44 @@ class AddMemberForm extends PureComponent{
   }
 }
 
-
+const listTestData = [
+  {
+    id: 1,
+    avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
+    name: 'chenxin',
+    age: 24,
+    phone: 18040431883,
+    cardNum: 133454545454,
+    inTime: '2018-11-09',
+    toTime: '2019-12-30',
+    maintain: '李四',
+    residue: 78,
+    coachName: '甜心教练',
+    lastClock: '3天前',
+    lastClockTime: '2018-10-28',
+    lastClass: '2天前',
+    lastClassTime: '2018-11-08',
+    money: '18000',
+  },
+  {
+    id: 2,
+    avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
+    name: 'chenxin',
+    age: 24,
+    phone: 18040431883,
+    cardNum: 133454545454,
+    inTime: '2018-11-09',
+    toTime: '2019-12-30',
+    maintain: '李四',
+    residue: 78,
+    coachName: '甜心教练',
+    lastClock: '3天前',
+    lastClockTime: '2018-10-28',
+    lastClass: '2天前',
+    lastClassTime: '2018-11-08',
+    money: '18000',
+  },
+];
 @Form.create()
 class MemberList extends PureComponent {
   state = {
@@ -579,6 +617,61 @@ class MemberList extends PureComponent {
     });
   };
 
+  handleCheckSortList(item){
+    console.log(item)
+  }
+
+  renderTbody(item){
+    return(
+      <tr>
+        <td>
+          {this.renderMemberInfo('https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png','陈鑫',28,180340431333)}
+        </td>
+        <td>
+          <div className={styles.messInfo}>
+            <p>{item.cardNum}</p>
+            <p className={styles.inTime}>{item.inTime}</p>
+          </div>
+        </td>
+        <td>
+          <div className={styles.dateInfo}>
+            <p className={styles.date}>{item.toTime}</p>
+            <p className={styles.title}>{item.maintain}</p>
+          </div>
+        </td>
+        <td>
+          <div className={styles.dateInfo}>
+            <p className={styles.date}>剩余{item.residue}节</p>
+            <p className={styles.title}>{item.coachName}</p>
+          </div>
+        </td>
+        <td>
+          <div className={styles.messInfo}>
+            <p>{item.lastClock}</p>
+            <p className={styles.inTime}>{item.lastClockTime}</p>
+          </div>
+        </td>
+      </tr>
+    );
+  }
+
+  renderMemberInfo(avatar,name,age,phone){
+    return(
+      <div className={styles.memberInfo}>
+        <p className={styles.avatar}>
+          <img src={avatar}/>
+        </p>
+        <div className={styles.baseInfo}>
+          <p className={styles.title}>
+            <span>{name}</span>
+            <span>{age}</span>
+          </p>
+          <p className={styles.subTitle}>{phone}</p>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     const {modalVisible} = this.state
 
@@ -632,45 +725,6 @@ class MemberList extends PureComponent {
         </div>
       </div>
     );
-
-    const listTestData = [
-      {
-        id: 1,
-        avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
-        name: 'chenxin',
-        age: 24,
-        phone: 18040431883,
-        cardNum: 133454545454,
-        inTime: '2018-11-09',
-        toTime: '2019-12-30',
-        maintain: '李四',
-        residue: 78,
-        coachName: '甜心教练',
-        lastClock: '3天前',
-        lastClockTime: '2018-10-28',
-        lastClass: '2天前',
-        lastClassTime: '2018-11-08',
-        money: '18000',
-      },
-      {
-        id: 2,
-        avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
-        name: 'chenxin',
-        age: 24,
-        phone: 18040431883,
-        cardNum: 133454545454,
-        inTime: '2018-11-09',
-        toTime: '2019-12-30',
-        maintain: '李四',
-        residue: 78,
-        coachName: '甜心教练',
-        lastClock: '3天前',
-        lastClockTime: '2018-10-28',
-        lastClass: '2天前',
-        lastClassTime: '2018-11-08',
-        money: '18000',
-      },
-    ];
 
     const addMemberMethods = {
       handleModalVisible: this.handleModalVisible,
@@ -729,6 +783,16 @@ class MemberList extends PureComponent {
                   </List.Item>
                 )}/>
             </div>
+
+            <AdvancedTable columns={this.columns} handleCheckSortList={this.handleCheckSortList.bind(this)}>
+              <tbody>
+              {
+                listTestData.map((item,i)=>{
+                  {this.renderTbody(item)}
+                })
+              }
+              </tbody>
+            </AdvancedTable>
           </div>
         </Card>
 

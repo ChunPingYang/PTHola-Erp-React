@@ -10,7 +10,8 @@ import {
   Tabs,
   Menu,
   Dropdown,
-  Divider
+  Divider,
+  Tooltip
 } from 'antd'
 
 import styles from './MemberSignIn.less'
@@ -19,6 +20,7 @@ import AddMemberForm from './AddMemberForm'
 import MemberShipForm from '@/components/Member/MemberShipForm'
 import MemberLeave from '@/components/Member/MemberLeave'
 import MemberPayCourse from '@/components/Member/MemberPayCourse'
+import AdvancedTable from '@/components/AdvancedTable'
 
 const FormItem = Form.Item;
 const Option = Select.Option
@@ -42,6 +44,7 @@ class MemberSignIn extends PureComponent{
     {
       title: '手牌号',
       hasSort: false,
+      tooltip:'',  //目标提示信息
       children: [
         {
           title: '男',
@@ -63,11 +66,14 @@ class MemberSignIn extends PureComponent{
           title: '姓名',
           sortUp: false,
           hasSort: true,
+          field:'name',
+          tooltip:''
         },
         {
           title:'年龄',
           sortUp:false,
           hasSort:true,
+          field:'age'
         }
       ],
     },
@@ -162,51 +168,9 @@ class MemberSignIn extends PureComponent{
     );
   }
 
-  renderThead(){
-    return(
-      <thead>
-        <tr>
-            {
-              this.columns.map(item => (
-                <th key={item.title}>
-                  <div className={styles.title}>
-                    {item.title}
-                    {
-                      item.hasSort ?
-                        <p className={styles.sorters}>
-                          <Icon type="caret-up"/>
-                          <Icon type="caret-down"/>
-                        </p>
-                        : ''
-                    }
-                  </div>
-                  {
-                    item.children ?
-                      <div className={styles.info}>
-                        {
-                          item.children.map(subItem => (
-                            <div key={subItem.title} className={styles.sortItem}>
-                              {subItem.title}
-                              {
-                                subItem.hasSort ?
-                                  <p className={styles.sorters}>
-                                    <Icon type="caret-up"/>
-                                    <Icon type="caret-down"/>
-                                  </p>
-                                  : ''
-                              }
-                            </div>
-                          ))
-                        }
-                      </div>
-                      : ''
-                  }
-                </th>
-              ))
-            }
-        </tr>
-      </thead>
-    );
+
+  handleCheckSortList(item){
+    console.log(item)
   }
 
   renderTbody(){
@@ -343,7 +307,15 @@ class MemberSignIn extends PureComponent{
 
 
   render(){
-    const { fetching, data, value, addModalVisible, shipModelVisible, leaveModelVisible, payModelVisible } = this.state;
+    const {
+      fetching,
+      data,
+      value,
+      addModalVisible,
+      shipModelVisible,
+      leaveModelVisible,
+      payModelVisible
+    } = this.state;
     const memberMethods = {
       handleAddModalVisible: this.handleAddModalVisible,
       handleShipModalVisible:this.handleShipModalVisible,
@@ -387,12 +359,9 @@ class MemberSignIn extends PureComponent{
               <Card bordered={false}>
                 <div className={styles.tableListForm}>{this.renderForm()}</div>
 
-                <div className={styles.tableList}>
-                  <table>
-                    {this.renderThead()}
-                    {this.renderTbody()}
-                  </table>
-                </div>
+                <AdvancedTable columns={this.columns} handleCheckSortList={this.handleCheckSortList.bind(this)}>
+                  {this.renderTbody()}
+                </AdvancedTable>
 
               </Card>
             </TabPane>

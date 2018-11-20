@@ -77,133 +77,80 @@
     }
   }
 
+  tbody{
+    tr{
+      p{
+        margin: 0;
+      }
+      td{
+        padding: 16px 20px;
+        word-break: break-word;
+        border-top: 1px solid #e8e8e8;
+        transition: all .3s,border 0s;
+        .title{
+          font-size: 14px;
+          color: #314659;
+          margin: 0;
+        }
+        .subTitle{
+          font-size: 13px;
+          color: rgba(0,0,0,.46);
+          margin: 2px 0 0 0;
+        }
+        .statusTxt{
+          font-size: 14px;
+          color: #03ccfb;
+        }
+        .signNum{
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          background: #f5f5f5;
+          font-size: 12px;
+          line-height: 30px;
+          text-align: center;
+          color: #314659;
+          margin: 0;
+        }
+        .dateInfo{
+          .date{
+            padding: 3px 10px;
+            border-radius: 20px;
+            color: #fff;
+            font-size: 13px;
+            margin-bottom: 0;
+            background-color: #03ccfb;
+            display: inline-block;
+          }
+        }
+        .timeOrder{
+          display: flex;
+          flex-flow: row wrap;
+          align-items: center;
+          .statusSign{
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #03ccfb;
+            color: #fff;
+            text-align: center;
+            line-height: 20px;
+            font-size: 12px;
+            margin-right: 5px;
+          }
+          .time{
+            font-size: 14px;
+            color: #314659;
+            margin: 0;
+          }
+        }
+      }
+    }
+  }
+
   .tableList{
     overflow-x: auto;
     overflow-y: hidden;
-  }
-  table{
-    width: 100%;
-    border-collapse: collapse;
-    text-align: left;
-    border-radius: 4px 4px 0 0;
-    thead{
-      background: #fafafa;
-      tr{
-        th{
-          padding: 10px 20px;
-          .title{
-            font-size: 14px;
-            color: rgba(0, 0, 0, 0.85);
-            margin-bottom: 3px;
-            display: flex;
-            flex-flow: row nowrap;
-            justify-content: flex-start;
-            align-items: center;
-            font-weight: bold;
-          }
-          .info{
-            display: flex;
-            flex-flow: row nowrap;
-            justify-content: flex-start;
-          }
-          .sortItem{
-            display: flex;
-            flex-flow: row nowrap;
-            justify-content: flex-start;
-            align-items: center;
-            font-size: 13px;
-            color: rgba(0,0,0,0.6);
-            margin-right: 10px;
-          }
-          .sorters{
-            display: flex;
-            flex-flow: column nowrap;
-            justify-content: flex-start;
-            margin-bottom: 0;
-            margin-top: -4px;
-            cursor: pointer;
-            i{
-              font-size: 12px;
-              height: 7px;
-              transition: all .3s;
-              display: block;
-              margin-left: 3px;
-              color: #bfbfbf;
-            }
-          }
-        }
-      }
-    }
-    tbody{
-      tr{
-        p{
-          margin: 0;
-        }
-        td{
-          padding: 16px 20px;
-          word-break: break-word;
-          border-top: 1px solid #e8e8e8;
-          transition: all .3s,border 0s;
-          .title{
-            font-size: 14px;
-            color: #314659;
-            margin: 0;
-          }
-          .subTitle{
-            font-size: 13px;
-            color: rgba(0,0,0,.46);
-            margin: 2px 0 0 0;
-          }
-          .statusTxt{
-            font-size: 14px;
-            color: #03ccfb;
-          }
-          .signNum{
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: #f5f5f5;
-            font-size: 12px;
-            line-height: 30px;
-            text-align: center;
-            color: #314659;
-            margin: 0;
-          }
-          .dateInfo{
-            .date{
-              padding: 3px 10px;
-              border-radius: 20px;
-              color: #fff;
-              font-size: 13px;
-              margin-bottom: 0;
-              background-color: #03ccfb;
-              display: inline-block;
-            }
-          }
-          .timeOrder{
-            display: flex;
-            flex-flow: row wrap;
-            align-items: center;
-            .statusSign{
-              width: 20px;
-              height: 20px;
-              border-radius: 50%;
-              background: #03ccfb;
-              color: #fff;
-              text-align: center;
-              line-height: 20px;
-              font-size: 12px;
-              margin-right: 5px;
-            }
-            .time{
-              font-size: 14px;
-              color: #314659;
-              margin: 0;
-            }
-          }
-        }
-      }
-    }
   }
 }
 
