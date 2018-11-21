@@ -1,5 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import moment from 'moment';
+import router from 'umi/router';
+import Link from 'umi/link'
 import {
   Row,
   Col,
@@ -599,6 +601,7 @@ class MemberList extends PureComponent {
   }
 
   renderTbody(item,index){
+    const {match} = this.props
     return(
       <tr key={index}>
         <td>
@@ -639,7 +642,7 @@ class MemberList extends PureComponent {
         </td>
         <td>
           <div className={styles.opers}>
-            <a href="#">详情</a>
+            <Link to={`${match.url}/detail/stamina`}>详情</Link>
             <Divider type="vertical" />
             <Dropdown overlay={this.renderMenu()}>
               <a className="ant-dropdown-link" href="javascript:;">
