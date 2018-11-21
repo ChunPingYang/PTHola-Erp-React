@@ -85,7 +85,7 @@ class MemberLeave extends PureComponent{
           )}
         </FormItem>
       </StandardFormRow>,
-      <StandardFormRow title="结束时间" labelCol={5} wrapperCol={19} key="2">
+      <StandardFormRow style={{borderBottom:'1px solid #e8e8e8', paddingBottom:'24px'}} title="结束时间" labelCol={5} wrapperCol={19} key="2">
         <FormItem key="endDate">
           {form.getFieldDecorator('endDate', {
             rules: [{ required: true, message: '请选择结束时间' }]

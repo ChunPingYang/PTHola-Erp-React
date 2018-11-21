@@ -1,5 +1,9 @@
 import React, {PureComponent} from 'react';
-import {Tooltip, Icon} from 'antd'
+import {
+  Tooltip,
+  Icon,
+  Pagination
+} from 'antd'
 
 import styles from './index.less'
 

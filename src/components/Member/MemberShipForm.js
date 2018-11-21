@@ -65,7 +65,7 @@ class MemberShipForm extends PureComponent{
           </Col>
         </div>
 
-        <div className={styles.tabGroup}>
+        {/*<div className={styles.tabGroup}>
           <Radio.Group value={key} onChange={this.handleChange.bind(this)} style={{marginBottom:24}}>
             <Radio.Button value="day">按天数</Radio.Button>
             <Radio.Button value="date">按到期时间</Radio.Button>
@@ -111,7 +111,32 @@ class MemberShipForm extends PureComponent{
                 )}
               </FormItem>
             </StandardFormRow>
-        }
+        }*/}
+        <StandardFormRow style={{borderBottom:'1px solid #e8e8e8', paddingBottom:'24px'}} title="充值天数" labelCol={5} wrapperCol={19} key="1">
+          <div className={styles.chargeDays}>
+            <FormItem key="name">
+              {form.getFieldDecorator('day', {
+                rules: [{ required: true, message: '请输入天数' }]
+              })(<Input placeholder="请输入天数" />)}
+            </FormItem>
+            <FormItem key="status">
+              {form.getFieldDecorator('status', {
+                initialValue:"1"
+              })(
+                <Select
+                  style={{ width: '140px',marginLeft:'10px' }}
+                >
+                  <Option key="1" value="1">
+                    立即激活
+                  </Option>
+                  <Option key="2" value="2">
+                    下次到场激活
+                  </Option>
+                </Select>
+              )}
+            </FormItem>
+          </div>
+        </StandardFormRow>
 
         {this.renderForm()}
       </Row>

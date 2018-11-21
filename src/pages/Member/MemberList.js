@@ -17,6 +17,7 @@ import {
   Modal,
   Steps,
   Radio,
+  Divider
 } from 'antd';
 
 import styles from './MemberList.less';
@@ -349,44 +350,7 @@ class AddMemberForm extends PureComponent{
   }
 }
 
-const listTestData = [
-  {
-    id: 1,
-    avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
-    name: 'chenxin',
-    age: 24,
-    phone: 18040431883,
-    cardNum: 133454545454,
-    inTime: '2018-11-09',
-    toTime: '2019-12-30',
-    maintain: '李四',
-    residue: 78,
-    coachName: '甜心教练',
-    lastClock: '3天前',
-    lastClockTime: '2018-10-28',
-    lastClass: '2天前',
-    lastClassTime: '2018-11-08',
-    money: '18000',
-  },
-  {
-    id: 2,
-    avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
-    name: 'chenxin',
-    age: 24,
-    phone: 18040431883,
-    cardNum: 133454545454,
-    inTime: '2018-11-09',
-    toTime: '2019-12-30',
-    maintain: '李四',
-    residue: 78,
-    coachName: '甜心教练',
-    lastClock: '3天前',
-    lastClockTime: '2018-10-28',
-    lastClass: '2天前',
-    lastClassTime: '2018-11-08',
-    money: '18000',
-  },
-];
+
 @Form.create()
 class MemberList extends PureComponent {
   state = {
@@ -621,9 +585,22 @@ class MemberList extends PureComponent {
     console.log(item)
   }
 
-  renderTbody(item){
+  renderMenu(){
+    return (
+      <Menu>
+        <Menu.Item>
+          <span>编辑</span>
+        </Menu.Item>
+        <Menu.Item>
+          <span>删除</span>
+        </Menu.Item>
+      </Menu>
+    );
+  }
+
+  renderTbody(item,index){
     return(
-      <tr>
+      <tr key={index}>
         <td>
           {this.renderMemberInfo('https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png','陈鑫',28,180340431333)}
         </td>
@@ -649,6 +626,26 @@ class MemberList extends PureComponent {
           <div className={styles.messInfo}>
             <p>{item.lastClock}</p>
             <p className={styles.inTime}>{item.lastClockTime}</p>
+          </div>
+        </td>
+        <td>
+          <div className={styles.messInfo}>
+            <p>{item.lastClass}</p>
+            <p className={styles.inTime}>{item.lastClassTime}</p>
+          </div>
+        </td>
+        <td>
+          ¥{item.money}
+        </td>
+        <td>
+          <div className={styles.opers}>
+            <a href="#">详情</a>
+            <Divider type="vertical" />
+            <Dropdown overlay={this.renderMenu()}>
+              <a className="ant-dropdown-link" href="javascript:;">
+                更多 <Icon type="down" />
+              </a>
+            </Dropdown>
           </div>
         </td>
       </tr>
@@ -691,40 +688,51 @@ class MemberList extends PureComponent {
       </Dropdown>
     );
 
+    const listTestData = [
+      {
+        id: 1,
+        avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
+        name: 'chenxin',
+        age: 24,
+        phone: 18040431883,
+        cardNum: 133454545454,
+        inTime: '2018-11-09',
+        toTime: '2019-12-30',
+        maintain: '李四',
+        residue: 78,
+        coachName: '甜心教练',
+        lastClock: '3天前',
+        lastClockTime: '2018-10-28',
+        lastClass: '2天前',
+        lastClassTime: '2018-11-08',
+        money: '18000',
+      },
+      {
+        id: 2,
+        avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
+        name: 'chenxin',
+        age: 24,
+        phone: 18040431883,
+        cardNum: 133454545454,
+        inTime: '2018-11-09',
+        toTime: '2019-12-30',
+        maintain: '李四',
+        residue: 78,
+        coachName: '甜心教练',
+        lastClock: '3天前',
+        lastClockTime: '2018-10-28',
+        lastClass: '2天前',
+        lastClassTime: '2018-11-08',
+        money: '18000',
+      },
+    ];
+
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
       pageSize: 5,
       total: 50,
     };
-
-    const ListContent = ({ item }) => (
-      <div className={styles.listContent}>
-        <div style={{ width: '19%' }} className={styles.messInfo}>
-          <p>{item.cardNum}</p>
-          <p className={styles.inTime}>{item.inTime}</p>
-        </div>
-        <div style={{ width: '18%' }} className={styles.dateInfo}>
-          <p className={styles.date}>{item.toTime}</p>
-          <p className={styles.title}>{item.maintain}</p>
-        </div>
-        <div style={{ width: '17%' }} className={styles.dateInfo}>
-          <p className={styles.date}>剩余{item.residue}节</p>
-          <p className={styles.title}>{item.coachName}</p>
-        </div>
-        <div style={{ width: '15%' }} className={styles.messInfo}>
-          <p>{item.lastClock}</p>
-          <p className={styles.inTime}>{item.lastClockTime}</p>
-        </div>
-        <div style={{ width: '15%' }} className={styles.messInfo}>
-          <p>{item.lastClass}</p>
-          <p className={styles.inTime}>{item.lastClassTime}</p>
-        </div>
-        <div className={styles.totalMoney}>
-          ¥{item.money}
-        </div>
-      </div>
-    );
 
     const addMemberMethods = {
       handleModalVisible: this.handleModalVisible,
@@ -761,38 +769,22 @@ class MemberList extends PureComponent {
             <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
               新建
             </Button>
-            <div className={styles.memberList}>
-              {this.renderSelfThead()}
 
-              <List
-                pagination={paginationProps}
-                dataSource={listTestData}
-                renderItem={item => (
-                  <List.Item
-                    actions={[
-                      <MoreBtn current={item}/>,
-                    ]}
-                  >
-
-                    <List.Item.Meta
-                      avatar={<Avatar src={item.avatar} shape="square" size="large"/>}
-                      title={<span>{item.name} {item.age}</span>}
-                      description={item.phone}
-                    />
-                    <ListContent item={item}/>
-                  </List.Item>
-                )}/>
-            </div>
-
-            <AdvancedTable columns={this.columns} handleCheckSortList={this.handleCheckSortList.bind(this)}>
+            <AdvancedTable
+              columns={this.columns}
+              {...paginationProps}
+              handleCheckSortList={this.handleCheckSortList.bind(this)}>
               <tbody>
               {
-                listTestData.map((item,i)=>{
-                  {this.renderTbody(item)}
+                listTestData.map((item,index)=>{
+                  return (
+                    this.renderTbody(item,index)
+                  )
                 })
               }
               </tbody>
             </AdvancedTable>
+
           </div>
         </Card>
 

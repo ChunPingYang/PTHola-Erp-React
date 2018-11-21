@@ -148,7 +148,7 @@ class MemberPayCourse extends PureComponent{
           })(<Input placeholder="请输入课程数量"/>)}
         </FormItem>
       </StandardFormRow>,
-      <StandardFormRow title="到期时间" labelCol={5} wrapperCol={19} key="1">
+      <StandardFormRow style={{borderBottom:'1px solid #e8e8e8', paddingBottom:'24px'}} title="到期时间" labelCol={5} wrapperCol={19} key="1">
         <FormItem key="startDate">
           {form.getFieldDecorator('startDate', {
             rules: [{ required: true, message: '请选择开始时间' }]
