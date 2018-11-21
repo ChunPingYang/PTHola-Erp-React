@@ -642,7 +642,7 @@ class MemberList extends PureComponent {
         </td>
         <td>
           <div className={styles.opers}>
-            <Link to={`${match.url}/detail/stamina`}>详情</Link>
+            <Link to={`${match.url}/detail/sign`}>详情</Link>
             <Divider type="vertical" />
             <Dropdown overlay={this.renderMenu()}>
               <a className="ant-dropdown-link" href="javascript:;">

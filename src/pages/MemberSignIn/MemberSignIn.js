@@ -44,7 +44,7 @@ class MemberSignIn extends PureComponent{
     {
       title: '手牌号',
       hasSort: false,
-      tooltip:'',  //目标提示信息
+      tooltip:'目标提示信息',  //目标提示信息
       children: [
         {
           title: '男',

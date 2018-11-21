@@ -26,14 +26,6 @@ class MemberDetail extends PureComponent{
 
     const operationTabList = [
       {
-        key: 'stamina',
-        tab: '体测数据',
-      },
-      {
-        key: 'heart',
-        tab: '心率数据',
-      },
-      {
         key: 'sign',
         tab: '签到记录',
       },
@@ -48,6 +40,14 @@ class MemberDetail extends PureComponent{
       {
         key: 'ship',
         tab: '会籍续费记录',
+      },
+      {
+        key: 'stamina',
+        tab: '体测数据',
+      },
+      {
+        key: 'heart',
+        tab: '心率数据',
       }
     ];
 
