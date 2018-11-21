@@ -669,24 +669,12 @@ class MemberList extends PureComponent {
     );
   }
 
+  onPageChange(current,pageSize){
+    console.log(current,pageSize)
+  }
+
   render() {
     const {modalVisible} = this.state
-
-    const MoreBtn = props => (
-      <Dropdown
-        overlay={
-          <Menu>
-            <Menu.Item key="details">详情</Menu.Item>
-            <Menu.Item key="edit">编辑</Menu.Item>
-            <Menu.Item key="delete">删除</Menu.Item>
-          </Menu>
-        }
-      >
-        <a>
-          更多 <Icon type="down"/>
-        </a>
-      </Dropdown>
-    );
 
     const listTestData = [
       {
@@ -730,7 +718,7 @@ class MemberList extends PureComponent {
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
-      pageSize: 5,
+      defaultCurrent:1,
       total: 50,
     };
 
@@ -772,7 +760,8 @@ class MemberList extends PureComponent {
 
             <AdvancedTable
               columns={this.columns}
-              {...paginationProps}
+              pagination = {paginationProps}
+              onPageChange={this.onPageChange.bind(this)}
               handleCheckSortList={this.handleCheckSortList.bind(this)}>
               <tbody>
               {

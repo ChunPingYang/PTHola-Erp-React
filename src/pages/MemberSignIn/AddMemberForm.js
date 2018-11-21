@@ -15,7 +15,7 @@ const FormItem = Form.Item;
 class AddMemberForm extends PureComponent{
 
   renderContent(){
-    const { form } = this.props;
+    const { form, handleShipModalVisible, handlePayModalVisible } = this.props;
 
     return(
       <div>
@@ -30,7 +30,7 @@ class AddMemberForm extends PureComponent{
               <p className={styles.subTitle}>王大翠</p>
             </div>
           </div>
-          <Button>续费</Button>
+          <Button onClick={handleShipModalVisible}>续费</Button>
         </div>
         <div className={styles.listItem}>
           <div className={styles.listInfo}>
@@ -43,7 +43,7 @@ class AddMemberForm extends PureComponent{
               <p className={styles.subTitle}>甜心等3人</p>
             </div>
           </div>
-          <Button>买课</Button>
+          <Button onClick={handlePayModalVisible}>买课</Button>
         </div>
         <FormItem key="name" label="手环号">
           {form.getFieldDecorator('name', {

@@ -61,14 +61,23 @@ class AdvancedTable extends PureComponent{
     );
   }
 
+
   render(){
-    const {children} = this.props
+    const {children,pagination,onPageChange} = this.props
     return(
       <div className={styles.tableList}>
         <table>
           {this.renderThead()}
           {children}
         </table>
+        <div className={styles.page}>
+          <Pagination
+            onChange={onPageChange}
+            onShowSizeChange={onPageChange}
+            defaultCurrent={1}
+            {...pagination}
+          />
+        </div>
       </div>
     );
   }
