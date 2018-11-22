@@ -33,12 +33,23 @@ class MemberShipForm extends PureComponent{
   }
 
   renderContent(){
-    const {renderMemberInfo,form} = this.props
+    const {form} = this.props
     const {key} = this.state
     return(
       <Row>
         <div className={styles.baseInfo}>
-          {renderMemberInfo('https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png','陈鑫',28,180340431333)}
+          <div className={styles.memberInfo}>
+            <p className={styles.avatar}>
+              <img src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"/>
+            </p>
+            <div className={styles.baseMsg}>
+              <p className={styles.title}>
+                <span>陈鑫</span>
+                <span>28</span>
+              </p>
+              <p className={styles.subTitle}>180340431333</p>
+            </div>
+          </div>
           <span className={styles.divider}></span>
           <div className={styles.ship}>
             <p>维护会籍</p>

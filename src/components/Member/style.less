@@ -21,6 +21,50 @@
     }
   }
 }
+
+.memberInfo{
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-start;
+  align-items: center;
+  p{
+    margin: 0;
+    span:first-child{
+      margin-right: 8px;
+    }
+  }
+  .avatar{
+    width: 45px;
+    height: 45px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    img{
+      width: 100%;
+    }
+  }
+  .baseMsg{
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: flex-start;
+    margin-left: 10px;
+    .name{
+      span:first-child{
+        margin-right: 8px;
+      }
+    }
+    .title{
+      font-size: 14px;
+      color: #314659;
+      margin: 0;
+    }
+    .subTitle{
+      font-size: 13px;
+      color: rgba(0,0,0,.46);
+      margin: 2px 0 0 0;
+    }
+  }
+}
 .datePeriod{
   display: flex;
   justify-content: space-between;

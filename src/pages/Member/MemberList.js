@@ -32,6 +32,29 @@ const { Step } = Steps;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 
+const owners = [
+  {
+    id: 'wzj',
+    name: '我自己',
+  },
+  {
+    id: 'wjh',
+    name: '吴家豪',
+  },
+  {
+    id: 'zxx',
+    name: '周星星',
+  },
+  {
+    id: 'zly',
+    name: '赵丽颖',
+  },
+  {
+    id: 'ym',
+    name: '姚明',
+  },
+];
+
 @Form.create()
 class AddMemberForm extends PureComponent{
   constructor(props) {
@@ -102,28 +125,6 @@ class AddMemberForm extends PureComponent{
 
   renderContent = (currentStep, formVals) => {
     const { form } = this.props;
-    const owners = [
-      {
-        id: 'wzj',
-        name: '我自己',
-      },
-      {
-        id: 'wjh',
-        name: '吴家豪',
-      },
-      {
-        id: 'zxx',
-        name: '周星星',
-      },
-      {
-        id: 'zly',
-        name: '赵丽颖',
-      },
-      {
-        id: 'ym',
-        name: '姚明',
-      },
-    ];
     if (currentStep === 1) {
       return [
         <FormItem key="photo" {...this.formLayout} label="人脸拍照">
@@ -181,6 +182,8 @@ class AddMemberForm extends PureComponent{
               initialValue: formVals.membership,
             })(
               <Select
+                showSearch
+                optionFilterProp="children"
                 style={{ width: '100%' }}
                 placeholder="请选择会籍"
               >
@@ -352,12 +355,290 @@ class AddMemberForm extends PureComponent{
   }
 }
 
+@Form.create()
+class EditMemberForm extends PureComponent{
+  constructor(props){
+    super(props)
+  }
+
+  renderContent=()=>{
+    const { form } = this.props;
+
+    return(
+      <div className={styles.editForm}>
+
+        <div className={styles.card}>
+          <p className={styles.title}>基本信息</p>
+          <Row gutter={16}>
+            <Col lg={12} sm={24}>
+              <StandardFormRow title="姓名" labelCol={6} wrapperCol={18}>
+                <FormItem key="membership">
+                  {form.getFieldDecorator('membership', {
+                    initialValue: '',
+                  })(<Input placeholder="请输入姓名" />)}
+                </FormItem>
+              </StandardFormRow>
+            </Col>
+            <Col lg={12} sm={24}>
+              <StandardFormRow title="性别" labelCol={6} wrapperCol={18}>
+                <FormItem key="sex">
+                  {form.getFieldDecorator('sex', {
+                    initialValue: '1',
+                  })(
+                    <Select
+                      style={{ width: '100%' }}
+                      placeholder="请选择性别"
+                    >
+                      <Option key="1" value="1">
+                        男
+                      </Option>
+                      <Option key="2" value="2">
+                        女
+                      </Option>
+                    </Select>
+                  )}
+                </FormItem>
+              </StandardFormRow>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col lg={12} sm={24}>
+              <StandardFormRow title="生日" labelCol={6} wrapperCol={18}>
+                <FormItem key="born">
+                  {form.getFieldDecorator('born', {
+                  })(
+                    <DatePicker
+                      style={{ width: '100%' }}
+                      format="YYYY-MM-DD"
+                      placeholder="请选择出生日期"
+                    />
+                  )}
+                </FormItem>
+              </StandardFormRow>
+            </Col>
+            <Col lg={12} sm={24}>
+              <StandardFormRow title="手机号" labelCol={6} wrapperCol={18}>
+                <FormItem key="phone">
+                  {form.getFieldDecorator('phone', {
+                    initialValue: '',
+                  })(
+                    <Input placeholder="请输入手机号码" />
+                  )}
+                </FormItem>
+              </StandardFormRow>
+            </Col>
+          </Row>
+        </div>
+
+        <div className={styles.card}>
+          <p className={styles.title}>打卡信息</p>
+          <Row gutter={16}>
+            <Col lg={12} sm={24}>
+              <StandardFormRow title="人脸拍照" labelCol={6} wrapperCol={18}>
+                <FormItem key="photo">
+                  {form.getFieldDecorator('photo',{
+                    initialValue:''
+                  })(
+                    <Input type="hidden"/>
+                  )}
+                </FormItem>
+                <div className={styles.operList}>
+                  <div className={styles.avatar}>
+                    <img src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"/>
+                  </div>
+                  <div className={styles.btns}>
+                    <Button type="primary">拍摄</Button>
+                    <Button>上传</Button>
+                  </div>
+                </div>
+              </StandardFormRow>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col lg={12} sm={24}>
+              <StandardFormRow title="实体卡号" labelCol={6} wrapperCol={18}>
+                <div className={styles.cardBox}>
+                  <FormItem key="card">
+                    {form.getFieldDecorator('card',{
+                      initialValue:''
+                    })(
+                      <Input placeholder="请输入实体卡号" />
+                    )}
+                  </FormItem>
+                  <Button>刷卡</Button>
+                </div>
+                <p className={styles.msg}>手动输入或通过读卡器、刷卡器录入卡号</p>
+              </StandardFormRow>
+            </Col>
+            <Col lg={12} sm={24}>
+              <StandardFormRow title="指纹信息" labelCol={6} wrapperCol={18}>
+                <div className={styles.cardBox}>
+                  <FormItem key="fingerprint">
+                    {form.getFieldDecorator('fingerprint',{
+                      initialValue:'未采集'
+                    })(
+                      <Input disabled={true} style={{textAlign:'center'}}/>
+                    )}
+                  </FormItem>
+                  <Button>采集</Button>
+                </div>
+                <p className={styles.msg}>点击采集，根据提示完成指纹录入</p>
+              </StandardFormRow>
+            </Col>
+          </Row>
+        </div>
+
+        <div className={styles.card}>
+          <p className={styles.title}>维护信息</p>
+          <Row gutter={16}>
+            <Col lg={12} sm={24}>
+              <StandardFormRow title="维护会籍" labelCol={5} wrapperCol={18}>
+                <FormItem key="membership">
+                  {form.getFieldDecorator('membership', {
+                    initialValue: '',
+                  })(
+                    <Select
+                      showSearch
+                      optionFilterProp="children"
+                      style={{ width: '100%' }}
+                      placeholder="请选择会籍"
+                    >
+                      {owners.map(owner => (
+                        <Option key={owner.id} value={owner.id}>
+                          {owner.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  )}
+                </FormItem>
+                <p className={styles.msg}>
+                  仅为方便管理，与业绩划分并无直接关系最多可选1位会籍
+                </p>
+              </StandardFormRow>
+            </Col>
+            <Col lg={12} sm={24}>
+              <StandardFormRow title="维护教练" labelCol={5} wrapperCol={18}>
+                <FormItem key="coach">
+                  {form.getFieldDecorator('coach', {
+                    initialValue: [],
+                  })(
+                    <Select
+                      mode="multiple"
+                      style={{ width: '100%' }}
+                      placeholder="请选择教练"
+                    >
+                      {owners.map(owner => (
+                        <Option key={owner.id} value={owner.id}>
+                          {owner.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  )}
+                  <p className={styles.msg}>
+                    仅为方便管理，与业绩划分并无直接关系不限数量
+                  </p>
+                </FormItem>
+              </StandardFormRow>
+            </Col>
+          </Row>
+        </div>
+
+        <div className={styles.card}>
+          <p className={styles.title}>更多信息</p>
+          <Row gutter={16}>
+            <Col lg={12} sm={24}>
+              <StandardFormRow title="微信" labelCol={5} wrapperCol={18}>
+                <FormItem key="wx">
+                  {form.getFieldDecorator('wx', {
+                    initialValue: '',
+                  })(<Input placeholder="请输入微信号" />)}
+                </FormItem>
+              </StandardFormRow>
+            </Col>
+            <Col lg={12} sm={24}>
+              <StandardFormRow title="身份证号" labelCol={5} wrapperCol={18}>
+                <FormItem key="IDcard">
+                  {form.getFieldDecorator('IDcard', {
+                    initialValue: '',
+                  })(<Input placeholder="请输入身份证号" />)}
+                </FormItem>
+              </StandardFormRow>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col lg={12} sm={24}>
+              <StandardFormRow title="邮箱" labelCol={5} wrapperCol={18}>
+                <FormItem key="email">
+                  {form.getFieldDecorator('email', {
+                    initialValue: '',
+                  })(<Input placeholder="请输入邮箱" />)}
+                </FormItem>
+              </StandardFormRow>
+            </Col>
+            <Col lg={12} sm={24}>
+              <StandardFormRow title="所在单位" labelCol={5} wrapperCol={18}>
+                <FormItem key="company">
+                  {form.getFieldDecorator('company', {
+                    initialValue: '',
+                  })(<Input placeholder="请请输入所在单位" />)}
+                </FormItem>
+              </StandardFormRow>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col lg={12} sm={24}>
+              <StandardFormRow title="来源渠道" labelCol={5} wrapperCol={18}>
+                <FormItem key="channel">
+                  {form.getFieldDecorator('channel', {
+                    initialValue: '',
+                  })(<Input placeholder="请输入来源渠道" />)}
+                </FormItem>
+              </StandardFormRow>
+            </Col>
+          </Row>
+        </div>
+      </div>
+    );
+  }
+
+  handleSubmit(e){
+    const _this = this
+    e.preventDefault();
+    const { form } = this.props;
+    form.validateFields((err, fieldsValue) => {
+      if(!err){
+        console.log(fieldsValue)
+      }
+    });
+  }
+
+  render(){
+
+    const {editModalVisible, handleEditModalVisible} = this.props
+
+    return(
+      <Modal
+        width={750}
+        bodyStyle={{ padding: '32px 40px 48px' }}
+        destroyOnClose
+        title="编辑会员"
+        visible={editModalVisible}
+        onOk={this.handleSubmit.bind(this)}
+        onCancel={() => handleEditModalVisible()}
+      >
+        {this.renderContent()}
+      </Modal>
+    )
+  }
+
+}
 
 @Form.create()
 class MemberList extends PureComponent {
   state = {
     expandForm: false,
     modalVisible: false,
+    editModalVisible:false
   };
 
   columns = [
@@ -583,6 +864,12 @@ class MemberList extends PureComponent {
     });
   };
 
+  handleEditModalVisible = flag => {
+    this.setState({
+      editModalVisible: !!flag,
+    })
+  }
+
   handleCheckSortList(item){
     console.log(item)
   }
@@ -591,7 +878,7 @@ class MemberList extends PureComponent {
     return (
       <Menu>
         <Menu.Item>
-          <span>编辑</span>
+          <span onClick={this.handleEditModalVisible.bind(this,true)}>编辑</span>
         </Menu.Item>
         <Menu.Item>
           <span>删除</span>
@@ -677,7 +964,7 @@ class MemberList extends PureComponent {
   }
 
   render() {
-    const {modalVisible} = this.state
+    const {modalVisible,editModalVisible} = this.state
 
     const listTestData = [
       {
@@ -729,6 +1016,10 @@ class MemberList extends PureComponent {
       handleModalVisible: this.handleModalVisible,
       handleUpdate: this.handleUpdate,
     };
+
+    const editMemberMethods = {
+      handleEditModalVisible: this.handleEditModalVisible,
+    }
 
     return (
       <div className={styles.memberContent}>
@@ -783,6 +1074,11 @@ class MemberList extends PureComponent {
         <AddMemberForm
           {...addMemberMethods}
           modalVisible={modalVisible}
+        />
+
+        <EditMemberForm
+          {...editMemberMethods}
+          editModalVisible={editModalVisible}
         />
       </div>
     );

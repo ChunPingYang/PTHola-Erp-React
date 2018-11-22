@@ -320,8 +320,7 @@ class MemberSignIn extends PureComponent{
       handleAddModalVisible: this.handleAddModalVisible,
       handleShipModalVisible:this.handleShipModalVisible,
       handleLeaveModalVisible:this.handleLeaveModalVisible,
-      handlePayModalVisible:this.handlePayModalVisible,
-      renderMemberInfo:this.renderMemberInfo
+      handlePayModalVisible:this.handlePayModalVisible
     };
 
     return(

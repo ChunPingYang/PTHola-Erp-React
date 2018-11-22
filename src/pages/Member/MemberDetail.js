@@ -9,12 +9,40 @@ import {
 } from 'antd';
 
 import styles from './MemberDetail.less'
+import MemberShipForm from '@/components/Member/MemberShipForm'
+import MemberLeave from '@/components/Member/MemberLeave'
+import MemberPayCourse from '@/components/Member/MemberPayCourse'
 
 class MemberDetail extends PureComponent{
+
+  state = {
+    shipModelVisible:false, //会籍续费
+    leaveModelVisible:false,  //请假
+    payModelVisible:false,  //买私教课
+  }
+
 
   onTabChange = key => {
     const {match} = this.props
     router.push(`${match.url}/${key}`);
+  }
+
+  handleShipModalVisible = flag =>{
+    this.setState({
+      shipModelVisible: !!flag,
+    })
+  }
+
+  handleLeaveModalVisible = flag =>{
+    this.setState({
+      leaveModelVisible: !!flag,
+    })
+  }
+
+  handlePayModalVisible = flag =>{
+    this.setState({
+      payModelVisible: !!flag,
+    })
   }
 
   render(){
@@ -23,6 +51,19 @@ class MemberDetail extends PureComponent{
       location,
       children
     } = this.props
+
+    const {
+      shipModelVisible,
+      leaveModelVisible,
+      payModelVisible
+    } = this.state;
+
+    const memberMethods = {
+      handleShipModalVisible:this.handleShipModalVisible,
+      handlePayModalVisible:this.handlePayModalVisible,
+      handleLeaveModalVisible:this.handleLeaveModalVisible,
+    };
+
 
     const operationTabList = [
       {
@@ -96,8 +137,8 @@ class MemberDetail extends PureComponent{
                       上次签到时间：3天前（2018-12-17）
                     </p>
                     <div className={styles.btns}>
-                      <Button>续费</Button>
-                      <Button>请假</Button>
+                      <Button onClick={this.handleShipModalVisible.bind(this,true)}>续费</Button>
+                      <Button onClick={this.handleLeaveModalVisible.bind(this,true)}>请假</Button>
                       <Button>退款</Button>
                     </div>
                   </div>
@@ -114,7 +155,7 @@ class MemberDetail extends PureComponent{
                       上次消课时间：3天前（2018-12-17）
                     </p>
                     <div className={styles.btns}>
-                      <Button>买课</Button>
+                      <Button onClick={this.handlePayModalVisible.bind(this,true)}>买课</Button>
                       <Button>消课</Button>
                       <Button>退款</Button>
                     </div>
@@ -135,6 +176,21 @@ class MemberDetail extends PureComponent{
             </Card>
           </Col>
         </Row>
+
+        <MemberShipForm
+          {...memberMethods}
+          shipModelVisible={shipModelVisible}
+        />
+
+        <MemberLeave
+          {...memberMethods}
+          leaveModelVisible={leaveModelVisible}
+        />
+
+        <MemberPayCourse
+          {...memberMethods}
+          payModelVisible={payModelVisible}
+        />
       </div>
     )
   }
