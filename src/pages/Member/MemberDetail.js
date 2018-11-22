@@ -95,8 +95,8 @@ class MemberDetail extends PureComponent{
     return(
       <div className={styles.detailCenter}>
         <Row gutter={24}>
-          <Col lg={7} md={24}>
-            <Card bordered={false} style={{ marginBottom: 24 }}>
+          <Col className={styles.userInfo} lg={7} md={24}>
+            <Card bordered={false}>
               <div>
                 <div className={styles.avatarHolder}>
                   <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png" />
