@@ -74,6 +74,7 @@ export default {
   'menu.financelist':'财务模块',
   'menu.configurelist':'配置',
   'menu.memberSignIn':'会员签到',
+  'menu.orderlist':'订单中心',
 
 
   'menu.home': '首页',

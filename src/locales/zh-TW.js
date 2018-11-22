@@ -73,6 +73,7 @@ export default {
   'menu.financelist':'財務模塊',
   'menu.configurelist':'配置',
   'menu.memberSignIn':'會員簽到',
+  'menu.orderlist':'訂單中心',
 
   'menu.home': '首頁',
   'menu.dashboard': 'Dashboard',

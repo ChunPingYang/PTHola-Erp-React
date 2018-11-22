@@ -78,6 +78,12 @@ export default [
         component:'./Eliminate/EliminateList'
       },
       {
+        path:'order-list',
+        name:'orderlist',
+        icon:'',
+        component:'./Order/OrderList'
+      },
+      {
         path:'/achievement-list',
         name:'achievementlist',
         icon:'',

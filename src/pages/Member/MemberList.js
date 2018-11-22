@@ -1027,19 +1027,19 @@ class MemberList extends PureComponent {
           <Card bordered={false}>
             <Row>
               <Col xl={5} lg={8} md={8} sm={12} xs={24}>
-                <StandarInfoData subTitle1="会员总数" title="245" subTitle2="男134 女166" bordered/>
+                <StandarInfoData title="会员总数" number="245" subTitle1="男134" subTitle2="女166" bordered/>
               </Col>
               <Col xl={5} lg={8} md={8} sm={12} xs={24}>
-                <StandarInfoData subTitle1="未过期会员" title="245" subTitle2="已过期58" bordered/>
+                <StandarInfoData title="未过期会员" number="245" subTitle1="已过期58" bordered/>
               </Col>
               <Col xl={5} lg={8} md={8} sm={12} xs={24}>
-                <StandarInfoData subTitle1="私教会员" title="245" subTitle2="非私教会员100" bordered/>
+                <StandarInfoData title="私教会员" number="245" subTitle1="非私教会员100" bordered/>
               </Col>
               <Col xl={4} lg={8} md={8} sm={12} xs={24}>
-                <StandarInfoData subTitle1="90天内即将过期" title="245" subTitle2="30天内过期12" bordered/>
+                <StandarInfoData title="90天内即将过期" number="245" subTitle1="30天内过期12" bordered/>
               </Col>
               <Col xl={5} lg={8} md={8} sm={12} xs={24}>
-                <StandarInfoData subTitle1="剩余课时1-15节" title="245" subTitle2="剩余0节会员25"/>
+                <StandarInfoData title="剩余课时1-15节" number="245" subTitle1="剩余0节会员25"/>
               </Col>
             </Row>
           </Card>

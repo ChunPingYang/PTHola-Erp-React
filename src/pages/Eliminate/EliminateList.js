@@ -92,13 +92,24 @@ class EliminateList extends PureComponent {
     });
   };
 
+  handleSearch(e){
+    const _this = this
+    e.preventDefault();
+    const { form } = this.props;
+    form.validateFields((err, fieldsValue) => {
+      if(!err){
+        console.log(fieldsValue)
+      }
+    });
+  }
+
   renderSimpleForm() {
     const {
       form: { getFieldDecorator },
     } = this.props;
 
     return (
-      <Form onSubmit={this.handleSearch} layout="inline">
+      <Form onSubmit={this.handleSearch.bind(this)} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="上课日期">
@@ -157,7 +168,7 @@ class EliminateList extends PureComponent {
     ];
 
     return (
-      <Form onSubmit={this.handleSearch} layout="inline">
+      <Form onSubmit={this.handleSearch.bind(this)} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="上课日期">
@@ -255,19 +266,19 @@ class EliminateList extends PureComponent {
           <Card bordered={false}>
             <Row>
               <Col xl={5} lg={8} md={8} sm={12} xs={24}>
-                <StandarInfoData subTitle1="今日消课数" title="28" subTitle2="本周283 本月1700" bordered/>
+                <StandarInfoData title="今日消课数" number="28" subTitle1="本周283" subTitle2="本月1700" bordered/>
               </Col>
               <Col xl={5} lg={8} md={8} sm={12} xs={24}>
-                <StandarInfoData subTitle1="今日销售课时" title="36" subTitle2="本周283 本月100" bordered/>
+                <StandarInfoData title="今日销售课时" number="36" subTitle1="本周283" subTitle2="本月100" bordered/>
               </Col>
               <Col xl={5} lg={8} md={8} sm={12} xs={24}>
-                <StandarInfoData subTitle1="今日销售业绩" title="¥7100" subTitle2="本周¥34000 本月¥89000" bordered/>
+                <StandarInfoData title="今日销售业绩" number="¥7100" subTitle1="本周¥34000" subTitle2="本月¥89000" bordered/>
               </Col>
               <Col xl={4} lg={8} md={8} sm={12} xs={24}>
-                <StandarInfoData subTitle1="剩余总课时" title="100" subTitle2="已消1345" bordered/>
+                <StandarInfoData title="剩余总课时" number="100" subTitle1="已消1345" bordered/>
               </Col>
               <Col xl={5} lg={8} md={8} sm={12} xs={24}>
-                <StandarInfoData subTitle1="今日消课收入" title="¥56000" subTitle2="本周¥34000 本月¥89000"/>
+                <StandarInfoData title="今日消课收入" number="¥56000" subTitle1="本周¥34000" subTitle2="本月¥89000"/>
               </Col>
             </Row>
           </Card>

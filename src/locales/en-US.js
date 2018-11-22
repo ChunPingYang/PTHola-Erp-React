@@ -76,6 +76,7 @@ export default {
   'menu.financelist':'Financial module',
   'menu.configurelist':'Configure',
   'menu.memberSignIn':'Member signIn',
+  'menu.orderlist':'Order center',
 
   'menu.home': 'Home',
   'menu.dashboard': 'Dashboard',
