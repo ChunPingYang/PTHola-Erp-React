@@ -177,9 +177,6 @@ class OrderList extends PureComponent{
               <Button type="primary" htmlType="submit">
                 查询
               </Button>
-              <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
-                重置
-              </Button>
               <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
                 展开 <Icon type="down"/>
               </a>
@@ -273,9 +270,6 @@ class OrderList extends PureComponent{
             <span className={styles.submitButtons}>
               <Button type="primary" htmlType="submit">
                 查询
-              </Button>
-              <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
-                重置
               </Button>
               <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
                 展开 <Icon type="down"/>

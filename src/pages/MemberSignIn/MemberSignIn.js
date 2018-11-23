@@ -20,6 +20,7 @@ import AddMemberForm from './AddMemberForm'
 import MemberShipForm from '@/components/Member/MemberShipForm'
 import MemberLeave from '@/components/Member/MemberLeave'
 import MemberPayCourse from '@/components/Member/MemberPayCourse'
+import MemberEliminate from '@/components/Member/MemberEliminate'
 import AdvancedTable from '@/components/AdvancedTable'
 
 const FormItem = Form.Item;
@@ -38,6 +39,7 @@ class MemberSignIn extends PureComponent{
     shipModelVisible:false, //会籍续费
     leaveModelVisible:false,  //请假
     payModelVisible:false,  //买私教课
+    eliminateModelVisible:false, //私教消课
   }
 
   columns = [
@@ -153,7 +155,7 @@ class MemberSignIn extends PureComponent{
     return (
       <Menu>
         <Menu.Item>
-          <span>私教消课</span>
+          <span onClick={this.handleEiminateModalVisible.bind(this,true)}>私教消课</span>
         </Menu.Item>
         <Menu.Item>
           <span onClick={this.handleShipModalVisible.bind(this,true)}>会籍续费</span>
@@ -305,6 +307,12 @@ class MemberSignIn extends PureComponent{
     })
   }
 
+  handleEiminateModalVisible = flag =>{
+    this.setState({
+      eliminateModelVisible: !!flag
+    })
+  }
+
 
   render(){
     const {
@@ -314,13 +322,15 @@ class MemberSignIn extends PureComponent{
       addModalVisible,
       shipModelVisible,
       leaveModelVisible,
-      payModelVisible
+      payModelVisible,
+      eliminateModelVisible
     } = this.state;
     const memberMethods = {
       handleAddModalVisible: this.handleAddModalVisible,
       handleShipModalVisible:this.handleShipModalVisible,
       handleLeaveModalVisible:this.handleLeaveModalVisible,
-      handlePayModalVisible:this.handlePayModalVisible
+      handlePayModalVisible:this.handlePayModalVisible,
+      handleEiminateModalVisible:this.handleEiminateModalVisible
     };
 
     return(
@@ -387,6 +397,11 @@ class MemberSignIn extends PureComponent{
         <MemberPayCourse
           {...memberMethods}
           payModelVisible={payModelVisible}
+        />
+
+        <MemberEliminate
+          {...memberMethods}
+          eliminateModelVisible={eliminateModelVisible}
         />
       </div>
     )

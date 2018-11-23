@@ -744,9 +744,6 @@ class MemberList extends PureComponent {
               <Button type="primary" htmlType="submit">
                 查询
               </Button>
-              <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
-                重置
-              </Button>
               <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
                 展开 <Icon type="down"/>
               </a>
@@ -794,9 +791,6 @@ class MemberList extends PureComponent {
               <Button type="primary" htmlType="submit">
                 查询
               </Button>
-              <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
-                重置
-              </Button>
               <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
                 收起 <Icon type="down"/>
               </a>
@@ -810,52 +804,6 @@ class MemberList extends PureComponent {
   renderForm() {
     const { expandForm } = this.state;
     return expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
-  }
-
-  renderSelfThead() {
-    return (
-      <ul className={styles.memberThead}>
-        {
-          this.columns.map(item => (
-            <li key={item.title}>
-              <div className={styles.title}>
-                {item.title}
-                {
-                  item.hasSort ?
-                    <p className={styles.sorters}>
-                      <Icon type="caret-up"/>
-                      <Icon type="caret-down"/>
-                    </p>
-                    : ''
-                }
-              </div>
-              {
-                item.children ?
-                  <div className={styles.info}>
-                    {
-                      item.children.map(subItem => (
-                        <div key={subItem.title} className={styles.sortItem}>
-                          {subItem.title}
-                          {
-                            subItem.hasSort ?
-                              <p className={styles.sorters}>
-                                <Icon type="caret-up"/>
-                                <Icon type="caret-down"/>
-                              </p>
-                              : ''
-                          }
-
-                        </div>
-                      ))
-                    }
-                  </div>
-                  : ''
-              }
-            </li>
-          ))
-        }
-      </ul>
-    );
   }
 
   handleModalVisible = flag => {

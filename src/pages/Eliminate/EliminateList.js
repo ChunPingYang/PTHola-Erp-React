@@ -77,7 +77,7 @@ class EliminateList extends PureComponent {
       title:'管理权限',
       dataIndex:'authority',
       key:'authority',
-      render:val => <span>{val===1 ? '修改' : ''}</span>
+      render:val => <span>{val===1 ? <a href="javascript:;">修改</a> : ''}</span>
     }
   ]
 
@@ -228,7 +228,7 @@ class EliminateList extends PureComponent {
 
     const tableData = [
       {
-        key:1,
+        id:1,
         name:'陈鑫1',
         coach:'甜心教练',
         classDate:1542000600000,
@@ -240,7 +240,7 @@ class EliminateList extends PureComponent {
         authority:1
       },
       {
-        key:2,
+        id:2,
         name:'陈鑫2',
         coach:'甜心教练',
         classDate:1539234000000,
@@ -291,7 +291,7 @@ class EliminateList extends PureComponent {
               导出
             </Button>
             <Table
-              rowKey='key'
+              rowKey='id'
               pagination={paginationProps}
               dataSource={tableData}
               columns={this.columns}/>
