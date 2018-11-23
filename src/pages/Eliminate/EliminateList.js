@@ -290,11 +290,13 @@ class EliminateList extends PureComponent {
             <Button icon="plus" type="primary">
               导出
             </Button>
-            <Table
-              rowKey='id'
-              pagination={paginationProps}
-              dataSource={tableData}
-              columns={this.columns}/>
+            <div className={styles.tableList}>
+              <Table
+                rowKey='id'
+                pagination={paginationProps}
+                dataSource={tableData}
+                columns={this.columns}/>
+            </div>
           </div>
         </Card>
       </div>

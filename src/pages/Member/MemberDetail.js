@@ -12,6 +12,7 @@ import styles from './MemberDetail.less'
 import MemberShipForm from '@/components/Member/MemberShipForm'
 import MemberLeave from '@/components/Member/MemberLeave'
 import MemberPayCourse from '@/components/Member/MemberPayCourse'
+import MemberEliminate from '@/components/Member/MemberEliminate'
 
 class MemberDetail extends PureComponent{
 
@@ -19,6 +20,7 @@ class MemberDetail extends PureComponent{
     shipModelVisible:false, //会籍续费
     leaveModelVisible:false,  //请假
     payModelVisible:false,  //买私教课
+    eliminateModelVisible:false, //私教消课
   }
 
 
@@ -45,6 +47,12 @@ class MemberDetail extends PureComponent{
     })
   }
 
+  handleEiminateModalVisible = flag =>{
+    this.setState({
+      eliminateModelVisible: !!flag
+    })
+  }
+
   render(){
     const {
       match,
@@ -55,13 +63,15 @@ class MemberDetail extends PureComponent{
     const {
       shipModelVisible,
       leaveModelVisible,
-      payModelVisible
+      payModelVisible,
+      eliminateModelVisible
     } = this.state;
 
     const memberMethods = {
       handleShipModalVisible:this.handleShipModalVisible,
       handlePayModalVisible:this.handlePayModalVisible,
       handleLeaveModalVisible:this.handleLeaveModalVisible,
+      handleEiminateModalVisible:this.handleEiminateModalVisible
     };
 
 
@@ -156,7 +166,7 @@ class MemberDetail extends PureComponent{
                     </p>
                     <div className={styles.btns}>
                       <Button onClick={this.handlePayModalVisible.bind(this,true)}>买课</Button>
-                      <Button>消课</Button>
+                      <Button onClick={this.handleEiminateModalVisible.bind(this,true)}>消课</Button>
                       <Button>退款</Button>
                     </div>
                   </div>
@@ -190,6 +200,11 @@ class MemberDetail extends PureComponent{
         <MemberPayCourse
           {...memberMethods}
           payModelVisible={payModelVisible}
+        />
+
+        <MemberEliminate
+          {...memberMethods}
+          eliminateModelVisible={eliminateModelVisible}
         />
       </div>
     )
