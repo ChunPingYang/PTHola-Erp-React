@@ -1,9 +1,10 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
-import { fakeAccountLogin, getFakeCaptcha } from '@/services/api';
+import { UserLogin, getUserInfo } from '@/services/user';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
+import Cookies from 'js-cookie'
 
 export default {
   namespace: 'login',
@@ -14,13 +15,13 @@ export default {
 
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
+      const response = yield call(UserLogin, payload);
       yield put({
         type: 'changeLoginStatus',
         payload: response,
       });
       // Login successfully
-      if (response.status === 'ok') {
+      if (!response.error_response) {
         reloadAuthorized();
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
@@ -41,19 +42,17 @@ export default {
       }
     },
 
-    *getCaptcha({ payload }, { call }) {
-      yield call(getFakeCaptcha, payload);
-    },
-
-    *logout(_, { put }) {
+    *logout({ payload }, { call, put }){
+      const response = yield call(getUserInfo, payload);
       yield put({
         type: 'changeLoginStatus',
         payload: {
-          status: false,
-          currentAuthority: 'guest',
+          roles:['guest'],
+          ...response
         },
       });
       reloadAuthorized();
+      Cookies.remove('token')
       yield put(
         routerRedux.push({
           pathname: '/user/login',
@@ -61,18 +60,21 @@ export default {
             redirect: window.location.href,
           }),
         })
-      );
-    },
+      )
+    }
   },
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      setAuthority(payload.currentAuthority);
+      const result  = payload.response
+      if(result){
+        Cookies.set('token',`${result.token_type} ${result.access_token}`,{expires:2})
+        setAuthority(result.roles);
+      }
+
       return {
-        ...state,
-        status: payload.status,
-        type: payload.type,
+        ...payload,
       };
-    },
+    }
   },
 };

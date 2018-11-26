@@ -72,6 +72,12 @@ export default {
   //     pathRewrite: { '^/server': '' },
   //   },
   // },
+  proxy: {
+    "/api": {
+      "target": "http://192.168.0.128:8080/",
+      "changeOrigin": true,
+    },
+  },
   ignoreMomentLocale: true,
   lessLoaderOptions: {
     javascriptEnabled: true,
