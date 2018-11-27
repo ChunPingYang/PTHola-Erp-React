@@ -2,7 +2,8 @@ import React, {PureComponent} from 'react';
 import {
   Tooltip,
   Icon,
-  Pagination
+  Pagination,
+  Spin
 } from 'antd'
 
 import styles from './index.less'
@@ -24,8 +25,8 @@ class AdvancedTable extends PureComponent{
                 {
                   item.hasSort ?
                     <p className={styles.sorters} onClick={handleCheckSortList.bind(this, item)}>
-                      <Icon type="caret-up"/>
-                      <Icon type="caret-down"/>
+                      <Icon type="caret-up" className={item.sortUp === 2 ? styles.active : ''}/>
+                      <Icon type="caret-down" className={item.sortUp === 2 ? '' : item.sortUp === 3 ? styles.active : ''}/>
                     </p>
                     : ''
                 }
@@ -42,8 +43,8 @@ class AdvancedTable extends PureComponent{
                           {
                             subItem.hasSort ?
                               <p className={styles.sorters} onClick={handleCheckSortList.bind(this, subItem)}>
-                                <Icon type="caret-up"/>
-                                <Icon type="caret-down"/>
+                                <Icon type="caret-up" className={subItem.sortUp === 2 ? styles.active : ''}/>
+                                <Icon type="caret-down" className={subItem.sortUp === 2 ? '' : subItem.sortUp === 3 ? styles.active : ''}/>
                               </p>
                               : ''
                           }
@@ -63,22 +64,34 @@ class AdvancedTable extends PureComponent{
 
 
   render(){
-    const {children,pagination,onPageChange} = this.props
+    const {
+      children,
+      pagination,
+      onPageChange,
+      loading,
+      data
+    } = this.props
+
     return(
-      <div className={styles.tableList}>
-        <table>
-          {this.renderThead()}
-          {children}
-        </table>
-        <div className={styles.page}>
-          <Pagination
-            onChange={onPageChange}
-            onShowSizeChange={onPageChange}
-            defaultCurrent={1}
-            {...pagination}
-          />
+      <Spin spinning={loading}>
+        <div className={styles.tableList}>
+          <table>
+            {this.renderThead()}
+            {children}
+          </table>
+          {
+            data.length ?
+              <div className={styles.page}>
+                <Pagination
+                  onChange={onPageChange}
+                  onShowSizeChange={onPageChange}
+                  {...pagination}
+                />
+              </div>
+              : <p className={styles.noData}>暂无数据</p>
+          }
         </div>
-      </div>
+      </Spin>
     );
   }
 }

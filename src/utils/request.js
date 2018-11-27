@@ -146,11 +146,13 @@ export default function request(url, option) {
       const status = e.name;
 
       if (status === 401) {
+        console.log(status)
         // @HACK
         /* eslint-disable no-underscore-dangle */
-        window.g_app._store.dispatch({
-          type: 'login/logout',
-        })
+        // window.g_app._store.dispatch({
+        //   type: 'login/logout',
+        // })
+        router.push('/user/login')
       }else if(status === 403){
         router.push('/exception/403');
       }else if(status <= 504 && status >= 500){

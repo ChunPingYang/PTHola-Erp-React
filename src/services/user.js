@@ -1,13 +1,6 @@
 import { stringify } from 'qs';
 import request from '@/utils/request';
 
-export async function query() {
-  return request('/api/users');
-}
-
-export async function queryCurrent() {
-  return request('/api/currentUser');
-}
 
 /**
  * 用户登录
@@ -15,7 +8,7 @@ export async function queryCurrent() {
  * @returns {Promise<void>}
  * @constructor
  */
-export async function UserLogin(params) {
+export async function userLogin(params) {
   return request('/api/1.0.0/oauthinlet/pthola.base.user.login', {
     method: 'POST',
     body: params,
@@ -37,8 +30,18 @@ export async function getUserInfo() {
  * @returns {Promise<void>}
  * @constructor
  */
-export async function UserLogout() {
+export async function userLogout() {
   return request('/api/1.0.0/oauthinlet/pthola.base.user.logout',{
+    method: 'POST'
+  })
+}
+
+/**
+ * 刷新用户token
+ * @returns {Promise<void>}
+ */
+export async function refreshToken() {
+  return request('/api/1.0.0/oauthinlet/pthola.base.user.refresh',{
     method: 'POST'
   })
 }

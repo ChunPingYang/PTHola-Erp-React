@@ -1,7 +1,8 @@
 import React, { PureComponent, Fragment } from 'react';
 import moment from 'moment';
+import { connect } from 'dva';
 import router from 'umi/router';
-import Link from 'umi/link'
+import Link from 'umi/link';
 import {
   Row,
   Col,
@@ -19,13 +20,13 @@ import {
   Modal,
   Steps,
   Radio,
-  Divider
+  Divider,
 } from 'antd';
 
 import styles from './MemberList.less';
 import StandardFormRow from '@/components/StandardFormRow';
-import StandarInfoData from '@/components/StandarInfoData'
-import AdvancedTable from '@/components/AdvancedTable'
+import StandarInfoData from '@/components/StandarInfoData';
+import AdvancedTable from '@/components/AdvancedTable';
 
 const FormItem = Form.Item;
 const { Step } = Steps;
@@ -56,7 +57,7 @@ const owners = [
 ];
 
 @Form.create()
-class AddMemberForm extends PureComponent{
+class AddMemberForm extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -67,16 +68,16 @@ class AddMemberForm extends PureComponent{
         template: '0',
         type: '',
         frequency: 'month',
-        phone:'',
-        photo:'',
-        card:'',
-        membership:[],
-        coach:[],
-        wx:'',
-        email:'',
-        IDcard:'',
-        company:'',
-        channel:''
+        phone: '',
+        photo: '',
+        card: '',
+        membership: [],
+        coach: [],
+        wx: '',
+        email: '',
+        IDcard: '',
+        company: '',
+        channel: '',
       },
       currentStep: 0,
     };
@@ -101,10 +102,10 @@ class AddMemberForm extends PureComponent{
           if (currentStep < 3) {
             this.forward();
           } else {
-            console.log(formVals)
+            console.log(formVals);
             //handleUpdate(formVals);
           }
-        }
+        },
       );
     });
   };
@@ -128,8 +129,8 @@ class AddMemberForm extends PureComponent{
     if (currentStep === 1) {
       return [
         <FormItem key="photo" {...this.formLayout} label="人脸拍照">
-          {form.getFieldDecorator('photo',{
-            initialValue:formVals.photo
+          {form.getFieldDecorator('photo', {
+            initialValue: formVals.photo,
           })(
             <div className={styles.operList}>
               <div className={styles.avatar}>
@@ -139,39 +140,39 @@ class AddMemberForm extends PureComponent{
                 <Button type="primary">拍摄</Button>
                 <Button>上传</Button>
               </div>
-            </div>
+            </div>,
           )}
         </FormItem>,
         <FormItem key="card" {...this.formLayout} label="实体卡号">
-          {form.getFieldDecorator('card',{
-            initialValue:formVals.card
+          {form.getFieldDecorator('card', {
+            initialValue: formVals.card,
           })(
             <div className={styles.cardInfo}>
               <div className={styles.inp}>
-                <Input defaultValue={formVals.card} placeholder="请输入实体卡号" />
+                <Input defaultValue={formVals.card} placeholder="请输入实体卡号"/>
                 <Button type="primary">刷卡</Button>
               </div>
               <p className={styles.msg}>
                 手动输入或通过读卡器、刷卡器录入卡号
               </p>
-            </div>
+            </div>,
           )}
         </FormItem>,
         <FormItem key="fingerprint" {...this.formLayout} label="指纹信息">
-          {form.getFieldDecorator('fingerprint',{
-            initialValue:formVals.fingerprint
+          {form.getFieldDecorator('fingerprint', {
+            initialValue: formVals.fingerprint,
           })(
             <div className={styles.cardInfo}>
               <div className={styles.inp}>
-                <Input disabled={true} style={{textAlign:'center'}} value="未采集"/>
+                <Input disabled={true} style={{ textAlign: 'center' }} value="未采集"/>
                 <Button type="primary">采集</Button>
               </div>
               <p className={styles.msg}>
                 点击采集，根据提示完成指纹录入
               </p>
-            </div>
+            </div>,
           )}
-        </FormItem>
+        </FormItem>,
       ];
     }
     if (currentStep === 2) {
@@ -192,7 +193,7 @@ class AddMemberForm extends PureComponent{
                     {owner.name}
                   </Option>
                 ))}
-              </Select>
+              </Select>,
             )}
           </FormItem>
           <p className={styles.msg}>
@@ -214,7 +215,7 @@ class AddMemberForm extends PureComponent{
                     {owner.name}
                   </Option>
                 ))}
-              </Select>
+              </Select>,
             )}
             <p className={styles.msg}>
               仅为方便管理，与业绩划分并无直接关系不限数量
@@ -223,41 +224,41 @@ class AddMemberForm extends PureComponent{
         </StandardFormRow>,
       ];
     }
-    if(currentStep === 3){
+    if (currentStep === 3) {
       return [
         <FormItem key="wx" {...this.formLayout} label="微信">
           {form.getFieldDecorator('wx', {
             initialValue: formVals.wx,
-          })(<Input placeholder="请输入微信号" />)}
+          })(<Input placeholder="请输入微信号"/>)}
         </FormItem>,
         <FormItem key="email" {...this.formLayout} label="邮箱">
           {form.getFieldDecorator('email', {
             initialValue: formVals.email,
-          })(<Input placeholder="请输入邮箱号" />)}
+          })(<Input placeholder="请输入邮箱号"/>)}
         </FormItem>,
         <FormItem key="IDcard" {...this.formLayout} label="身份证号">
           {form.getFieldDecorator('IDcard', {
             initialValue: formVals.IDcard,
-          })(<Input placeholder="请输入身份证号" />)}
+          })(<Input placeholder="请输入身份证号"/>)}
         </FormItem>,
         <FormItem key="company" {...this.formLayout} label="所在单位">
           {form.getFieldDecorator('company', {
             initialValue: formVals.company,
-          })(<Input placeholder="请输入所在单位" />)}
+          })(<Input placeholder="请输入所在单位"/>)}
         </FormItem>,
         <FormItem key="channel" {...this.formLayout} label="所在单位">
           {form.getFieldDecorator('channel', {
             initialValue: formVals.channel,
-          })(<Input placeholder="请输入来源渠道" />)}
+          })(<Input placeholder="请输入来源渠道"/>)}
         </FormItem>,
-      ]
+      ];
     }
     return [
       <FormItem key="name" {...this.formLayout} label="姓名">
         {form.getFieldDecorator('name', {
           rules: [{ required: true, message: '请输入姓名' }],
           initialValue: formVals.name,
-        })(<Input placeholder="请输入姓名" />)}
+        })(<Input placeholder="请输入姓名"/>)}
       </FormItem>,
       <FormItem key="type" {...this.formLayout} label="性别">
         {form.getFieldDecorator('type', {
@@ -267,25 +268,25 @@ class AddMemberForm extends PureComponent{
           <RadioGroup>
             <Radio value="0">男</Radio>
             <Radio value="1">女</Radio>
-          </RadioGroup>
+          </RadioGroup>,
         )}
       </FormItem>,
       <FormItem key="born" {...this.formLayout} label="生日">
-        {form.getFieldDecorator('born',{
-          initialValue:formVals.born && moment(moment(formVals.born), 'YYYY-MM-DD')
+        {form.getFieldDecorator('born', {
+          initialValue: formVals.born && moment(moment(formVals.born), 'YYYY-MM-DD'),
         })(
           <DatePicker
             style={{ width: '100%' }}
             format="YYYY-MM-DD"
             placeholder="请选择出生日期"
-          />
+          />,
         )}
       </FormItem>,
       <FormItem key="phone" {...this.formLayout} label="手机号码">
         {form.getFieldDecorator('phone', {
           rules: [{ required: true, message: '请输入手机号码' }],
           initialValue: formVals.phone,
-        })(<Input placeholder="请输入手机号码" />)}
+        })(<Input placeholder="请输入手机号码"/>)}
       </FormItem>,
     ];
   };
@@ -344,10 +345,10 @@ class AddMemberForm extends PureComponent{
         onCancel={() => handleModalVisible()}
       >
         <Steps style={{ marginBottom: 28 }} size="small" current={currentStep}>
-          <Step title="基本" />
-          <Step title="打卡" />
-          <Step title="维护" />
-          <Step title="更多" />
+          <Step title="基本"/>
+          <Step title="打卡"/>
+          <Step title="维护"/>
+          <Step title="更多"/>
         </Steps>
         {this.renderContent(currentStep, formVals)}
       </Modal>
@@ -356,15 +357,15 @@ class AddMemberForm extends PureComponent{
 }
 
 @Form.create()
-class EditMemberForm extends PureComponent{
-  constructor(props){
-    super(props)
+class EditMemberForm extends PureComponent {
+  constructor(props) {
+    super(props);
   }
 
-  renderContent=()=>{
+  renderContent = () => {
     const { form } = this.props;
 
-    return(
+    return (
       <div className={styles.editForm}>
 
         <div className={styles.card}>
@@ -375,7 +376,7 @@ class EditMemberForm extends PureComponent{
                 <FormItem key="membership">
                   {form.getFieldDecorator('membership', {
                     initialValue: '',
-                  })(<Input placeholder="请输入姓名" />)}
+                  })(<Input placeholder="请输入姓名"/>)}
                 </FormItem>
               </StandardFormRow>
             </Col>
@@ -395,7 +396,7 @@ class EditMemberForm extends PureComponent{
                       <Option key="2" value="2">
                         女
                       </Option>
-                    </Select>
+                    </Select>,
                   )}
                 </FormItem>
               </StandardFormRow>
@@ -405,13 +406,12 @@ class EditMemberForm extends PureComponent{
             <Col lg={12} sm={24}>
               <StandardFormRow title="生日" labelCol={6} wrapperCol={18}>
                 <FormItem key="born">
-                  {form.getFieldDecorator('born', {
-                  })(
+                  {form.getFieldDecorator('born', {})(
                     <DatePicker
                       style={{ width: '100%' }}
                       format="YYYY-MM-DD"
                       placeholder="请选择出生日期"
-                    />
+                    />,
                   )}
                 </FormItem>
               </StandardFormRow>
@@ -422,7 +422,7 @@ class EditMemberForm extends PureComponent{
                   {form.getFieldDecorator('phone', {
                     initialValue: '',
                   })(
-                    <Input placeholder="请输入手机号码" />
+                    <Input placeholder="请输入手机号码"/>,
                   )}
                 </FormItem>
               </StandardFormRow>
@@ -436,10 +436,10 @@ class EditMemberForm extends PureComponent{
             <Col lg={12} sm={24}>
               <StandardFormRow title="人脸拍照" labelCol={6} wrapperCol={18}>
                 <FormItem key="photo">
-                  {form.getFieldDecorator('photo',{
-                    initialValue:''
+                  {form.getFieldDecorator('photo', {
+                    initialValue: '',
                   })(
-                    <Input type="hidden"/>
+                    <Input type="hidden"/>,
                   )}
                 </FormItem>
                 <div className={styles.operList}>
@@ -459,10 +459,10 @@ class EditMemberForm extends PureComponent{
               <StandardFormRow title="实体卡号" labelCol={6} wrapperCol={18}>
                 <div className={styles.cardBox}>
                   <FormItem key="card">
-                    {form.getFieldDecorator('card',{
-                      initialValue:''
+                    {form.getFieldDecorator('card', {
+                      initialValue: '',
                     })(
-                      <Input placeholder="请输入实体卡号" />
+                      <Input placeholder="请输入实体卡号"/>,
                     )}
                   </FormItem>
                   <Button>刷卡</Button>
@@ -474,10 +474,10 @@ class EditMemberForm extends PureComponent{
               <StandardFormRow title="指纹信息" labelCol={6} wrapperCol={18}>
                 <div className={styles.cardBox}>
                   <FormItem key="fingerprint">
-                    {form.getFieldDecorator('fingerprint',{
-                      initialValue:'未采集'
+                    {form.getFieldDecorator('fingerprint', {
+                      initialValue: '未采集',
                     })(
-                      <Input disabled={true} style={{textAlign:'center'}}/>
+                      <Input disabled={true} style={{ textAlign: 'center' }}/>,
                     )}
                   </FormItem>
                   <Button>采集</Button>
@@ -508,7 +508,7 @@ class EditMemberForm extends PureComponent{
                           {owner.name}
                         </Option>
                       ))}
-                    </Select>
+                    </Select>,
                   )}
                 </FormItem>
                 <p className={styles.msg}>
@@ -532,7 +532,7 @@ class EditMemberForm extends PureComponent{
                           {owner.name}
                         </Option>
                       ))}
-                    </Select>
+                    </Select>,
                   )}
                   <p className={styles.msg}>
                     仅为方便管理，与业绩划分并无直接关系不限数量
@@ -551,7 +551,7 @@ class EditMemberForm extends PureComponent{
                 <FormItem key="wx">
                   {form.getFieldDecorator('wx', {
                     initialValue: '',
-                  })(<Input placeholder="请输入微信号" />)}
+                  })(<Input placeholder="请输入微信号"/>)}
                 </FormItem>
               </StandardFormRow>
             </Col>
@@ -560,7 +560,7 @@ class EditMemberForm extends PureComponent{
                 <FormItem key="IDcard">
                   {form.getFieldDecorator('IDcard', {
                     initialValue: '',
-                  })(<Input placeholder="请输入身份证号" />)}
+                  })(<Input placeholder="请输入身份证号"/>)}
                 </FormItem>
               </StandardFormRow>
             </Col>
@@ -571,7 +571,7 @@ class EditMemberForm extends PureComponent{
                 <FormItem key="email">
                   {form.getFieldDecorator('email', {
                     initialValue: '',
-                  })(<Input placeholder="请输入邮箱" />)}
+                  })(<Input placeholder="请输入邮箱"/>)}
                 </FormItem>
               </StandardFormRow>
             </Col>
@@ -580,7 +580,7 @@ class EditMemberForm extends PureComponent{
                 <FormItem key="company">
                   {form.getFieldDecorator('company', {
                     initialValue: '',
-                  })(<Input placeholder="请请输入所在单位" />)}
+                  })(<Input placeholder="请请输入所在单位"/>)}
                 </FormItem>
               </StandardFormRow>
             </Col>
@@ -591,7 +591,7 @@ class EditMemberForm extends PureComponent{
                 <FormItem key="channel">
                   {form.getFieldDecorator('channel', {
                     initialValue: '',
-                  })(<Input placeholder="请输入来源渠道" />)}
+                  })(<Input placeholder="请输入来源渠道"/>)}
                 </FormItem>
               </StandardFormRow>
             </Col>
@@ -599,24 +599,24 @@ class EditMemberForm extends PureComponent{
         </div>
       </div>
     );
-  }
+  };
 
-  handleSubmit(e){
-    const _this = this
+  handleSubmit(e) {
+    const _this = this;
     e.preventDefault();
     const { form } = this.props;
     form.validateFields((err, fieldsValue) => {
-      if(!err){
-        console.log(fieldsValue)
+      if (!err) {
+        console.log(fieldsValue);
       }
     });
   }
 
-  render(){
+  render() {
 
-    const {editModalVisible, handleEditModalVisible} = this.props
+    const { editModalVisible, handleEditModalVisible } = this.props;
 
-    return(
+    return (
       <Modal
         width={750}
         bodyStyle={{ padding: '32px 40px 48px' }}
@@ -628,33 +628,43 @@ class EditMemberForm extends PureComponent{
       >
         {this.renderContent()}
       </Modal>
-    )
+    );
   }
 
 }
 
+
+@connect(({ member, loading }) => ({
+  member,
+  loading: loading.models.member,
+}))
 @Form.create()
 class MemberList extends PureComponent {
   state = {
     expandForm: false,
     modalVisible: false,
-    editModalVisible:false
+    editModalVisible: false,
+    form_values: [],
+    page: 1,
+    pageSize: 10,
   };
 
-  columns = [
+  columns = [   //sortUp 1:默认不排序  2:升序  3:降序
     {
       title: '会员基本信息',
       hasSort: false,
       children: [
         {
           title: '姓名',
-          sortUp: false,
+          sortUp: 1,
           hasSort: true,
+          sort_column: 'name',
         },
         {
           title: '年龄',
-          sortUp: false,
+          sortUp: 1,
           hasSort: true,
+          sort_column: 'age',
         },
       ],
     },
@@ -664,15 +674,17 @@ class MemberList extends PureComponent {
       children: [
         {
           title: '录入时间',
-          sortUp: false,
+          sortUp: 1,
           hasSort: true,
+          sort_column: 'created_at',
         },
       ],
     },
     {
       title: '到期时间',
       hasSort: true,
-      sortUp: false,
+      sortUp: 1,
+      sort_column: 'expire',
       children: [
         {
           title: '维护会籍',
@@ -683,7 +695,8 @@ class MemberList extends PureComponent {
     {
       title: '剩余课时',
       hasSort: true,
-      sortUp: false,
+      sortUp: 1,
+      sort_column: 'has_course_count',
       children: [
         {
           title: '维护教练',
@@ -694,17 +707,20 @@ class MemberList extends PureComponent {
     {
       title: '上次打卡',
       hasSort: true,
-      sortUp: false,
+      sortUp: 1,
+      sort_column: 'last_sign_time',
     },
     {
       title: '上次消课',
       hasSort: true,
-      sortUp: false,
+      sortUp: 1,
+      sort_column: 'last_in_class_time',
     },
     {
       title: '消费总额',
       hasSort: true,
-      sortUp: false,
+      sortUp: 1,
+      sort_column: 'total_amount',
     },
     {
       title: '操作',
@@ -712,7 +728,19 @@ class MemberList extends PureComponent {
   ];
 
   componentDidMount() {
+    this.queryMemberList({
+      page: 1,
+      page_size: this.state.pageSize,
+    });
+  }
 
+  //获取会员列表
+  queryMemberList(params) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'member/fetch',
+      payload: params,
+    });
   }
 
   toggleForm = () => {
@@ -727,7 +755,7 @@ class MemberList extends PureComponent {
       form: { getFieldDecorator },
     } = this.props;
     return (
-      <Form onSubmit={this.handleSearch} layout="inline">
+      <Form onSubmit={this.handleSearch.bind(this)} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="姓名">
@@ -759,7 +787,7 @@ class MemberList extends PureComponent {
       form: { getFieldDecorator },
     } = this.props;
     return (
-      <Form onSubmit={this.handleSearch} layout="inline">
+      <Form onSubmit={this.handleSearch.bind(this)} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="姓名">
@@ -773,17 +801,17 @@ class MemberList extends PureComponent {
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="会员卡">
-              {getFieldDecorator('card')(<Input placeholder="请输入搜索会员卡号"/>)}
+              {getFieldDecorator('card_number')(<Input placeholder="请输入搜索会员卡号"/>)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="会籍">
-              {getFieldDecorator('card')(<Input placeholder="请输入搜索会籍"/>)}
+              {getFieldDecorator('membership_name')(<Input placeholder="请输入搜索会籍"/>)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="教练">
-              {getFieldDecorator('card')(<Input placeholder="请输入搜索教练"/>)}
+              {getFieldDecorator('coaches_name')(<Input placeholder="请输入搜索教练"/>)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
@@ -806,6 +834,27 @@ class MemberList extends PureComponent {
     return expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
   }
 
+  //提交搜索
+  handleSearch(e) {
+    e.preventDefault();
+    const {
+      form: { validateFields },
+    } = this.props;
+
+    validateFields((err, values) => {
+      if (!err) {
+        this.setState({
+          form_values: values,
+        });
+        this.queryMemberList({
+          page: 1,
+          page_size: this.state.pageSize,
+          ...values,
+        });
+      }
+    });
+  }
+
   handleModalVisible = flag => {
     this.setState({
       modalVisible: !!flag,
@@ -815,18 +864,33 @@ class MemberList extends PureComponent {
   handleEditModalVisible = flag => {
     this.setState({
       editModalVisible: !!flag,
-    })
+    });
+  };
+
+  //排序
+  handleCheckSortList(item) {
+    const { page, pageSize, form_values } = this.state;
+
+    item.sortUp === 1 ?
+      item.sortUp = 2 :
+      item.sortUp === 2 ?
+        item.sortUp = 3 :
+        item.sortUp = 2;
+
+    this.queryMemberList({
+      page: page,
+      page_size: pageSize,
+      sort_column: item.sort_column,
+      sort_mode: item.sortUp === 2 ? 'asc' : item.sortUp === 3 ? 'desc' : '',
+      ...form_values,
+    });
   }
 
-  handleCheckSortList(item){
-    console.log(item)
-  }
-
-  renderMenu(){
+  renderMenu() {
     return (
       <Menu>
         <Menu.Item>
-          <span onClick={this.handleEditModalVisible.bind(this,true)}>编辑</span>
+          <span onClick={this.handleEditModalVisible.bind(this, true)}>编辑</span>
         </Menu.Item>
         <Menu.Item>
           <span>删除</span>
@@ -835,53 +899,55 @@ class MemberList extends PureComponent {
     );
   }
 
-  renderTbody(item,index){
-    const {match} = this.props
-    return(
-      <tr key={index}>
+  renderTbody(item) {
+    const { match } = this.props;
+    const coaches = item.coaches_name.split(',');
+    return (
+      <tr key={item.uuid}>
         <td>
-          {this.renderMemberInfo('https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png','陈鑫',28,180340431333)}
+          {this.renderMemberInfo(item.headimgurl, item.name, item.age, item.phone)}
         </td>
         <td>
           <div className={styles.messInfo}>
-            <p>{item.cardNum}</p>
-            <p className={styles.inTime}>{item.inTime}</p>
+            <p>{item.card_number}</p>
+            <p className={styles.inTime}>{moment(item.created_at * 1000).format('YYYY-MM-DD')}</p>
           </div>
         </td>
         <td>
           <div className={styles.dateInfo}>
-            <p className={styles.date}>{item.toTime}</p>
-            <p className={styles.title}>{item.maintain}</p>
+            <p className={styles.date}>{moment(item.expire * 1000).format('YYYY-MM-DD')}</p>
+            <p className={styles.title}>{item.membership_name}</p>
           </div>
         </td>
         <td>
           <div className={styles.dateInfo}>
-            <p className={styles.date}>剩余{item.residue}节</p>
-            <p className={styles.title}>{item.coachName}</p>
+            <p className={styles.date}>剩余{item.has_course_count}节</p>
+            <p
+              className={styles.title}>{coaches.length > 1 ? coaches[0] + '教练等' + coaches.length + '人' : coaches[0]}</p>
           </div>
         </td>
         <td>
           <div className={styles.messInfo}>
             <p>{item.lastClock}</p>
-            <p className={styles.inTime}>{item.lastClockTime}</p>
+            <p className={styles.inTime}>{moment(item.last_sign_time * 1000).format('YYYY-MM-DD')}</p>
           </div>
         </td>
         <td>
           <div className={styles.messInfo}>
             <p>{item.lastClass}</p>
-            <p className={styles.inTime}>{item.lastClassTime}</p>
+            <p className={styles.inTime}>{moment(item.last_in_class_time * 1000).format('YYYY-MM-DD')}</p>
           </div>
         </td>
         <td>
-          ¥{item.money}
+          ¥{item.total_amount}
         </td>
         <td>
           <div className={styles.opers}>
             <Link to={`${match.url}/detail/sign`}>详情</Link>
-            <Divider type="vertical" />
+            <Divider type="vertical"/>
             <Dropdown overlay={this.renderMenu()}>
               <a className="ant-dropdown-link" href="javascript:;">
-                更多 <Icon type="down" />
+                更多 <Icon type="down"/>
               </a>
             </Dropdown>
           </div>
@@ -890,8 +956,8 @@ class MemberList extends PureComponent {
     );
   }
 
-  renderMemberInfo(avatar,name,age,phone){
-    return(
+  renderMemberInfo(avatar, name, age, phone) {
+    return (
       <div className={styles.memberInfo}>
         <p className={styles.avatar}>
           <img src={avatar}/>
@@ -907,57 +973,32 @@ class MemberList extends PureComponent {
     );
   }
 
-  onPageChange(current,pageSize){
-    console.log(current,pageSize)
+  //分页
+  onPageChange(current, pageSize) {
+    const { form_values } = this.state;
+    this.setState({
+      page: current,
+      pageSize,
+    });
+
+    this.queryMemberList({
+      page: current,
+      page_size: pageSize,
+      ...form_values,
+    });
   }
 
   render() {
-    const {modalVisible,editModalVisible} = this.state
-
-    const listTestData = [
-      {
-        id: 1,
-        avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
-        name: 'chenxin',
-        age: 24,
-        phone: 18040431883,
-        cardNum: 133454545454,
-        inTime: '2018-11-09',
-        toTime: '2019-12-30',
-        maintain: '李四',
-        residue: 78,
-        coachName: '甜心教练',
-        lastClock: '3天前',
-        lastClockTime: '2018-10-28',
-        lastClass: '2天前',
-        lastClassTime: '2018-11-08',
-        money: '18000',
-      },
-      {
-        id: 2,
-        avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
-        name: 'chenxin',
-        age: 24,
-        phone: 18040431883,
-        cardNum: 133454545454,
-        inTime: '2018-11-09',
-        toTime: '2019-12-30',
-        maintain: '李四',
-        residue: 78,
-        coachName: '甜心教练',
-        lastClock: '3天前',
-        lastClockTime: '2018-10-28',
-        lastClass: '2天前',
-        lastClassTime: '2018-11-08',
-        money: '18000',
-      },
-    ];
-
+    const { modalVisible, editModalVisible } = this.state;
+    const {
+      member: { response },
+      loading,
+    } = this.props;
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
-      defaultCurrent:1,
-      total: 50,
+      current: response.paginator.page,
+      total: response.paginator.total_count,
     };
 
     const addMemberMethods = {
@@ -967,7 +1008,7 @@ class MemberList extends PureComponent {
 
     const editMemberMethods = {
       handleEditModalVisible: this.handleEditModalVisible,
-    }
+    };
 
     return (
       <div className={styles.memberContent}>
@@ -1001,16 +1042,18 @@ class MemberList extends PureComponent {
             </Button>
 
             <AdvancedTable
+              loading={loading}
               columns={this.columns}
-              pagination = {paginationProps}
+              data={response.members}
+              pagination={paginationProps}
               onPageChange={this.onPageChange.bind(this)}
               handleCheckSortList={this.handleCheckSortList.bind(this)}>
               <tbody>
               {
-                listTestData.map((item,index)=>{
+                response.members.map(item => {
                   return (
-                    this.renderTbody(item,index)
-                  )
+                    this.renderTbody(item)
+                  );
                 })
               }
               </tbody>

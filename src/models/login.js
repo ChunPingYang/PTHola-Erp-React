@@ -1,6 +1,6 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
-import { UserLogin, getUserInfo } from '@/services/user';
+import { userLogin, userLogout } from '@/services/user';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
@@ -15,7 +15,7 @@ export default {
 
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(UserLogin, payload);
+      const response = yield call(userLogin, payload);
       yield put({
         type: 'changeLoginStatus',
         payload: response,
@@ -43,7 +43,7 @@ export default {
     },
 
     *logout({ payload }, { call, put }){
-      const response = yield call(getUserInfo, payload);
+      const response = yield call(userLogout, payload);
       yield put({
         type: 'changeLoginStatus',
         payload: {
@@ -69,7 +69,7 @@ export default {
       const result  = payload.response
       if(result){
         Cookies.set('token',`${result.token_type} ${result.access_token}`,{expires:2})
-        setAuthority(result.roles);
+        setAuthority(result.roles ? result.roles : payload.roles);
       }
 
       return {

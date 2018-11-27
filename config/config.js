@@ -74,7 +74,7 @@ export default {
   // },
   proxy: {
     "/api": {
-      "target": "http://192.168.0.128:8080/",
+      "target": "https://pthola.erp.api.dev.pthola.com/",
       "changeOrigin": true,
     },
   },
