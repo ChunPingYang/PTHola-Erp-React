@@ -84,7 +84,6 @@ class MemberPayCourse extends PureComponent{
     const {form} = this.props
     form.getFieldDecorator('keys', { initialValue: [0] });
     const keys = form.getFieldValue('keys');
-    console.log(keys)
 
     const formItems = keys.map((k,index)=>{
       return(
@@ -236,7 +235,6 @@ class MemberPayCourse extends PureComponent{
     const { form } = this.props;
     form.validateFields((err, fieldsValue) => {
       if(!err){
-        console.log(fieldsValue)
 
         Modal.confirm({
           title:'温馨提示',

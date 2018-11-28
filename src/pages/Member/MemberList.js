@@ -62,11 +62,12 @@ class AddMemberForm extends PureComponent {
     this.state = {
       formVals: {
         name: '',
+        sex: '',
+        phone: '',
+        //birthday:'',
         target: '0',
         template: '0',
-        type: '',
         frequency: 'month',
-        phone: '',
         photo: '',
         card: '',
         membership: [],
@@ -258,20 +259,20 @@ class AddMemberForm extends PureComponent {
           initialValue: formVals.name,
         })(<Input placeholder="请输入姓名"/>)}
       </FormItem>,
-      <FormItem key="type" {...this.formLayout} label="性别">
-        {form.getFieldDecorator('type', {
+      <FormItem key="sex" {...this.formLayout} label="性别">
+        {form.getFieldDecorator('sex', {
           rules: [{ required: true, message: '请选择性别' }],
-          initialValue: formVals.type,
+          initialValue: formVals.sex,
         })(
           <RadioGroup>
-            <Radio value="0">男</Radio>
-            <Radio value="1">女</Radio>
+            <Radio value="1">男</Radio>
+            <Radio value="2">女</Radio>
           </RadioGroup>,
         )}
       </FormItem>,
-      <FormItem key="born" {...this.formLayout} label="生日">
-        {form.getFieldDecorator('born', {
-          initialValue: formVals.born && moment(moment(formVals.born), 'YYYY-MM-DD'),
+      <FormItem key="birthday" {...this.formLayout} label="生日">
+        {form.getFieldDecorator('birthday', {
+          initialValue: formVals.birthday && moment(moment(formVals.birthday), 'YYYY-MM-DD'),
         })(
           <DatePicker
             style={{ width: '100%' }}
@@ -338,6 +339,7 @@ class AddMemberForm extends PureComponent {
         bodyStyle={{ padding: '32px 40px 48px' }}
         destroyOnClose
         title="新增会员"
+        maskClosable={false}
         visible={modalVisible}
         footer={this.renderFooter(currentStep)}
         onCancel={() => handleModalVisible()}
@@ -620,6 +622,7 @@ class EditMemberForm extends PureComponent {
         bodyStyle={{ padding: '32px 40px 48px' }}
         destroyOnClose
         title="编辑会员"
+        maskClosable={false}
         visible={editModalVisible}
         onOk={this.handleSubmit.bind(this)}
         onCancel={() => handleEditModalVisible()}
@@ -869,25 +872,6 @@ class MemberList extends PureComponent {
   handleCheckSortList(item) {
     const { page, pageSize, form_values } = this.state;
 
-    this.columns.map(i=>{
-      if(i.sort_column!==item.sort_column){
-        i.sortUp = 1
-        if(i.children){
-          i.children.map(j=>{
-            if(j.sort_column !== item.sort_column){
-              j.sortUp = 1
-            }
-          })
-        }
-      }
-    })
-
-    item.sortUp === 1 ?
-      item.sortUp = 2 :
-      item.sortUp === 2 ?
-        item.sortUp = 3 :
-        item.sortUp = 2;
-
     this.queryMemberList({
       page: page,
       page_size: pageSize,
@@ -912,7 +896,7 @@ class MemberList extends PureComponent {
 
   renderTbody(item) {
     const { match } = this.props;
-    const coaches = item.coaches_name.split(',');
+    const coaches =  item.coaches_name ?  item.coaches_name.split(',') : '';
     return (
       <tr key={item.uuid}>
         <td>
@@ -926,7 +910,7 @@ class MemberList extends PureComponent {
         </td>
         <td>
           <div className={styles.dateInfo}>
-            <p className={styles.date}>{moment(item.expire * 1000).format('YYYY-MM-DD')}</p>
+            <p className={styles.date}>{item.expire ? moment(item.expire * 1000).format('YYYY-MM-DD') : '无会籍卡'}</p>
             <p className={styles.title}>{item.membership_name}</p>
           </div>
         </td>
