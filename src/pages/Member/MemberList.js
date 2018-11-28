@@ -12,8 +12,6 @@ import {
   Select,
   Icon,
   Button,
-  List,
-  Avatar,
   Dropdown,
   Menu,
   DatePicker,
@@ -870,6 +868,19 @@ class MemberList extends PureComponent {
   //排序
   handleCheckSortList(item) {
     const { page, pageSize, form_values } = this.state;
+
+    this.columns.map(i=>{
+      if(i.sort_column!==item.sort_column){
+        i.sortUp = 1
+        if(i.children){
+          i.children.map(j=>{
+            if(j.sort_column !== item.sort_column){
+              j.sortUp = 1
+            }
+          })
+        }
+      }
+    })
 
     item.sortUp === 1 ?
       item.sortUp = 2 :
