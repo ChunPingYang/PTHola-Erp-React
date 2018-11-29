@@ -26,7 +26,6 @@ export default {
 
     * add({ payload }, { call, put }) {
       const response = yield call(addMember, payload);
-      console.log(response)
       yield put({
         type:'addMember',
         payload: response

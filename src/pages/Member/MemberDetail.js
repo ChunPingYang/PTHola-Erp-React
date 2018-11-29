@@ -89,16 +89,16 @@ class MemberDetail extends PureComponent{
         tab: '私教课购课记录',
       },
       {
-        key: 'ship',
-        tab: '会籍续费记录',
+        key: 'recharge',
+        tab: '会籍充值记录',
       },
       {
-        key: 'stamina',
-        tab: '体测数据',
+        key: 'leave',
+        tab: '会籍请假记录',
       },
       {
-        key: 'heart',
-        tab: '心率数据',
+        key: 'consume',
+        tab: '消费记录',
       }
     ];
 

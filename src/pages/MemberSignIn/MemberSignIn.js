@@ -47,7 +47,8 @@ class MemberSignIn extends PureComponent {
 
     page:1,
     pageSize: 10,
-    form_values:[]
+    form_values:[],
+    is_today:1
   };
 
   columns = [  //sortUp 1:默认不排序  2:升序  3:降序
@@ -152,9 +153,11 @@ class MemberSignIn extends PureComponent {
   //获取签到列表
   querySignList(params) {
     const { dispatch } = this.props;
+    const {is_today} = this.state
+
     dispatch({
       type: 'sign/fetch',
-      payload: params,
+      payload: Object.assign(params,{is_today}),
     });
   }
 
@@ -176,7 +179,16 @@ class MemberSignIn extends PureComponent {
   };
 
   handleTabChange(key) {
-    console.log(key);
+    this.setState({
+      is_today:parseFloat(key)
+    },()=>{
+      this.querySignList({
+        page: 1,
+        page_size: this.state.pageSize,
+        sort_column: "created_at",
+        sort_mode: "desc"
+      });
+    })
   }
 
   renderMenu() {
@@ -460,7 +472,7 @@ class MemberSignIn extends PureComponent {
         </PageHeaderMain>
 
         <div className={styles.tableContent}>
-          <Tabs animated={false} defaultActiveKey="1" onChange={this.handleTabChange}>
+          <Tabs animated={false} defaultActiveKey="1" onChange={this.handleTabChange.bind(this)}>
             <TabPane tab="今日签到" key="1">
               <Card bordered={false}>
                 <div className={styles.tableListForm}>{this.renderForm()}</div>
@@ -486,7 +498,7 @@ class MemberSignIn extends PureComponent {
               </Card>
             </TabPane>
 
-            <TabPane tab="签到记录" key="2">签到记录</TabPane>
+            <TabPane tab="签到记录" key="0">签到记录</TabPane>
           </Tabs>
         </div>
 

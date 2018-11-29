@@ -2,12 +2,12 @@ import React, {PureComponent} from 'react';
 
 import styles from './MemberDetail.less'
 
-class ShipList extends PureComponent{
+class ConsumeList extends PureComponent{
   render(){
     return(
-      <div>会籍续费记录</div>
+      <div>消费记录</div>
     )
   }
 }
 
-export default ShipList;
+export default ConsumeList;

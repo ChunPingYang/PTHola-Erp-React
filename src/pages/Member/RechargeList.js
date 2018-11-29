@@ -2,12 +2,12 @@ import React, {PureComponent} from 'react';
 
 import styles from './MemberDetail.less'
 
-class HeartList extends PureComponent{
+class RechargeList extends PureComponent{
   render(){
     return(
-      <div>心率数据</div>
+      <div>会籍充值记录</div>
     )
   }
 }
 
-export default HeartList;
+export default RechargeList;

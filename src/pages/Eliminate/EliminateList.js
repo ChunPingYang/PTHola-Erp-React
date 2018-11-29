@@ -18,8 +18,6 @@ import styles from  './EliminateList.less'
 import moment from 'moment'
 
 const FormItem = Form.Item;
-const { RangePicker } = DatePicker;
-const Option = Select.Option;
 
 @connect(({ eliminate, loading }) => ({
   eliminate,
@@ -30,64 +28,10 @@ class EliminateList extends PureComponent {
   state = {
     expandForm: false,
     page:1,
-    pageSize:1
+    pageSize:10,
+    fieldsValue:[],
+    sortedInfo:{}
   };
-
-  columns = [
-    {
-      title:'会员姓名',
-      dataIndex:'member_name',
-      key:'member_name'
-    },
-    {
-      title:'上课教练',
-      dataIndex:'coach_name',
-      key:'coach_name'
-    },
-    {
-      title:'上课日期(上课时间)',
-      dataIndex:'attend_time',
-      key:'attend_time',
-      sorter:true,
-      render: val => <span>{moment(val * 1000).format('YYYY-MM-DD HH:mm:ss')}</span>,
-    },
-    {
-      title:'课程名称',
-      dataIndex:'course_name',
-      key:'course_name'
-    },
-    {
-      title:'课程单价',
-      dataIndex:'price',
-      key:'price',
-      sorter: true,
-      render:val => <span>¥{val.toFixed(2)}</span>,
-    },
-    {
-      title:'前台当值',
-      dataIndex:'handler_name',
-      key:'handler_name'
-    },
-    {
-      title:'操作日期(操作时间)',
-      dataIndex:'handler_time',
-      key:'handler_time',
-      sorter: true,
-      render:val => <span>{moment(val * 1000).format('YYYY-MM-DD HH:mm:ss')}</span>,
-    },
-    {
-      title:'确认状态',
-      dataIndex:'status',
-      key:'status',
-      render:val => <span>{val===1 ? '会员已确认' : '会员未确认'}</span>
-    },
-    {
-      title:'操作',
-      dataIndex:'',
-      key:'x',
-      render:val => <a href="javascript:;">修改</a>
-    }
-  ]
 
   //获取消课列表
   queryAttendList(params) {
@@ -101,7 +45,9 @@ class EliminateList extends PureComponent {
   componentDidMount() {
     this.queryAttendList({
       page: 1,
-      page_size: this.state.pageSize
+      page_size: this.state.pageSize,
+      sort_column:'handler_time',
+      sort_mode:'desc',
     })
   }
 
@@ -117,13 +63,19 @@ class EliminateList extends PureComponent {
     const { form } = this.props;
     form.validateFields((err, fieldsValue) => {
       if(!err){
+        this.setState({fieldsValue})
         fieldsValue.start_time ? fieldsValue.start_time = parseFloat(moment(fieldsValue.start_time).format('X')) : ''
         fieldsValue.end_time ? fieldsValue.end_time = parseFloat(moment(fieldsValue.end_time).format('X')) : ''
 
         this.queryAttendList({
           page:1,
           page_size: this.state.pageSize,
+          sort_column:'handler_time',
+          sort_mode:'desc',
           ...fieldsValue
+        })
+        this.setState({
+          sortedInfo:{}
         })
       }
     });
@@ -239,11 +191,17 @@ class EliminateList extends PureComponent {
   }
 
   handleTableChange(pagination, filters, sorter){
+    const {fieldsValue} = this.state
+    this.setState({
+      sortedInfo:sorter
+    })
+
     this.queryAttendList({
       page:pagination.current,
       page_size:pagination.pageSize,
-      sort_column:sorter.field,
-      sort_mode:sorter.order === 'descend' ? 'desc' : 'asc'
+      sort_column:sorter.field ? sorter.field : 'handler_time',
+      sort_mode:sorter.order === 'ascend' ? 'asc' : 'desc',
+      ...fieldsValue
     })
   }
 
@@ -253,10 +211,70 @@ class EliminateList extends PureComponent {
       loading
     } = this.props
 
+    const {sortedInfo} = this.state
+
+    const columns = [
+      {
+        title:'会员姓名',
+        dataIndex:'member_name',
+        key:'member_name'
+      },
+      {
+        title:'上课教练',
+        dataIndex:'coach_name',
+        key:'coach_name'
+      },
+      {
+        title:'上课日期(上课时间)',
+        dataIndex:'attend_time',
+        key:'attend_time',
+        sorter: (a, b) => a.attend_time - b.attend_time,
+        sortOrder: sortedInfo.columnKey === 'attend_time' && sortedInfo.order,
+        render: val => <span>{moment(val * 1000).format('YYYY-MM-DD HH:mm:ss')}</span>,
+      },
+      {
+        title:'课程名称',
+        dataIndex:'course_name',
+        key:'course_name'
+      },
+      {
+        title:'课程单价',
+        dataIndex:'price',
+        key:'price',
+        sorter: (a, b) => a.price - b.price,
+        sortOrder: sortedInfo.columnKey === 'price' && sortedInfo.order,
+        render:val => <span>¥{val.toFixed(2)}</span>,
+      },
+      {
+        title:'前台当值',
+        dataIndex:'handler_name',
+        key:'handler_name'
+      },
+      {
+        title:'操作日期(操作时间)',
+        dataIndex:'handler_time',
+        key:'handler_time',
+        sorter: (a, b) => a.handler_time - b.handler_time,
+        sortOrder: sortedInfo.columnKey === 'handler_time' && sortedInfo.order,
+        render:val => <span>{moment(val * 1000).format('YYYY-MM-DD HH:mm:ss')}</span>,
+      },
+      {
+        title:'确认状态',
+        dataIndex:'status',
+        key:'status',
+        render:val => <span>{val===1 ? '会员已确认' : '会员未确认'}</span>
+      },
+      {
+        title:'操作',
+        dataIndex:'',
+        key:'x',
+        render:val => <a href="javascript:;">修改</a>
+      }
+    ]
+
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
-      pageSizeOptions:['1'],
       current: response.paginator.page,
       total: response.paginator.total_count,
     };
@@ -298,7 +316,7 @@ class EliminateList extends PureComponent {
                 pagination={paginationProps}
                 dataSource={response.attend_courses}
                 onChange={this.handleTableChange.bind(this)}
-                columns={this.columns}/>
+                columns={columns}/>
             </div>
           </div>
         </Card>

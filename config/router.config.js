@@ -39,12 +39,12 @@ export default [
             redirect: '/member-list/detail/stamina',
           },
           {
-            path:'/member-list/detail/stamina',
-            component:'./Member/StaminaList',
+            path:'/member-list/detail/leave',
+            component:'./Member/LeaveList',
           },
           {
-            path:'/member-list/detail/heart',
-            component:'./Member/HeartList',
+            path:'/member-list/detail/consume',
+            component:'./Member/ConsumeList',
           },
           {
             path:'/member-list/detail/sign',
@@ -59,8 +59,8 @@ export default [
             component:'./Member/PrivateList',
           },
           {
-            path:'/member-list/detail/ship',
-            component:'./Member/ShipList',
+            path:'/member-list/detail/recharge',
+            component:'./Member/RechargeList',
           },
         ]
       },
