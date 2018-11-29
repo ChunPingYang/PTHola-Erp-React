@@ -732,6 +732,8 @@ class MemberList extends PureComponent {
     this.queryMemberList({
       page: 1,
       page_size: this.state.pageSize,
+      sort_column:'created_at',
+      sort_mode:'desc'
     });
   }
 
@@ -850,8 +852,11 @@ class MemberList extends PureComponent {
         this.queryMemberList({
           page: 1,
           page_size: this.state.pageSize,
+          sort_column:'created_at',
+          sort_mode:'desc',
           ...values,
         });
+        this.refs.advancedTable.handleReset();
       }
     });
   }
@@ -867,19 +872,6 @@ class MemberList extends PureComponent {
       editModalVisible: !!flag,
     });
   };
-
-  //排序
-  handleCheckSortList(item) {
-    const { page, pageSize, form_values } = this.state;
-
-    this.queryMemberList({
-      page: page,
-      page_size: pageSize,
-      sort_column: item.sort_column,
-      sort_mode: item.sortUp === 2 ? 'asc' : item.sortUp === 3 ? 'desc' : '',
-      ...form_values,
-    });
-  }
 
   renderMenu() {
     return (
@@ -916,7 +908,7 @@ class MemberList extends PureComponent {
         </td>
         <td>
           <div className={styles.dateInfo}>
-            <p className={styles.date}>剩余{item.has_course_count}节</p>
+            <p className={styles.date}>剩余{item.has_course_count ? item.has_course_count : 0}节</p>
             <p
               className={styles.title}>{coaches.length > 1 ? coaches[0] + '教练等' + coaches.length + '人' : coaches[0]}</p>
           </div>
@@ -924,17 +916,17 @@ class MemberList extends PureComponent {
         <td>
           <div className={styles.messInfo}>
             <p>{item.lastClock}</p>
-            <p className={styles.inTime}>{moment(item.last_sign_time * 1000).format('YYYY-MM-DD')}</p>
+            <p className={styles.inTime}>{item.last_sign_time ? moment(item.last_sign_time * 1000).format('YYYY-MM-DD') : ''}</p>
           </div>
         </td>
         <td>
           <div className={styles.messInfo}>
             <p>{item.lastClass}</p>
-            <p className={styles.inTime}>{moment(item.last_in_class_time * 1000).format('YYYY-MM-DD')}</p>
+            <p className={styles.inTime}>{item.last_in_class_time ? moment(item.last_in_class_time * 1000).format('YYYY-MM-DD') : ''}</p>
           </div>
         </td>
         <td>
-          ¥{item.total_amount}
+          ¥{item.total_amount ? item.total_amount : 0}
         </td>
         <td>
           <div className={styles.opers}>
@@ -969,16 +961,14 @@ class MemberList extends PureComponent {
   }
 
   //分页
-  onPageChange(current, pageSize) {
+  onPageChange(page, pageSize, sorter) {
     const { form_values } = this.state;
-    this.setState({
-      page: current,
-      pageSize,
-    });
 
     this.queryMemberList({
-      page: current,
+      page,
       page_size: pageSize,
+      sort_column: sorter.sort_column ? sorter.sort_column : "created_at",
+      sort_mode: sorter.sortUp === 2 ? 'asc' : sorter.sortUp === 3 ? 'desc' : 'desc',
       ...form_values,
     });
   }
@@ -1037,12 +1027,12 @@ class MemberList extends PureComponent {
             </Button>
 
             <AdvancedTable
+              ref="advancedTable"
               loading={loading}
               columns={this.columns}
               data={response.members}
               pagination={paginationProps}
-              onPageChange={this.onPageChange.bind(this)}
-              handleCheckSortList={this.handleCheckSortList.bind(this)}>
+              onPageChange={this.onPageChange.bind(this)}>
               <tbody>
               {
                 response.members.map(item => {

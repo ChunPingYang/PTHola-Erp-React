@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import {connect} from 'dva'
 import {
   Row,
   Col,
@@ -20,52 +21,59 @@ const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
 const Option = Select.Option;
 
+@connect(({ eliminate, loading }) => ({
+  eliminate,
+  loading: loading.models.eliminate,
+}))
 @Form.create()
 class EliminateList extends PureComponent {
   state = {
-    expandForm: false
+    expandForm: false,
+    page:1,
+    pageSize:1
   };
 
   columns = [
     {
       title:'会员姓名',
-      dataIndex:'name',
-      key:'name'
+      dataIndex:'member_name',
+      key:'member_name'
     },
     {
       title:'上课教练',
-      dataIndex:'coach',
-      key:'coach'
+      dataIndex:'coach_name',
+      key:'coach_name'
     },
     {
       title:'上课日期(上课时间)',
-      dataIndex:'classDate',
-      key:'classDate',
+      dataIndex:'attend_time',
+      key:'attend_time',
       sorter:true,
-      render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
+      render: val => <span>{moment(val * 1000).format('YYYY-MM-DD HH:mm:ss')}</span>,
     },
     {
-      title:'课程类型',
-      dataIndex:'type',
-      key:'type'
+      title:'课程名称',
+      dataIndex:'course_name',
+      key:'course_name'
     },
     {
       title:'课程单价',
       dataIndex:'price',
       key:'price',
-      render:val => <span>¥{val}</span>,
+      sorter: true,
+      render:val => <span>¥{val.toFixed(2)}</span>,
     },
     {
       title:'前台当值',
-      dataIndex:'dutyName',
-      key:'dutyName'
+      dataIndex:'handler_name',
+      key:'handler_name'
     },
     {
       title:'操作日期(操作时间)',
-      dataIndex:'operDate',
-      key:'operDate',
+      dataIndex:'handler_time',
+      key:'handler_time',
       sorter: true,
-      render:val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
+      render:val => <span>{moment(val * 1000).format('YYYY-MM-DD HH:mm:ss')}</span>,
     },
     {
       title:'确认状态',
@@ -74,15 +82,27 @@ class EliminateList extends PureComponent {
       render:val => <span>{val===1 ? '会员已确认' : '会员未确认'}</span>
     },
     {
-      title:'管理权限',
-      dataIndex:'authority',
-      key:'authority',
-      render:val => <span>{val===1 ? <a href="javascript:;">修改</a> : ''}</span>
+      title:'操作',
+      dataIndex:'',
+      key:'x',
+      render:val => <a href="javascript:;">修改</a>
     }
   ]
 
-  componentDidMount() {
+  //获取消课列表
+  queryAttendList(params) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'eliminate/fetch',
+      payload: params,
+    });
+  }
 
+  componentDidMount() {
+    this.queryAttendList({
+      page: 1,
+      page_size: this.state.pageSize
+    })
   }
 
   toggleForm = () => {
@@ -93,12 +113,18 @@ class EliminateList extends PureComponent {
   };
 
   handleSearch(e){
-    const _this = this
     e.preventDefault();
     const { form } = this.props;
     form.validateFields((err, fieldsValue) => {
       if(!err){
-        console.log(fieldsValue)
+        fieldsValue.start_time ? fieldsValue.start_time = parseFloat(moment(fieldsValue.start_time).format('X')) : ''
+        fieldsValue.end_time ? fieldsValue.end_time = parseFloat(moment(fieldsValue.end_time).format('X')) : ''
+
+        this.queryAttendList({
+          page:1,
+          page_size: this.state.pageSize,
+          ...fieldsValue
+        })
       }
     });
   }
@@ -112,22 +138,19 @@ class EliminateList extends PureComponent {
       <Form onSubmit={this.handleSearch.bind(this)} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label="上课日期">
-              {getFieldDecorator('date')(<RangePicker />)}
+            <FormItem label="上课开始时间">
+              {getFieldDecorator('start_time')(<DatePicker />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
-            <FormItem label="会员姓名">
-              {getFieldDecorator('name')(<Input placeholder="请输入会员姓名"/>)}
+            <FormItem label="上课结束时间">
+              {getFieldDecorator('end_time')(<DatePicker />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
             <span className={styles.submitButtons}>
               <Button type="primary" htmlType="submit">
                 查询
-              </Button>
-              <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
-                重置
               </Button>
               <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
                 展开 <Icon type="down"/>
@@ -171,43 +194,34 @@ class EliminateList extends PureComponent {
       <Form onSubmit={this.handleSearch.bind(this)} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label="上课日期">
-              {getFieldDecorator('date')(<RangePicker />)}
+            <FormItem label="上课开始时间">
+              {getFieldDecorator('start_time')(<DatePicker />)}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <FormItem label="上课结束时间">
+              {getFieldDecorator('end_time')(<DatePicker />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="会员姓名">
-              {getFieldDecorator('name')(<Input placeholder="请输入会员姓名"/>)}
+              {getFieldDecorator('member_name')(<Input placeholder="请输入会员姓名"/>)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="上课教练">
-              {getFieldDecorator('coach')(<Input placeholder="请输入上课教练"/>)}
+              {getFieldDecorator('coach_name')(<Input placeholder="请输入上课教练"/>)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
-            <FormItem label="课程类型">
-              {getFieldDecorator('type')(
-                <Select
-                  style={{ width: '100%' }}
-                  placeholder="请选择课程类型"
-                >
-                  {owners.map(owner => (
-                    <Option key={owner.id} value={owner.id}>
-                      {owner.name}
-                    </Option>
-                  ))}
-                </Select>
-              )}
+            <FormItem label="课程名称">
+              {getFieldDecorator('course_name')(<Input placeholder="请输入课程名称"/>)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
             <span className={styles.submitButtons}>
               <Button type="primary" htmlType="submit">
                 查询
-              </Button>
-              <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
-                重置
               </Button>
               <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
                 收起 <Icon type="down"/>
@@ -224,40 +238,27 @@ class EliminateList extends PureComponent {
     return expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
   }
 
-  render() {
+  handleTableChange(pagination, filters, sorter){
+    this.queryAttendList({
+      page:pagination.current,
+      page_size:pagination.pageSize,
+      sort_column:sorter.field,
+      sort_mode:sorter.order === 'descend' ? 'desc' : 'asc'
+    })
+  }
 
-    const tableData = [
-      {
-        id:1,
-        name:'陈鑫1',
-        coach:'甜心教练',
-        classDate:1542000600000,
-        type:'常规私教课',
-        price:'196',
-        dutyName:'李四',
-        operDate:1542087000000,
-        status:1,
-        authority:1
-      },
-      {
-        id:2,
-        name:'陈鑫2',
-        coach:'甜心教练',
-        classDate:1539234000000,
-        type:'常规私教课',
-        price:'196',
-        dutyName:'李四',
-        operDate:1539322200000,
-        status:2,
-        authority:1
-      }
-    ]
+  render() {
+    const {
+      eliminate:{response},
+      loading
+    } = this.props
 
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
-      pageSize: 5,
-      total: 50,
+      pageSizeOptions:['1'],
+      current: response.paginator.page,
+      total: response.paginator.total_count,
     };
 
     return (
@@ -292,9 +293,11 @@ class EliminateList extends PureComponent {
             </Button>
             <div className={styles.tableList}>
               <Table
-                rowKey='id'
+                loading={loading}
+                rowKey='uuid'
                 pagination={paginationProps}
-                dataSource={tableData}
+                dataSource={response.attend_courses}
+                onChange={this.handleTableChange.bind(this)}
                 columns={this.columns}/>
             </div>
           </div>

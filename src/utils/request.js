@@ -146,7 +146,6 @@ export default function request(url, option) {
       const status = e.name;
 
       if (status === 401) {
-        console.log(status)
         // @HACK
         /* eslint-disable no-underscore-dangle */
         // window.g_app._store.dispatch({
@@ -155,8 +154,6 @@ export default function request(url, option) {
         router.push('/user/login')
       }else if(status === 403){
         router.push('/exception/403');
-      }else if(status <= 504 && status >= 500){
-        router.push('/exception/500');
       }else if(status >= 404 && status < 422){
         router.push('/exception/404');
       }

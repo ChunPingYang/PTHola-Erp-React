@@ -1,18 +1,23 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import {
   Tooltip,
   Icon,
   Pagination,
-  Spin
-} from 'antd'
+  Spin,
+} from 'antd';
 
-import styles from './index.less'
+import styles from './index.less';
 
-class AdvancedTable extends PureComponent{
+class AdvancedTable extends PureComponent {
+  state = {
+    page: 1,
+    page_size: 10,
+    sorter: {},
+  };
 
-  renderThead(){
-    const {columns} = this.props
-    return(
+  renderThead() {
+    const { columns } = this.props;
+    return (
       <thead>
       <tr>
         {
@@ -26,7 +31,8 @@ class AdvancedTable extends PureComponent{
                   item.hasSort ?
                     <p className={styles.sorters} onClick={this.handleCheckSort.bind(this, item)}>
                       <Icon type="caret-up" className={item.sortUp === 2 ? styles.active : ''}/>
-                      <Icon type="caret-down" className={item.sortUp === 2 ? '' : item.sortUp === 3 ? styles.active : ''}/>
+                      <Icon type="caret-down"
+                            className={item.sortUp === 2 ? '' : item.sortUp === 3 ? styles.active : ''}/>
                     </p>
                     : ''
                 }
@@ -44,7 +50,8 @@ class AdvancedTable extends PureComponent{
                             subItem.hasSort ?
                               <p className={styles.sorters} onClick={this.handleCheckSort.bind(this, subItem)}>
                                 <Icon type="caret-up" className={subItem.sortUp === 2 ? styles.active : ''}/>
-                                <Icon type="caret-down" className={subItem.sortUp === 2 ? '' : subItem.sortUp === 3 ? styles.active : ''}/>
+                                <Icon type="caret-down"
+                                      className={subItem.sortUp === 2 ? '' : subItem.sortUp === 3 ? styles.active : ''}/>
                               </p>
                               : ''
                           }
@@ -62,21 +69,26 @@ class AdvancedTable extends PureComponent{
     );
   }
 
-  handleCheckSort(item){
-    const {columns, handleCheckSortList} = this.props
+  handleCheckSort(item) {
+    const { columns, onPageChange } = this.props;
+    const { page, page_size } = this.state;
 
-    columns.map(i=>{
-      if(i.sort_column!==item.sort_column){
-        i.sortUp = 1
-        if(i.children){
-          i.children.map(j=>{
-            if(j.sort_column !== item.sort_column){
-              j.sortUp = 1
+    this.setState({
+      sorter: item,
+    });
+
+    columns.map(i => {
+      if (i.sort_column !== item.sort_column) {
+        i.sortUp = 1;
+        if (i.children) {
+          i.children.map(j => {
+            if (j.sort_column !== item.sort_column) {
+              j.sortUp = 1;
             }
-          })
+          });
         }
       }
-    })
+    });
 
     item.sortUp === 1 ?
       item.sortUp = 2 :
@@ -84,20 +96,46 @@ class AdvancedTable extends PureComponent{
         item.sortUp = 3 :
         item.sortUp = 2;
 
-    handleCheckSortList(item)
+    onPageChange(page, page_size, item);
+  }
+
+  handleReset(){
+    const {columns} = this.props
+    columns.map(item=>{
+      item.sortUp = 1;
+      if(item.children){
+        item.children.map(i=>{
+          i.sortUp = 1
+        })
+      }
+    })
+    this.setState({
+      sorter:{}
+    })
+  }
+
+  handleTableChange(page, page_size) {
+    const { onPageChange } = this.props;
+    const { sorter } = this.state;
+
+    this.setState({
+      page,
+      page_size,
+    });
+
+    onPageChange(page, page_size, sorter);
   }
 
 
-  render(){
+  render() {
     const {
       children,
       pagination,
-      onPageChange,
       loading,
-      data
-    } = this.props
+      data,
+    } = this.props;
 
-    return(
+    return (
       <Spin spinning={loading}>
         <div className={styles.tableList}>
           <table>
@@ -108,8 +146,8 @@ class AdvancedTable extends PureComponent{
             data ? data.length ?
               <div className={styles.page}>
                 <Pagination
-                  onChange={onPageChange}
-                  onShowSizeChange={onPageChange}
+                  onChange={this.handleTableChange.bind(this)}
+                  onShowSizeChange={this.handleTableChange.bind(this)}
                   {...pagination}
                 />
               </div>

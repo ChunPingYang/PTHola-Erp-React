@@ -149,7 +149,7 @@ class MemberSignIn extends PureComponent {
     },
   ];
 
-  //获取会员列表
+  //获取签到列表
   querySignList(params) {
     const { dispatch } = this.props;
     dispatch({
@@ -245,7 +245,7 @@ class MemberSignIn extends PureComponent {
           {
             item.is_guest === 0 ?
               <div className={styles.dateInfo}>
-                <p className={styles.date}>剩余{item.has_course_count}节</p>
+                <p className={styles.date}>剩余{item.has_course_count ? item.has_course_count : 0}节</p>
                 <p
                   className={styles.subTitle}>{coaches.length > 1 ? coaches[0] + '教练等' + coaches.length + '人' : coaches[0]}</p>
               </div> : ''
@@ -328,8 +328,11 @@ class MemberSignIn extends PureComponent {
         this.querySignList({
           page:1,
           page_size: this.state.pageSize,
+          sort_column:'created_at',
+          sort_mode:'desc',
           ...values
         })
+        this.refs.advancedTable.handleReset();
       }
     });
   }
@@ -351,30 +354,14 @@ class MemberSignIn extends PureComponent {
     );
   }
 
-  onPageChange(current, pageSize) {
+  onPageChange(page, pageSize, sorter) {
     const { form_values } = this.state;
-    this.setState({
-      page: current,
-      pageSize,
-    });
 
     this.querySignList({
-      page: current,
+      page,
       page_size: pageSize,
-      sort_column: "created_at",
-      sort_mode: "desc",
-      ...form_values,
-    });
-  }
-
-  handleCheckSortList(item) {
-    const { page, pageSize, form_values } = this.state;
-
-    this.querySignList({
-      page: page,
-      page_size: pageSize,
-      sort_column: item.sort_column,
-      sort_mode: item.sortUp === 2 ? 'asc' : item.sortUp === 3 ? 'desc' : '',
+      sort_column: sorter.sort_column ? sorter.sort_column : "created_at",
+      sort_mode: sorter.sortUp === 2 ? 'asc' : sorter.sortUp === 3 ? 'desc' : 'desc',
       ...form_values,
     });
   }
@@ -479,12 +466,12 @@ class MemberSignIn extends PureComponent {
                 <div className={styles.tableListForm}>{this.renderForm()}</div>
 
                 <AdvancedTable
+                  ref="advancedTable"
                   loading={loading}
                   columns={this.columns}
                   data={response.signs}
                   pagination={paginationProps}
-                  onPageChange={this.onPageChange.bind(this)}
-                  handleCheckSortList={this.handleCheckSortList.bind(this)}>
+                  onPageChange={this.onPageChange.bind(this)}>
                   <tbody>
                   {
                     response.signs.map(item => {
