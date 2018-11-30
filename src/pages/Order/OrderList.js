@@ -18,6 +18,7 @@ import StandarInfoData from '@/components/StandarInfoData'
 import ShipTimeModal from './ShipTimeModal'
 import PayCourseModal from './PayCourseModal'
 import LeaveStopModal from './LeaveStopModal'
+import AmendRecordModal from './AmendRecordModal'
 import styles from './OrderList.less'
 import moment from 'moment'
 
@@ -52,7 +53,8 @@ class OrderList extends PureComponent{
     sortedInfo:{},
     shipModalVisible:false,
     payModalVisible:false,
-    leaveModalVisible:false
+    leaveModalVisible:false,
+    amendModalVisible:false
   };
 
   //获取订单列表
@@ -102,6 +104,8 @@ class OrderList extends PureComponent{
             <FormItem label="订单类型">
               {getFieldDecorator('order_type')(
                 <Select
+                  showSearch
+                  optionFilterProp="children"
                   style={{ width: '100%' }}
                   placeholder="请选择课程类型"
                 >
@@ -151,6 +155,8 @@ class OrderList extends PureComponent{
             <FormItem label="订单类型">
               {getFieldDecorator('order_type')(
                 <Select
+                  showSearch
+                  optionFilterProp="children"
                   style={{ width: '100%' }}
                   placeholder="请选择课程类型"
                 >
@@ -299,6 +305,12 @@ class OrderList extends PureComponent{
     });
   };
 
+  handleAmendModalVisible = flag => {
+    this.setState({
+      amendModalVisible: !!flag
+    })
+  }
+
   render(){
     const {
       order:{response},
@@ -308,7 +320,8 @@ class OrderList extends PureComponent{
       sortedInfo,
       shipModalVisible,
       payModalVisible,
-      leaveModalVisible
+      leaveModalVisible,
+      amendModalVisible
     } = this.state
 
     const columns=[
@@ -368,7 +381,7 @@ class OrderList extends PureComponent{
         title:'订单修改记录',
         dataIndex:'order_amend',
         key:'order_amend',
-        render:(val,row)=><a href="javascript:;">{val ? val : 0+'条修改记录'}</a>
+        render:(val,row)=><a href="javascript:;" onClick={this.handleAmendModalVisible.bind(this,row)}>{val ? val : 0+'条修改记录'}</a>
       },
       {
         title:'财务锁定',
@@ -384,7 +397,7 @@ class OrderList extends PureComponent{
           <span>
           <a href="javascript:;">查看</a>
           <Divider type="vertical" />
-          <a href="javascript:;" onClick={this.handleCheckModal.bind(this, row)}>修改</a>
+          <a href="javascript:;" onClick={this.handleCheckModal.bind(this,row)}>修改</a>
         </span>
         )
       }
@@ -400,7 +413,8 @@ class OrderList extends PureComponent{
     const memberMethods = {
       handleShipModalVisible: this.handleShipModalVisible,
       handlePayModalVisible:this.handlePayModalVisible,
-      handleLeaveModalVisible:this.handleLeaveModalVisible
+      handleLeaveModalVisible:this.handleLeaveModalVisible,
+      handleAmendModalVisible:this.handleAmendModalVisible
     }
 
 
@@ -454,6 +468,11 @@ class OrderList extends PureComponent{
         <LeaveStopModal
           {...memberMethods}
           leaveModalVisible={leaveModalVisible}
+        />
+
+        <AmendRecordModal
+          {...memberMethods}
+          amendModalVisible={amendModalVisible}
         />
       </div>
     )
