@@ -100,7 +100,6 @@ class AmendRecordModal extends PureComponent {
         dataIndex: 'content',
         key: 'content',
         render: (val) => {
-          console.log(Object.keys(val));
           return (
             Object.keys(val).map((item, index) => {
               return (
@@ -187,6 +186,7 @@ class AmendRecordModal extends PureComponent {
 
         <div className={styles.tableListOperator}>
           <Table
+            style={{minWidth:'600px'}}
             rowKey='uuid'
             bordered
             pagination={paginationProps}
