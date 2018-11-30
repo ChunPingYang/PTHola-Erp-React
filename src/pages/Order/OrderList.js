@@ -15,7 +15,9 @@ import {
 } from 'antd';
 
 import StandarInfoData from '@/components/StandarInfoData'
-import ShipTimeModel from './ShipTimeModel'
+import ShipTimeModal from './ShipTimeModal'
+import PayCourseModal from './PayCourseModal'
+import LeaveStopModal from './LeaveStopModal'
 import styles from './OrderList.less'
 import moment from 'moment'
 
@@ -48,7 +50,9 @@ class OrderList extends PureComponent{
     pageSize:10,
     fieldsValue:[],
     sortedInfo:{},
-    shipModalVisible:false
+    shipModalVisible:false,
+    payModalVisible:false,
+    leaveModalVisible:false
   };
 
   //获取订单列表
@@ -269,8 +273,10 @@ class OrderList extends PureComponent{
         this.handleShipModalVisible(true)
         break;
       case 'PT_COURSE':
+        this.handlePayModalVisible(true)
         break;
       case 'STOP_CARD':
+        this.handleLeaveModalVisible(true)
         break;
     }
   }
@@ -281,6 +287,18 @@ class OrderList extends PureComponent{
     });
   };
 
+  handlePayModalVisible = flag => {
+    this.setState({
+      payModalVisible: !!flag,
+    });
+  };
+
+  handleLeaveModalVisible = flag => {
+    this.setState({
+      leaveModalVisible: !!flag,
+    });
+  };
+
   render(){
     const {
       order:{response},
@@ -288,7 +306,9 @@ class OrderList extends PureComponent{
     } = this.props
     const {
       sortedInfo,
-      shipModalVisible
+      shipModalVisible,
+      payModalVisible,
+      leaveModalVisible
     } = this.state
 
     const columns=[
@@ -348,7 +368,7 @@ class OrderList extends PureComponent{
         title:'订单修改记录',
         dataIndex:'order_amend',
         key:'order_amend',
-        render:(val,row)=><a href="javascript:;" onClick={this.handleCheckModal.bind(this, row)}>{val ? val : 0+'条修改记录'}</a>
+        render:(val,row)=><a href="javascript:;">{val ? val : 0+'条修改记录'}</a>
       },
       {
         title:'财务锁定',
@@ -360,11 +380,11 @@ class OrderList extends PureComponent{
         title:'操作',
         dataIndex:'',
         key:'x',
-        render:()=>(
+        render:(row)=>(
           <span>
           <a href="javascript:;">查看</a>
           <Divider type="vertical" />
-          <a href="javascript:;">修改</a>
+          <a href="javascript:;" onClick={this.handleCheckModal.bind(this, row)}>修改</a>
         </span>
         )
       }
@@ -379,6 +399,8 @@ class OrderList extends PureComponent{
 
     const memberMethods = {
       handleShipModalVisible: this.handleShipModalVisible,
+      handlePayModalVisible:this.handlePayModalVisible,
+      handleLeaveModalVisible:this.handleLeaveModalVisible
     }
 
 
@@ -419,9 +441,19 @@ class OrderList extends PureComponent{
           </div>
         </Card>
 
-        <ShipTimeModel
+        <ShipTimeModal
           {...memberMethods}
           shipModalVisible={shipModalVisible}
+        />
+
+        <PayCourseModal
+          {...memberMethods}
+          payModalVisible={payModalVisible}
+        />
+
+        <LeaveStopModal
+          {...memberMethods}
+          leaveModalVisible={leaveModalVisible}
         />
       </div>
     )

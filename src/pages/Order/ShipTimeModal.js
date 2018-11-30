@@ -19,7 +19,7 @@ const { TextArea } = Input;
 
 @Form.create()
 
-class ShipTimeModel extends PureComponent{
+class ShipTimeModal extends PureComponent{
 
   state = {
     key:'day'
@@ -155,31 +155,17 @@ class ShipTimeModel extends PureComponent{
           {form.getFieldDecorator('remarks',{
           })(<TextArea rows={4} placeholder="请输入备注" />)}
         </FormItem>
-      </StandardFormRow>
+      </StandardFormRow>,
+      <p key="14" className={styles.remark}><span>*</span> 本订单由[甜心]，在2018-10-22 19：20录入，共有2次修改记录</p>
     ];
   }
 
-  handlePrint(){
-    console.log(1111)
-  }
-
   handleSubmit(e){
-    const _this = this
     e.preventDefault();
     const { form } = this.props;
     form.validateFields((err, fieldsValue) => {
       if(!err){
         console.log(fieldsValue)
-
-        Modal.confirm({
-          title:'温馨提示',
-          content:'是否打印会籍合同?',
-          okText:'立即打印',
-          cancelText:'暂不打印',
-          onOk(){
-            _this.handlePrint()
-          }
-        })
       }
     });
   }
@@ -193,6 +179,7 @@ class ShipTimeModel extends PureComponent{
         width={480}
         destroyOnClose
         title="修改会籍订单"
+        maskClosable={false}
         visible={shipModalVisible}
         onCancel={() => handleShipModalVisible()}
         onOk={this.handleSubmit.bind(this)}
@@ -205,4 +192,4 @@ class ShipTimeModel extends PureComponent{
   }
 }
 
-export default ShipTimeModel;
+export default ShipTimeModal;
