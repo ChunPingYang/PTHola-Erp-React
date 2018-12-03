@@ -77,6 +77,7 @@ export default {
   'menu.configurelist':'配置',
   'menu.memberSignIn':'会员签到',
   'menu.orderlist':'订单中心',
+  'menu.employee':'员工中心',
 
 
   'menu.home': '首页',

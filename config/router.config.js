@@ -88,28 +88,16 @@ export default [
         component:'./Eliminate/EliminateList'
       },
       {
-        path:'order-list',
+        path:'/order-list',
         name:'orderlist',
         icon:'form',
         component:'./Order/OrderList'
       },
       {
-        path:'/achievement-list',
-        name:'achievementlist',
-        icon:'warning',
-        component:'./Achievement/AchievementList'
-      },
-      {
-        path:'/finance-list',
-        name:'financelist',
+        path:'/employee-list',
+        name:'employee',
         icon:'table',
-        component:'./Finance/FinanceList'
-      },
-      {
-        path:'/configure-list',
-        name:'configurelist',
-        icon:'user',
-        component:'./Configure/ConfigureList'
+        component:'./Employee/EmployeeList'
       },
       {
         component: '404',
