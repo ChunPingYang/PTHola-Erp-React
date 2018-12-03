@@ -67,7 +67,9 @@ export default {
   'component.noticeIcon.cleared': '清空了',
   'component.noticeIcon.empty': '暂无数据',
 
-  'menu.memberlist':'会员管理',
+  'menu.member':'会员中心',
+  'menu.member.potential':'潜在会员',
+  'menu.member.memberlist':'会员管理',
   'menu.datalist':'数据中心',
   'menu.eliminatelist':'消课数据',
   'menu.achievementlist':'业绩数据',

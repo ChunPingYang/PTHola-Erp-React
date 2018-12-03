@@ -172,7 +172,6 @@ class ShipTimeModal extends PureComponent{
 
   render(){
     const { shipModalVisible, handleShipModalVisible } = this.props;
-
     return(
       <Modal
         className={styles.memberModal}

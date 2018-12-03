@@ -69,7 +69,9 @@ export default {
   'component.noticeIcon.cleared': 'Cleared',
   'component.noticeIcon.empty': 'No notifications',
 
-  'menu.memberlist':'Member management',
+  'menu.member':'Member center',
+  'menu.member.potential':'Potential members',
+  'menu.member.memberlist':'Member management',
   'menu.datalist':'Data center',
   'menu.eliminatelist':'Elimination data',
   'menu.achievementlist':'Performance data',

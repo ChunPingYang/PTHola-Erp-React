@@ -439,8 +439,6 @@ class MemberSignIn extends PureComponent {
       total: response.paginator.total_count,
     };
 
-    console.log(response);
-
     return (
       <div className={styles.signBox}>
         <PageHeaderMain title="会员签到">

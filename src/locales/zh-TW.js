@@ -66,7 +66,10 @@ export default {
   'component.noticeIcon.clear': '清空',
   'component.noticeIcon.cleared': '清空了',
   'component.noticeIcon.empty': '暫無數據',
-  'menu.memberlist':'會員管理',
+
+  'menu.member':'會員中心',
+  'menu.member.potential':'潛在會員',
+  'menu.member.memberlist':'會員管理',
   'menu.datalist':'數據中心',
   'menu.eliminatelist':'消課中心',
   'menu.achievementlist':'業績數據',

@@ -1,5 +1,5 @@
-import React, {PureComponent} from 'react'
-import {connect} from 'dva'
+import React, { PureComponent } from 'react';
+import { connect } from 'dva';
 import {
   Row,
   Col,
@@ -11,16 +11,16 @@ import {
   Button,
   DatePicker,
   Table,
-  Divider
+  Divider,
 } from 'antd';
 
-import StandarInfoData from '@/components/StandarInfoData'
-import ShipTimeModal from './ShipTimeModal'
-import PayCourseModal from './PayCourseModal'
-import LeaveStopModal from './LeaveStopModal'
-import AmendRecordModal from './AmendRecordModal'
-import styles from './OrderList.less'
-import moment from 'moment'
+import StandarInfoData from '@/components/StandarInfoData';
+import ShipTimeModal from './ShipTimeModal';
+import PayCourseModal from './PayCourseModal';
+import LeaveStopModal from './LeaveStopModal';
+import AmendRecordModal from './AmendRecordModal';
+import styles from './OrderList.less';
+import moment from 'moment';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -37,7 +37,7 @@ const orderTypes = [
   {
     id: 'STOP_CARD',
     name: '停卡',
-  }
+  },
 ];
 
 @connect(({ order, loading }) => ({
@@ -45,16 +45,17 @@ const orderTypes = [
   loading: loading.models.order,
 }))
 @Form.create()
-class OrderList extends PureComponent{
+class OrderList extends PureComponent {
   state = {
     expandForm: false,
-    pageSize:10,
-    fieldsValue:[],
-    sortedInfo:{},
-    shipModalVisible:false,
-    payModalVisible:false,
-    leaveModalVisible:false,
-    amendModalVisible:false
+    pageSize: 10,
+    fieldsValue: [],
+    sortedInfo: {},
+    shipModalVisible: false,
+    payModalVisible: false,
+    leaveModalVisible: false,
+    amendModalVisible: false,
+    rowItem: null,
   };
 
   //获取订单列表
@@ -66,13 +67,13 @@ class OrderList extends PureComponent{
     });
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.queryOrderList({
       page: 1,
       page_size: this.state.pageSize,
-      sort_column:'handler_time',
-      sort_mode: 'desc'
-    })
+      sort_column: 'handler_time',
+      sort_mode: 'desc',
+    });
   }
 
   toggleForm = () => {
@@ -82,7 +83,7 @@ class OrderList extends PureComponent{
     });
   };
 
-  renderSimpleForm(){
+  renderSimpleForm() {
     const {
       form: { getFieldDecorator },
     } = this.props;
@@ -92,12 +93,12 @@ class OrderList extends PureComponent{
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={6} sm={24}>
             <FormItem label="开始时间">
-              {getFieldDecorator('start_time')(<DatePicker />)}
+              {getFieldDecorator('start_time')(<DatePicker/>)}
             </FormItem>
           </Col>
           <Col md={6} sm={24}>
             <FormItem label="结束时间">
-              {getFieldDecorator('end_time')(<DatePicker />)}
+              {getFieldDecorator('end_time')(<DatePicker/>)}
             </FormItem>
           </Col>
           <Col md={7} sm={24}>
@@ -114,7 +115,7 @@ class OrderList extends PureComponent{
                       {item.name}
                     </Option>
                   ))}
-                </Select>
+                </Select>,
               )}
             </FormItem>
           </Col>
@@ -133,22 +134,22 @@ class OrderList extends PureComponent{
     );
   }
 
-  renderAdvancedForm(){
+  renderAdvancedForm() {
     const {
       form: { getFieldDecorator },
     } = this.props;
 
-    return(
+    return (
       <Form onSubmit={this.handleSearch.bind(this)} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={6} sm={24}>
             <FormItem label="开始时间">
-              {getFieldDecorator('start_time')(<DatePicker />)}
+              {getFieldDecorator('start_time')(<DatePicker/>)}
             </FormItem>
           </Col>
           <Col md={6} sm={24}>
             <FormItem label="结束时间">
-              {getFieldDecorator('end_time')(<DatePicker />)}
+              {getFieldDecorator('end_time')(<DatePicker/>)}
             </FormItem>
           </Col>
           <Col md={6} sm={24}>
@@ -165,7 +166,7 @@ class OrderList extends PureComponent{
                       {item.name}
                     </Option>
                   ))}
-                </Select>
+                </Select>,
               )}
             </FormItem>
           </Col>
@@ -192,7 +193,7 @@ class OrderList extends PureComponent{
                   <Option key='0' value='0'>
                     未锁定
                   </Option>
-                </Select>
+                </Select>,
               )}
             </FormItem>
           </Col>
@@ -209,7 +210,7 @@ class OrderList extends PureComponent{
                   <Option key='0' value='0'>
                     没修改
                   </Option>
-                </Select>
+                </Select>,
               )}
             </FormItem>
           </Col>
@@ -233,56 +234,57 @@ class OrderList extends PureComponent{
     return expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
   }
 
-  handleSearch(e){
+  handleSearch(e) {
     e.preventDefault();
     const { form } = this.props;
     form.validateFields((err, fieldsValue) => {
-      if(!err){
-        this.setState({fieldsValue})
-        fieldsValue.start_time ? fieldsValue.start_time = parseFloat(moment(fieldsValue.start_time).format('X')) : ''
-        fieldsValue.end_time ? fieldsValue.end_time = parseFloat(moment(fieldsValue.end_time).format('X')) : ''
-        fieldsValue.locked ? fieldsValue.locked = parseFloat(fieldsValue.locked) : ''
-        fieldsValue.order_number ? fieldsValue.order_number = parseFloat(fieldsValue.order_number) : ''
+      if (!err) {
+        this.setState({ fieldsValue });
+        fieldsValue.start_time ? fieldsValue.start_time = parseFloat(moment(fieldsValue.start_time).format('X')) : '';
+        fieldsValue.end_time ? fieldsValue.end_time = parseFloat(moment(fieldsValue.end_time).format('X')) : '';
+        fieldsValue.locked ? fieldsValue.locked = parseFloat(fieldsValue.locked) : '';
+        fieldsValue.order_number ? fieldsValue.order_number = parseFloat(fieldsValue.order_number) : '';
 
         this.queryOrderList({
-          page:1,
+          page: 1,
           page_size: this.state.pageSize,
-          sort_column:'handler_time',
-          sort_mode:'desc',
-          ...fieldsValue
-        })
+          sort_column: 'handler_time',
+          sort_mode: 'desc',
+          ...fieldsValue,
+        });
         this.setState({
-          sortedInfo:{}
-        })
+          sortedInfo: {},
+        });
       }
     });
   }
 
-  handleTableChange(pagination, filters, sorter){
-    const {fieldsValue} = this.state
+  handleTableChange(pagination, filters, sorter) {
+    const { fieldsValue } = this.state;
     this.setState({
-      sortedInfo:sorter
-    })
+      sortedInfo: sorter,
+    });
 
     this.queryOrderList({
-      page:pagination.current,
-      page_size:pagination.pageSize,
-      sort_column:sorter.field ? sorter.field : 'handler_time',
-      sort_mode:sorter.order === 'ascend' ? 'asc' : 'desc',
-      ...fieldsValue
-    })
+      page: pagination.current,
+      page_size: pagination.pageSize,
+      sort_column: sorter.field ? sorter.field : 'handler_time',
+      sort_mode: sorter.order === 'ascend' ? 'asc' : 'desc',
+      ...fieldsValue,
+    });
   }
 
-  handleCheckModal(row){
+  handleCheckModal(row) {
+    this.setState({ rowItem: row });
     switch (row.mold) {
       case 'TIME_CARD':
-        this.handleShipModalVisible(true)
+        this.handleShipModalVisible(true);
         break;
       case 'PT_COURSE':
-        this.handlePayModalVisible(true)
+        this.handlePayModalVisible(true);
         break;
       case 'STOP_CARD':
-        this.handleLeaveModalVisible(true)
+        this.handleLeaveModalVisible(true);
         break;
     }
   }
@@ -307,101 +309,104 @@ class OrderList extends PureComponent{
 
   handleAmendModalVisible = flag => {
     this.setState({
-      amendModalVisible: !!flag
-    })
-  }
+      amendModalVisible: !!flag,
+      rowItem: flag
+    });
+  };
 
-  render(){
+  render() {
     const {
-      order:{response},
-      loading
-    } = this.props
+      order: { response },
+      loading,
+    } = this.props;
     const {
       sortedInfo,
       shipModalVisible,
       payModalVisible,
       leaveModalVisible,
-      amendModalVisible
-    } = this.state
+      amendModalVisible,
+      rowItem,
+    } = this.state;
 
-    const columns=[
+    const columns = [
       {
-        title:'订单号',
-        dataIndex:'order_number',
-        key:'order_number'
+        title: '订单号',
+        dataIndex: 'order_number',
+        key: 'order_number',
       },
       {
-        title:'关联订单',
-        dataIndex:'relation_order_number',
-        key:'relation_order_number'
+        title: '关联订单',
+        dataIndex: 'relation_order_number',
+        key: 'relation_order_number',
       },
       {
-        title:'会员姓名',
-        dataIndex:'member_name',
-        key:'member_name'
+        title: '会员姓名',
+        dataIndex: 'member_name',
+        key: 'member_name',
       },
       {
-        title:'会员卡号',
-        dataIndex:'card_number',
-        key:'card_number'
+        title: '会员卡号',
+        dataIndex: 'card_number',
+        key: 'card_number',
       },
       {
-        title:'订单类型',
-        dataIndex:'mold',
-        key:'mold',
-        render:val=><span>{val === 'TIME_CARD' ? '时间卡' : val === 'PT_COURSE' ? '私教课' : '停卡'}</span>
+        title: '订单类型',
+        dataIndex: 'mold',
+        key: 'mold',
+        render: val => <span>{val === 'TIME_CARD' ? '时间卡' : val === 'PT_COURSE' ? '私教课' : '停卡'}</span>,
       },
       {
-        title:'订单数量',
-        dataIndex:'num',
-        key:'num'
+        title: '订单数量',
+        dataIndex: 'num',
+        key: 'num',
       },
       {
-        title:'订单操作时间',
-        dataIndex:'handler_time',
-        key:'handler_time',
+        title: '订单操作时间',
+        dataIndex: 'handler_time',
+        key: 'handler_time',
         sorter: (a, b) => a.handler_time - b.handler_time,
         sortOrder: sortedInfo.columnKey === 'handler_time' && sortedInfo.order,
-        render:val=><span>{moment(val * 1000).format('YYYY-MM-DD HH:mm')}</span>
+        render: val => <span>{moment(val * 1000).format('YYYY-MM-DD HH:mm')}</span>,
       },
       {
-        title:'前台操作员',
-        dataIndex:'handler_name',
-        key:'handler_name'
+        title: '前台操作员',
+        dataIndex: 'handler_name',
+        key: 'handler_name',
       },
       {
-        title:'实收金额',
-        dataIndex:'payment',
-        key:'payment',
+        title: '实收金额',
+        dataIndex: 'payment',
+        key: 'payment',
         sorter: (a, b) => a.payment - b.payment,
         sortOrder: sortedInfo.columnKey === 'payment' && sortedInfo.order,
-        render:val=><span>¥{val ? val : 0}</span>
+        render: val => <span>¥{val ? val : 0}</span>,
       },
       {
-        title:'订单修改记录',
-        dataIndex:'order_amend',
-        key:'order_amend',
-        render:(val,row)=><a href="javascript:;" onClick={this.handleAmendModalVisible.bind(this,row)}>{val ? val : 0+'条修改记录'}</a>
+        title: '订单修改记录',
+        dataIndex: 'order_amend',
+        key: 'order_amend',
+        render: (val, row) => <a href="javascript:;"
+                                 onClick={this.handleAmendModalVisible.bind(this, row)}>{val ? val : 0 + '条修改记录'}</a>,
       },
       {
-        title:'财务锁定',
-        dataIndex:'locked',
-        key:'locked',
-        render:val=><span>{val === 1 ? '是' : '否'}</span>
+        title: '财务锁定',
+        dataIndex: 'locked',
+        key: 'locked',
+        render: val => <span>{val === 1 ? '是' : '否'}</span>,
       },
       {
-        title:'操作',
-        dataIndex:'',
-        key:'x',
-        render:(row)=>(
+        title: '操作',
+        dataIndex: '',
+        key: 'x',
+        render: (row) => (
           <span>
           <a href="javascript:;">查看</a>
-          <Divider type="vertical" />
-          <a href="javascript:;" onClick={this.handleCheckModal.bind(this,row)}>修改</a>
+          <Divider type="vertical"/>
+          <a href="javascript:;" onClick={this.handleCheckModal.bind(this, row)}>修改</a>
         </span>
-        )
-      }
-    ]
+        ),
+      },
+    ];
 
     const paginationProps = {
       showSizeChanger: true,
@@ -412,28 +417,33 @@ class OrderList extends PureComponent{
 
     const memberMethods = {
       handleShipModalVisible: this.handleShipModalVisible,
-      handlePayModalVisible:this.handlePayModalVisible,
-      handleLeaveModalVisible:this.handleLeaveModalVisible,
-      handleAmendModalVisible:this.handleAmendModalVisible
-    }
+      handlePayModalVisible: this.handlePayModalVisible,
+      handleLeaveModalVisible: this.handleLeaveModalVisible,
+      handleAmendModalVisible: this.handleAmendModalVisible,
+      item: rowItem,
+    };
 
 
-    return(
+    return (
       <div>
         <div className={styles.standardList}>
           <Card bordered={false}>
             <Row>
               <Col xl={5} lg={8} md={8} sm={12} xs={24}>
-                <StandarInfoData title="本月销售额" number="1343455" subTitle1="上月1234344" subTitle2="同比15%" up='true' bordered/>
+                <StandarInfoData title="本月销售额" number="1343455" subTitle1="上月1234344" subTitle2="同比15%" up='true'
+                                 bordered/>
               </Col>
               <Col xl={5} lg={8} md={8} sm={12} xs={24}>
-                <StandarInfoData title="本月会籍销售额" number="193939" subTitle1="上月234444" subTitle2="同比16%" up="false" bordered/>
+                <StandarInfoData title="本月会籍销售额" number="193939" subTitle1="上月234444" subTitle2="同比16%" up="false"
+                                 bordered/>
               </Col>
               <Col xl={5} lg={8} md={8} sm={12} xs={24}>
-                <StandarInfoData title="本月私教销售额" number="710033" subTitle1="上月137447" subTitle2="同比17%" up='true' bordered/>
+                <StandarInfoData title="本月私教销售额" number="710033" subTitle1="上月137447" subTitle2="同比17%" up='true'
+                                 bordered/>
               </Col>
               <Col xl={4} lg={8} md={8} sm={12} xs={24}>
-                <StandarInfoData title="本月其他销售额" number="3453454" subTitle1="上月28383" subTitle2="同比17%" up="false" bordered/>
+                <StandarInfoData title="本月其他销售额" number="3453454" subTitle1="上月28383" subTitle2="同比17%" up="false"
+                                 bordered/>
               </Col>
               <Col xl={5} lg={8} md={8} sm={12} xs={24}>
                 <StandarInfoData title="本月退款金额" number="56000" subTitle1="上月83292" subTitle2="同比19%" up='true'/>
@@ -475,7 +485,7 @@ class OrderList extends PureComponent{
           amendModalVisible={amendModalVisible}
         />
       </div>
-    )
+    );
   }
 }
 

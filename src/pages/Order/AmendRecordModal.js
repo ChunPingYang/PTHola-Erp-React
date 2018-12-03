@@ -81,6 +81,7 @@ class AmendRecordModal extends PureComponent {
 
   render() {
     const { amendModalVisible, handleAmendModalVisible } = this.props;
+
     const columns = [
       {
         width:120,

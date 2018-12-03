@@ -21,83 +21,94 @@ export default [
       {
         path:'/data-list',
         name:'datalist',
-        icon:'',
+        icon:'dashboard',
         component:'./Data/DataCenter'
       },
       {
-        path:'/member-list',
-        name:'memberlist',
-        icon:'',
-        component:'./Member/MemberList',
-      },
-      {
-        path:'/member-list/detail',
-        component:'./Member/MemberDetail',
+        path:'/member',
+        name:'member',
+        icon:'table',
         routes:[
           {
-            path: '/member-list/detail',
-            redirect: '/member-list/detail/stamina',
+            path:'/member/member-list',
+            name:'memberlist',
+            component:'./Member/MemberList/MemberList',
           },
           {
-            path:'/member-list/detail/leave',
-            component:'./Member/LeaveList',
+            path:'/member/potential',
+            name:'potential',
+            component:'./Member/Potential/Potential'
           },
           {
-            path:'/member-list/detail/consume',
-            component:'./Member/ConsumeList',
-          },
-          {
-            path:'/member-list/detail/sign',
-            component:'./Member/SignList',
-          },
-          {
-            path:'/member-list/detail/elimination',
-            component:'./Member/EliminationList',
-          },
-          {
-            path:'/member-list/detail/private',
-            component:'./Member/PrivateList',
-          },
-          {
-            path:'/member-list/detail/recharge',
-            component:'./Member/RechargeList',
+            path:'/member/member-list/detail',
+            component:'./Member/MemberList/MemberDetail',
+            routes:[
+              {
+                path: '/member/member-list/detail',
+                redirect: '/member/member-list/detail/sign',
+              },
+              {
+                path:'/member/member-list/detail/leave',
+                component:'./Member/MemberList/LeaveList',
+              },
+              {
+                path:'/member/member-list/detail/consume',
+                component:'./Member/MemberList/ConsumeList',
+              },
+              {
+                path:'/member/member-list/detail/sign',
+                component:'./Member/MemberList/SignList',
+              },
+              {
+                path:'/member/member-list/detail/elimination',
+                component:'./Member/MemberList/EliminationList',
+              },
+              {
+                path:'/member/member-list/detail/private',
+                component:'./Member/MemberList/PrivateList',
+              },
+              {
+                path:'/member/member-list/detail/recharge',
+                component:'./Member/MemberList/RechargeList',
+              },
+            ]
           },
         ]
       },
       {
         path:'/member-sign',
         name:'memberSignIn',
-        icon:'',
+        icon:'usergroup-add',
         component:'./MemberSignIn/MemberSignIn'
       },
       {
         path:'/eliminate-list',
         name:'eliminatelist',
-        icon:'',
+        icon:'profile',
         component:'./Eliminate/EliminateList'
       },
       {
         path:'order-list',
         name:'orderlist',
-        icon:'',
+        icon:'form',
         component:'./Order/OrderList'
       },
       {
         path:'/achievement-list',
         name:'achievementlist',
-        icon:'',
+        icon:'warning',
         component:'./Achievement/AchievementList'
       },
       {
         path:'/finance-list',
         name:'financelist',
-        icon:'',
+        icon:'table',
         component:'./Finance/FinanceList'
       },
       {
         path:'/configure-list',
         name:'configurelist',
-        icon:'',
+        icon:'user',
         component:'./Configure/ConfigureList'
       },
       {
