@@ -14,6 +14,7 @@ import {
   DatePicker
 } from 'antd';
 import moment from 'moment'
+import AddEmployee from './AddEmployee'
 import styles from './EmployeeList.less';
 
 const FormItem = Form.Item;
@@ -148,6 +149,8 @@ class EmployeeList extends PureComponent {
 
 
   render() {
+    const {addVisible} = this.state
+
     const columns = [
       {
         title: '照片',
@@ -168,6 +171,7 @@ class EmployeeList extends PureComponent {
         title: '性别',
         dataIndex: 'sex',
         key: 'sex',
+        render:val=><span>{val === 1 ? '男' : '女'}</span>
       },
       {
         title: '电话',
@@ -238,12 +242,17 @@ class EmployeeList extends PureComponent {
       total: 50,
     };
 
+    const MethodsProps = {
+      handleAddModalVisible: this.handleAddModalVisible,
+      addVisible: addVisible
+    }
+
     return (
       <div>
         <Card bordered={false}>
           <div className={styles.tableListForm}>{this.renderForm()}</div>
           <div className={styles.tableListOperator}>
-            <Button icon="plus" type="primary" onClick={() => this.handleAddModalVisible(true, '')}>
+            <Button icon="plus" type="primary" onClick={() => this.handleAddModalVisible(true)}>
               新建
             </Button>
             <div className={styles.tableList}>
@@ -256,6 +265,10 @@ class EmployeeList extends PureComponent {
             </div>
           </div>
         </Card>
+
+        <AddEmployee
+          {...MethodsProps}
+        />
       </div>
     );
   }
