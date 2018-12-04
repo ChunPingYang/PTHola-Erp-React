@@ -100,6 +100,22 @@ export default [
         component:'./Employee/EmployeeList'
       },
       {
+        path:'/setting',
+        name:'setting',
+        icon:'setting',
+        component:'./VenueSetting/Setting',
+        routes:[
+          {
+            path: '/setting',
+            redirect: '/setting/base',
+          },
+          {
+            path:'/setting/base',
+            component:'./VenueSetting/Base'
+          }
+        ]
+      },
+      {
         component: '404',
       },
     ],

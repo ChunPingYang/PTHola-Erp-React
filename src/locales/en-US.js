@@ -79,6 +79,7 @@ export default {
   'menu.configurelist':'Configure',
   'menu.memberSignIn':'Member signIn',
   'menu.orderlist':'Order center',
+  'menu.setting':'Venue setting',
 
   'menu.home': 'Home',
   'menu.dashboard': 'Dashboard',

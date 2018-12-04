@@ -1,0 +1,51 @@
+@import '~antd/lib/style/themes/default.less';
+
+.baseView{
+  display: flex;
+  padding-top: 12px;
+  flex-flow: column nowrap;
+  .left{
+    max-width: 448px;
+    min-width: 224px;
+  }
+  .label{
+    padding: 0 0 8px;
+    margin: 0;
+    display: block;
+    text-align: left;
+    line-height: 1.5;
+    color: rgba(0,0,0,.85);
+  }
+  .phoneGroup{
+    .attribution{
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+    }
+    :global{
+      .ant-form-item-children{
+        display: flex;
+      }
+    }
+  }
+  .timeGroup{
+    margin-top: 24px;
+  }
+  .logoBox{
+    margin-bottom: 24px;
+    .logo{
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+      .avatar{
+        width:180px;
+        height: 64px;
+        overflow: hidden;
+        margin-right: 20px;
+        img{
+          width: 100%;
+        }
+      }
+    }
+  }
+}
