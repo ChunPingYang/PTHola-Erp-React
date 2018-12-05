@@ -64,6 +64,7 @@ export default {
   },
   externals: {
     '@antv/data-set': 'DataSet',
+    'BMap':'BMap'
   },
   // proxy: {
   //   '/server/api/': {
