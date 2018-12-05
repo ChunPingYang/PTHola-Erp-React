@@ -33,7 +33,12 @@ class EmployeeList extends PureComponent {
       form: { getFieldDecorator },
     } = this.props;
     return (
-      <Form onSubmit={this.handleSearch.bind(this)} layout="inline">
+      <Form
+        onKeyDown={(e)=>{
+          e.keyCode == 13 && e.preventDefault()
+        }}
+        onSubmit={this.handleSearch.bind(this)}
+        layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="姓名">
@@ -66,7 +71,12 @@ class EmployeeList extends PureComponent {
     } = this.props;
 
     return (
-      <Form onSubmit={this.handleSearch.bind(this)} layout="inline">
+      <Form
+        onKeyDown={(e)=>{
+          e.keyCode == 13 && e.preventDefault()
+        }}
+        onSubmit={this.handleSearch.bind(this)}
+        layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="姓名">

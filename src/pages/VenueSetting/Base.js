@@ -8,6 +8,7 @@ import {
   Button,
   Icon,
   TimePicker,
+  notification,
 } from 'antd';
 import moment from 'moment';
 import BMap from 'BMap';
@@ -45,6 +46,8 @@ class Base extends PureComponent {
   state = {
     lng: '',
     lat: '',
+    initLng:'',  //默认经度
+    initLat:'',  //默认纬度
     ac: null,
   };
 
@@ -67,9 +70,9 @@ class Base extends PureComponent {
     geolocation.getCurrentPosition(function(r) {
       if (this.getStatus() == BMAP_STATUS_SUCCESS) {
         _this.setState({
-          lng: r.point.lng,
-          lat: r.point.lat,
-        });
+          initLng:r.point.lng,
+          initLat:r.point.lat
+        })
         _this.locationPoint(map, r.point.lng, r.point.lat);
       }
     }, { enableHighAccuracy: true });
@@ -78,6 +81,7 @@ class Base extends PureComponent {
   //设置地图定位
   locationPoint(map, lng, lat) {
     const _this = this;
+    _this.setState({ lng, lat });
     map.clearOverlays();  //清楚地图上所有覆盖物
     map.enableScrollWheelZoom(true);
     map.enableDoubleClickZoom(true);
@@ -99,15 +103,20 @@ class Base extends PureComponent {
     const myGeo = new BMap.Geocoder();
 
     if (!val) {
-      _this.locationPoint(map, _this.state.lng, _this.state.lat);
+      _this.locationPoint(map, _this.state.initLng, _this.state.initLat)
       return;
     }
 
     myGeo.getPoint(val, function(point) {
       if (point) {
         _this.locationPoint(map, point.lng, point.lat);
+      } else {
+        notification.error({
+          message: '定位失败',
+          description: '请按照省市区县进行描述定位',
+        });
       }
-    }, '成都市');
+    }, '');
   }
 
   handleAdd() {
@@ -134,6 +143,7 @@ class Base extends PureComponent {
     const {
       form: { getFieldDecorator, getFieldValue },
     } = this.props;
+    const { lng, lat } = this.state;
     getFieldDecorator('keys', { initialValue: [0] });
     const keys = getFieldValue('keys');
 
@@ -221,12 +231,22 @@ class Base extends PureComponent {
         <div className={styles.inpStr}>
           <Search
             id="searchVal"
-            placeholder="请输入搜索地址"
+            placeholder="当前定位地址"
             onSearch={this.handleLocationSearch.bind(this)}
             enterButton
           />
         </div>
         <div className={styles.mapBox} id="mapBox"></div>
+        <FormItem>
+          {getFieldDecorator('lng', {
+            initialValue: lng,
+          })(<Input type="hidden"/>)}
+        </FormItem>
+        <FormItem>
+          {getFieldDecorator('lat', {
+            initialValue: lat,
+          })(<Input type="hidden"/>)}
+        </FormItem>
       </div>,
       <FormItem label="大众点评链接" key="link">
         {getFieldDecorator('link', {})(<Input placeholder="请输入大众点评链接"/>)}
@@ -249,7 +269,12 @@ class Base extends PureComponent {
     return (
       <div className={styles.baseView}>
         <div className={styles.left}>
-          <Form layout="vertical" onSubmit={this.handleSubmit.bind(this)}>
+          <Form
+            layout="vertical"
+            onKeyDown={(e)=>{
+              e.keyCode == 13 && e.preventDefault()
+            }}
+            onSubmit={this.handleSubmit.bind(this)}>
             {this.renderContent()}
           </Form>
         </div>
