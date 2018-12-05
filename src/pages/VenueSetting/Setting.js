@@ -12,7 +12,7 @@ class Setting extends PureComponent{
     const { match, location } = props;
     const menuMap = {
       base:'基本设置',
-      photo:'照片相册'
+      //photo:'照片相册'
     }
 
     const key = location.pathname.replace(`${match.path}/`, '');
