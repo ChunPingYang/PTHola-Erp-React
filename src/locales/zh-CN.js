@@ -81,6 +81,7 @@ export default {
   'menu.setting':'配置',
   'menu.setting.venue':'场馆设置',
   'menu.setting.private':'私教课设置',
+  'menu.setting.bracelet':'手环管理',
 
 
   'menu.home': '首页',

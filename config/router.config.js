@@ -123,6 +123,25 @@ export default [
             path:'/setting/private_setting',
             name:'private',
             component:'./Setting/PrivateSetting/Setting'
+          },
+          {
+            path:'/setting/bracelet_setting',
+            name:'bracelet',
+            component:'./Setting/BraceletSetting/Setting',
+            routes:[
+              {
+                path: '/setting/bracelet_setting',
+                redirect: '/setting/bracelet_setting/bracelet_list',
+              },
+              {
+                path:'/setting/bracelet_setting/bracelet_list',
+                component:'./Setting/BraceletSetting/BraceletList'
+              },
+              {
+                path:'/setting/bracelet_setting/use_record',
+                component:'./Setting/BraceletSetting/UseRecord'
+              }
+            ]
           }
         ]
       },

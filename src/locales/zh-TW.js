@@ -79,6 +79,7 @@ export default {
   'menu.orderlist':'訂單中心',
   'menu.setting':'配置',
   'menu.setting.venue':'場館設置',
+  'menu.setting.bracelet':'手環管理',
 
   'menu.home': '首頁',
   'menu.dashboard': 'Dashboard',
