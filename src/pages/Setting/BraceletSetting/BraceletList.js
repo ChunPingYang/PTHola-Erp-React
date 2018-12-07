@@ -42,7 +42,6 @@ class BraceletList extends PureComponent {
     for(var i=0; i<15; i++){
       list.push(i)
     }
-    console.log(list.length)
 
     return (
       <Fragment>
