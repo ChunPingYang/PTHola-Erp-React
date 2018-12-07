@@ -77,7 +77,8 @@ export default {
   'menu.configurelist':'配置',
   'menu.memberSignIn':'會員簽到',
   'menu.orderlist':'訂單中心',
-  'menu.setting':'場館設置',
+  'menu.setting':'配置',
+  'menu.setting.venue':'場館設置',
 
   'menu.home': '首頁',
   'menu.dashboard': 'Dashboard',

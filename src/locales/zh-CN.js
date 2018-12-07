@@ -78,7 +78,9 @@ export default {
   'menu.memberSignIn':'会员签到',
   'menu.orderlist':'订单中心',
   'menu.employee':'员工中心',
-  'menu.setting':'场馆设置',
+  'menu.setting':'配置',
+  'menu.setting.venue':'场馆设置',
+  'menu.setting.private':'私教课设置',
 
 
   'menu.home': '首页',

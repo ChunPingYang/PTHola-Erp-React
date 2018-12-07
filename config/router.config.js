@@ -103,15 +103,26 @@ export default [
         path:'/setting',
         name:'setting',
         icon:'setting',
-        component:'./VenueSetting/Setting',
         routes:[
           {
-            path: '/setting',
-            redirect: '/setting/base',
+            path:'/setting/venue_setting',
+            name:'venue',
+            component:'./Setting/VenueSetting/Setting',
+            routes:[
+              {
+                path: '/setting/venue_setting',
+                redirect: '/setting/venue_setting/base',
+              },
+              {
+                path:'/setting/venue_setting/base',
+                component:'./Setting/VenueSetting/Base'
+              }
+            ]
           },
           {
-            path:'/setting/base',
-            component:'./VenueSetting/Base'
+            path:'/setting/private_setting',
+            name:'private',
+            component:'./Setting/PrivateSetting/Setting'
           }
         ]
       },

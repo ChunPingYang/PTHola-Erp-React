@@ -88,7 +88,7 @@ class Base extends PureComponent {
     var point = new BMap.Point(lng, lat);
     var marker = new BMap.Marker(point);
     map.addOverlay(marker);
-    map.centerAndZoom(point, 16);
+    map.centerAndZoom(point, 18);
     marker.setAnimation(BMAP_ANIMATION_BOUNCE);
 
     map.addEventListener('click', function(e) {
@@ -211,12 +211,12 @@ class Base extends PureComponent {
         <Row gutter={24}>
           <Col lg={12} sm={24}>
             <FormItem key="start_time" style={{ width: '100%', marginBottom: '10px' }}>
-              {getFieldDecorator('start_time', {})(<TimePicker placeholder="请输入开始营业时间" style={{ width: '100%' }}/>)}
+              {getFieldDecorator('start_time', {})(<TimePicker format="HH:mm" placeholder="请输入开始营业时间" style={{ width: '100%' }}/>)}
             </FormItem>
           </Col>
           <Col lg={12} sm={24}>
             <FormItem key="end_time" style={{ width: '100%', marginBottom: '10px' }}>
-              {getFieldDecorator('end_time', {})(<TimePicker placeholder="请输入结束营业时间" style={{ width: '100%' }}/>)}
+              {getFieldDecorator('end_time', {})(<TimePicker format="HH:mm" placeholder="请输入结束营业时间" style={{ width: '100%' }}/>)}
             </FormItem>
           </Col>
         </Row>
