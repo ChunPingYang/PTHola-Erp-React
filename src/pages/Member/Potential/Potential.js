@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'dva';
 import {
   Row,
   Col,
@@ -14,7 +15,8 @@ import {
 } from 'antd';
 import styles from './Potential.less';
 import PotentialForm from './PotentialForm';
-import RecordModalForm from './RecordModalForm'
+import RecordModalForm from './RecordModalForm';
+import { addFollowRecord } from '../../../services/potential';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -24,11 +26,14 @@ const { TextArea } = Input;
 class AddFollowRecord extends PureComponent {
 
   handleSubmit(e) {
+    const {
+      addFollowRecord,
+    } = this.props;
     e.preventDefault();
     const { form } = this.props;
     form.validateFields((err, fieldsValue) => {
       if (!err) {
-        console.log(fieldsValue);
+        addFollowRecord(fieldsValue)
       }
     });
   }
@@ -49,10 +54,10 @@ class AddFollowRecord extends PureComponent {
         onCancel={() => handleAddModalVisible()}
       >
         <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 19 }} label="撰写跟进">
-          {form.getFieldDecorator('records', {
-            rules: [{ required: true, message: '请输入撰写跟进描述'}],
+          {form.getFieldDecorator('content', {
+            rules: [{ required: true, message: '请输入撰写跟进描述' }],
           })(
-            <TextArea rows={4}/>
+            <TextArea rows={4}/>,
           )}
         </FormItem>
       </Modal>
@@ -60,6 +65,10 @@ class AddFollowRecord extends PureComponent {
   }
 }
 
+@connect(({ potential, loading }) => ({
+  potential,
+  loading: loading.models.potential,
+}))
 @Form.create()
 class Potential extends PureComponent {
 
@@ -67,9 +76,28 @@ class Potential extends PureComponent {
     expandForm: false,
     modalVisible: false,
     addFollowVisible: false,
-    recordModalVisible:false,
-    uuid: '',
+    recordModalVisible: false,
+    rowItem: [],
+    pageSize: 10,
+    fieldsValue: [],
   };
+
+  queryGuestList(params) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'potential/fetch',
+      payload: params,
+      sort_column: 'created_at',
+      sort_mode: 'desc',
+    });
+  }
+
+  componentDidMount() {
+    this.queryGuestList({
+      page: 1,
+      page_size: this.state.pageSize,
+    });
+  }
 
   renderSimpleForm() {
     const {
@@ -110,31 +138,31 @@ class Potential extends PureComponent {
 
     const signs = [
       {
-        id: 'wzj',
-        name: '我自己',
+        id: 'WECHAT',
+        name: '已加微信',
       },
       {
-        id: 'wjh',
-        name: '吴家豪',
+        id: 'STORE',
+        name: '已到店',
       },
       {
-        id: 'zxx',
-        name: '周星星',
+        id: 'GOOD',
+        name: '有购买力',
       },
       {
-        id: 'zly',
-        name: '赵丽颖',
+        id: 'BAD',
+        name: '无购买力',
       },
       {
-        id: 'ym',
-        name: '姚明',
+        id: 'NO',
+        name: '无意向',
       },
     ];
 
     return (
       <Form
-        onKeyDown={(e)=>{
-          e.keyCode == 13 && e.preventDefault()
+        onKeyDown={(e) => {
+          e.keyCode == 13 && e.preventDefault();
         }}
         onSubmit={this.handleSearch.bind(this)}
         layout="inline">
@@ -151,7 +179,7 @@ class Potential extends PureComponent {
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="标签">
-              {getFieldDecorator('signs')(
+              {getFieldDecorator('tags')(
                 <Select
                   mode="multiple"
                   style={{ width: '100%' }}
@@ -207,7 +235,11 @@ class Potential extends PureComponent {
     const { form } = this.props;
     form.validateFields((err, fieldsValue) => {
       if (!err) {
-        console.log(fieldsValue);
+        this.queryGuestList({
+          page: 1,
+          page_size: this.state.pageSize,
+          ...fieldsValue,
+        });
       }
     });
   }
@@ -218,18 +250,44 @@ class Potential extends PureComponent {
   }
 
   handleTableChange(pagination, filters, sorter) {
+    const { fieldsValue } = this.state;
+    this.queryGuestList({
+      page: pagination.current,
+      page_size: pagination.pageSize,
+      ...fieldsValue,
+    });
   }
 
-  handleModalVisible = (flag, uuid) => {
-    this.setState({
-      modalVisible: !!flag,
-      uuid: uuid,
+  //添加跟进记录
+  addFollowRecord = fields => {
+    const { dispatch } = this.props;
+    const { rowItem } = this.state;
+    dispatch({
+      type: 'potential/addFollow',
+      payload: Object.assign({ uuid: rowItem.uuid }, fields),
+      callback:(res)=>{
+        if(res.response){
+          this.handleAddModalVisible(false)
+          this.queryGuestList({
+            page: 1,
+            page_size: this.state.pageSize,
+          })
+        }
+      }
     });
   };
 
-  handleAddModalVisible = flag => {
+  handleModalVisible = (flag, row) => {
+    this.setState({
+      modalVisible: !!flag,
+      rowItem: row,
+    });
+  };
+
+  handleAddModalVisible = (flag, row) => {
     this.setState({
       addFollowVisible: !!flag,
+      rowItem: row,
     });
   };
 
@@ -241,10 +299,14 @@ class Potential extends PureComponent {
 
   render() {
     const {
+      potential: { response },
+      loading,
+    } = this.props;
+    const {
       modalVisible,
       addFollowVisible,
       recordModalVisible,
-      uuid,
+      rowItem,
     } = this.state;
 
     const columns = [
@@ -276,15 +338,16 @@ class Potential extends PureComponent {
       },
       {
         title: '跟进标签',
-        dataIndex: 'signs',
-        key: 'signs',
-        render: val => <span>{val.join(',')}</span>,
+        dataIndex: 'tags',
+        key: 'tags',
+        render: val => <span>{val}</span>,
       },
       {
         title: '跟进记录',
-        dataIndex: 'record',
-        key: 'record',
-        render: val => <a href="javascript:;" onClick={()=>this.handleRecordModalVisible(true)}>{val ? val : 0}条跟进记录</a>,
+        dataIndex: 'track_record',
+        key: 'track_record',
+        render: val => <a href="javascript:;"
+                          onClick={() => this.handleRecordModalVisible(true)}>{val ? val.data.length : 0}条跟进记录</a>,
       },
       {
         title: '操作',
@@ -292,9 +355,9 @@ class Potential extends PureComponent {
         key: 'x',
         render: (val, row) => (
           <span>
-            <a href="javascript:;" onClick={() => this.handleModalVisible(true, row.uuid)}>编辑信息</a>
+            <a href="javascript:;" onClick={() => this.handleModalVisible(true, row)}>编辑信息</a>
             <Divider type="vertical"/>
-            <a href="javascript:;" onClick={()=>this.handleAddModalVisible(true)}>新增跟进</a>
+            <a href="javascript:;" onClick={() => this.handleAddModalVisible(true, row)}>新增跟进</a>
             <Divider type="vertical"/>
             <a href="javascript:;">删除</a>
           </span>
@@ -302,44 +365,22 @@ class Potential extends PureComponent {
       },
     ];
 
-    const dataList = [
-      {
-        uuid: '1111',
-        name: '玩你吗',
-        sex: 1,
-        phone: 18303034944,
-        source: '美团点评',
-        membership_name: '一护',
-        signs: ['已到店', '有购买力'],
-        record: 4,
-      },
-      {
-        uuid: '222',
-        name: '密码我',
-        sex: 2,
-        phone: 18303034944,
-        source: '美团点评',
-        membership_name: '一护',
-        signs: ['已到店', '有购买力'],
-        record: 4,
-      },
-    ];
-
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
-      current: 1,
-      total: 50,
+      current: response.paginator.page,
+      total: response.paginator.total_count,
     };
 
     const memberMethodsProps = {
       handleModalVisible: this.handleModalVisible.bind(this),
       handleAddModalVisible: this.handleAddModalVisible.bind(this),
       handleRecordModalVisible: this.handleRecordModalVisible.bind(this),
-      addFollowVisible:addFollowVisible,
+      addFollowVisible: addFollowVisible,
+      addFollowRecord:this.addFollowRecord.bind(this),
       modalVisible: modalVisible,
-      recordModalVisible:recordModalVisible,
-      uuid: uuid,
+      recordModalVisible: recordModalVisible,
+      rowItem: rowItem,
     };
 
     return (
@@ -353,8 +394,9 @@ class Potential extends PureComponent {
             <div className={styles.tableList}>
               <Table
                 rowKey='uuid'
+                loading={loading}
                 pagination={paginationProps}
-                dataSource={dataList}
+                dataSource={response.guests}
                 onChange={this.handleTableChange.bind(this)}
                 columns={columns}/>
             </div>
