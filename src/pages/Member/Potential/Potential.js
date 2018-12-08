@@ -16,7 +16,6 @@ import {
 import styles from './Potential.less';
 import PotentialForm from './PotentialForm';
 import RecordModalForm from './RecordModalForm';
-import { addFollowRecord } from '../../../services/potential';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -291,9 +290,10 @@ class Potential extends PureComponent {
     });
   };
 
-  handleRecordModalVisible = flag => {
+  handleRecordModalVisible = (flag, row) => {
     this.setState({
       recordModalVisible: !!flag,
+      rowItem: row,
     });
   };
 
@@ -346,8 +346,8 @@ class Potential extends PureComponent {
         title: '跟进记录',
         dataIndex: 'track_record',
         key: 'track_record',
-        render: val => <a href="javascript:;"
-                          onClick={() => this.handleRecordModalVisible(true)}>{val ? val.data.length : 0}条跟进记录</a>,
+        render: (val,row) => <a href="javascript:;"
+                          onClick={() => this.handleRecordModalVisible(true, row)}>{val ? val.data.length : 0}条跟进记录</a>,
       },
       {
         title: '操作',

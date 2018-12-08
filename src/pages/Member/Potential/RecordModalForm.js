@@ -8,46 +8,22 @@ import styles from './Potential.less';
 
 class RecordModalForm extends PureComponent {
 
-  handleTableChange() {
-
-  }
-
   render() {
-    const { recordModalVisible, handleRecordModalVisible } = this.props;
+    const { recordModalVisible, handleRecordModalVisible, rowItem={} } = this.props;
 
     const columns = [
       {
         title: '日期',
-        dataIndex: 'date',
-        key: 'date',
+        dataIndex: 'created_at',
+        key: 'created_at',
         render: val => <span>{moment(val * 1000).format('YYYY-MM-DD HH:mm')}</span>,
       },
       {
         title:'跟进描述',
-        dataIndex:'desc',
-        key:'desc'
+        dataIndex:'content',
+        key:'content'
       }
     ];
-
-    const paginationProps = {
-      showSizeChanger: true,
-      showQuickJumper: true,
-      current: 1,
-      total: 50,
-    };
-
-    const tableList = [
-      {
-        uuid:'111',
-        date:1543827619,
-        desc:'这是第一段描述'
-      },
-      {
-        uuid:'222',
-        date:1543741219,
-        desc:'这是第二段描述'
-      }
-    ]
 
     return (
       <Modal
@@ -63,12 +39,10 @@ class RecordModalForm extends PureComponent {
 
         <div className={styles.tableListOperator}>
           <Table
-            style={{ minWidth: '600px' }}
             rowKey='uuid'
             bordered
-            pagination={paginationProps}
-            dataSource={tableList}
-            onChange={this.handleTableChange.bind(this)}
+            pagination={false}
+            dataSource={rowItem.track_record ? rowItem.track_record.data : []}
             columns={columns}/>
         </div>
 
