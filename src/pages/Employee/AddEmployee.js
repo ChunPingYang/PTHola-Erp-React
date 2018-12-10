@@ -35,7 +35,7 @@ class AddEmployee extends PureComponent{
   }
 
   handleNext = currentStep => {
-    const { form } = this.props;
+    const { form, addEmployeeInfo } = this.props;
     const { formVals: oldValue } = this.state;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
@@ -48,7 +48,7 @@ class AddEmployee extends PureComponent{
           if (currentStep < 3) {
             this.forward();
           } else {
-            console.log(formVals);
+            addEmployeeInfo(formVals)
             //handleUpdate(formVals);
           }
         },
@@ -96,39 +96,45 @@ class AddEmployee extends PureComponent{
     ];
     if (currentStep === 1) {
       return[
-        <StandardFormRow key="card_number" title="工号" {...this.formLayout}>
+        <StandardFormRow required={true} key="card_number" title="工号" {...this.formLayout}>
           <FormItem key="card_number">
-            {form.getFieldDecorator('card_number', {
-              initialValue: formVals.card_number,
+            {form.getFieldDecorator('job_number', {
+              rules: [
+                { required: true, message: '请输入员工工号' },
+                {pattern: '^[0-9]*$', message: '请输入数字员工工号'}
+              ],
+              initialValue: formVals.job_number,
             })(
               <Input placeholder="请输入员工工号"/>
             )}
-            <p className={styles.msg}>
-              工号的先后顺序决定对会员展示列表的顺序
-            </p>
           </FormItem>
+          <p className={styles.msg}>
+            工号的先后顺序决定对会员展示列表的顺序
+          </p>
         </StandardFormRow>,
-        <StandardFormRow key="title" title="职称" {...this.formLayout}>
+        <StandardFormRow required={true} key="job" title="职称" {...this.formLayout}>
           <FormItem>
-            {form.getFieldDecorator('title', {
-              initialValue: formVals.title,
+            {form.getFieldDecorator('job', {
+              rules: [{ required: true, message: '请输入员工职称' }],
+              initialValue: formVals.job,
             })(
               <Input placeholder="请输入员工职称"/>
             )}
-            <p className={styles.msg}>
-              对会员展示的称谓，并非内部管理角色
-            </p>
           </FormItem>
+          <p className={styles.msg}>
+            对会员展示的称谓，并非内部管理角色
+          </p>
         </StandardFormRow>,
-        <StandardFormRow key="date" title="入职时间" {...this.formLayout}>
+        <StandardFormRow required={true} key="entry_date" title="入职时间" {...this.formLayout}>
           <FormItem>
-            {form.getFieldDecorator('date', {
-              initialValue: formVals.date && moment(moment(formVals.date), 'YYYY-MM-DD'),
+            {form.getFieldDecorator('entry_date', {
+              rules: [{ required: true, message: '请选择员工入职时间' }],
+              initialValue: formVals.entry_date && moment(moment(formVals.date), 'YYYY-MM-DD'),
             })(
               <DatePicker
                 style={{width:'100%'}}
                 format="YYYY-MM-DD"
-                placeholder="请选择入职时间"
+                placeholder="请选择员工入职时间"
               />
             )}
           </FormItem>
@@ -137,10 +143,11 @@ class AddEmployee extends PureComponent{
     }
     if (currentStep === 2) {
       return[
-        <StandardFormRow key="role" title="角色权限" {...this.formLayout}>
+        <StandardFormRow required={true} key="role" title="角色权限" {...this.formLayout}>
           <FormItem>
-            {form.getFieldDecorator('role', {
-              initialValue: formVals.role
+            {form.getFieldDecorator('roles', {
+              rules: [{ required: true, message: '请选择员工角色' }],
+              initialValue: formVals.roles
             })(
               <Select
                 mode="multiple"
@@ -156,13 +163,13 @@ class AddEmployee extends PureComponent{
                 }
               </Select>
             )}
-            <p className={styles.msg}>
-              可多选，详细角色权限，<a href="javascript:;">点击查看</a>
-            </p>
-            <p className={styles.msg}>
-              工作室的管理建议每个教练兼具：会籍、教练、前台三个权限
-            </p>
           </FormItem>
+          <p className={styles.msg}>
+            可多选，详细角色权限，<a href="javascript:;">点击查看</a>
+          </p>
+          <p className={styles.msg}>
+            工作室的管理建议每个教练兼具：会籍、教练、前台三个权限
+          </p>
         </StandardFormRow>
       ]
     }
@@ -176,10 +183,10 @@ class AddEmployee extends PureComponent{
             })(
               <Input placeholder="请输入员工登录账户" addonAfter="@PTHola"/>
             )}
-            <p className={styles.msg}>
-              员工可使用账号@场馆唯一标示登录后台，建议使用【手机号】或【工号】
-            </p>
           </FormItem>
+          <p className={styles.msg}>
+            员工可使用账号@场馆唯一标示登录后台，建议使用【手机号】或【工号】
+          </p>
         </StandardFormRow>,
         <StandardFormRow key="password" title="登录密码" {...this.formLayout}>
           <FormItem key="password">
@@ -189,15 +196,15 @@ class AddEmployee extends PureComponent{
             })(
               <Input placeholder="请输入员工登录密码"/>
             )}
-            <p className={styles.msg}>
-              员工首次登录密码；首次登录后，会强制员工修改密码
-            </p>
           </FormItem>
+          <p className={styles.msg}>
+            员工首次登录密码；首次登录后，会强制员工修改密码
+          </p>
         </StandardFormRow>
       ]
     }
     return[
-      <StandardFormRow key="name" title="姓名" {...this.formLayout}>
+      <StandardFormRow required={true} key="name" title="姓名" {...this.formLayout}>
         <FormItem key="membership">
           {form.getFieldDecorator('name', {
             rules: [{ required: true, message: '请输入员工姓名' }],
@@ -205,7 +212,7 @@ class AddEmployee extends PureComponent{
           })(<Input placeholder="请输入员工姓名"/>)}
         </FormItem>
       </StandardFormRow>,
-      <StandardFormRow key="sex" title="性别" {...this.formLayout}>
+      <StandardFormRow required={true} key="sex" title="性别" {...this.formLayout}>
         <FormItem key="membership">
           {form.getFieldDecorator('sex', {
             rules: [{ required: true, message: '请选择性别' }],
@@ -225,10 +232,13 @@ class AddEmployee extends PureComponent{
           )}
         </FormItem>
       </StandardFormRow>,
-      <StandardFormRow key="phone" title="手机号码" {...this.formLayout}>
+      <StandardFormRow required={true} key="phone" title="手机号码" {...this.formLayout}>
         <FormItem key="phone">
           {form.getFieldDecorator('phone', {
-            rules: [{ required: true, message: '请输入员工手机号码' }],
+            rules: [
+              { required: true, message: '请输入员工手机号码' },
+              {pattern: '^1[0-9]{10}$', message: '请输入正确手机号'}
+            ],
             initialValue: formVals.phone,
           })(<Input placeholder="请输入员工手机号码"/>)}
         </FormItem>
@@ -243,10 +253,9 @@ class AddEmployee extends PureComponent{
             <Button>上传</Button>
           </div>
         </div>
-        <FormItem key="photo">
-          {form.getFieldDecorator('photo', {
-            rules: [{ required: true, message: '请选择上传头像' }],
-            initialValue: 'https://gw.alipayobj',
+        <FormItem key="headimgurl">
+          {form.getFieldDecorator('headimgurl', {
+            initialValue: formVals.headimgurl,
           })(
             <Input type="hidden"/>,
           )}

@@ -63,7 +63,6 @@ class EliminateList extends PureComponent {
     const { form } = this.props;
     form.validateFields((err, fieldsValue) => {
       if(!err){
-        this.setState({fieldsValue})
         fieldsValue.start_time ? fieldsValue.start_time = parseFloat(moment(fieldsValue.start_time).format('X')) : ''
         fieldsValue.end_time ? fieldsValue.end_time = parseFloat(moment(fieldsValue.end_time).format('X')) : ''
 
@@ -75,7 +74,8 @@ class EliminateList extends PureComponent {
           ...fieldsValue
         })
         this.setState({
-          sortedInfo:{}
+          sortedInfo:{},
+          fieldsValue
         })
       }
     });

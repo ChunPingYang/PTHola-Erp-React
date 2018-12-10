@@ -19,3 +19,15 @@ export async function fakeRegister(params) {
 export async function queryNotices() {
   return request('/api/notices');
 }
+
+/**
+ * 获取角色列表
+ * @param params
+ * @returns {Promise<void>}
+ */
+export async function queryRolesList(params) {
+  return request('/api/1.0.0/oauthinlet/pthola.base.roles.query',{
+    method: 'POST',
+    body: params
+  })
+}

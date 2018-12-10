@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'dva';
 import {
   Row,
   Col,
@@ -11,22 +12,46 @@ import {
   Table,
   Modal,
   Divider,
-  DatePicker
+  DatePicker,
 } from 'antd';
-import moment from 'moment'
-import AddEmployee from './AddEmployee'
+import moment from 'moment';
+import AddEmployee from './AddEmployee';
 import styles from './EmployeeList.less';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
+@connect(({ employee, loading }) => ({
+  employee,
+  loading: loading.models.employee,
+}))
 @Form.create()
 class EmployeeList extends PureComponent {
 
   state = {
     expandForm: false,
     addVisible: false,
+    pageSize: 10,
+    fieldsValue: [],
+    sortedInfo: {},
   };
+
+  queryEmployeeList(params) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'employee/fetch',
+      payload: params,
+    });
+  }
+
+  componentDidMount() {
+    this.queryEmployeeList({
+      page: 1,
+      page_size: this.state.pageSize,
+      sort_column: 'created_at',
+      sort_mode: 'desc',
+    });
+  }
 
   renderSimpleForm() {
     const {
@@ -34,8 +59,8 @@ class EmployeeList extends PureComponent {
     } = this.props;
     return (
       <Form
-        onKeyDown={(e)=>{
-          e.keyCode == 13 && e.preventDefault()
+        onKeyDown={(e) => {
+          e.keyCode == 13 && e.preventDefault();
         }}
         onSubmit={this.handleSearch.bind(this)}
         layout="inline">
@@ -72,8 +97,8 @@ class EmployeeList extends PureComponent {
 
     return (
       <Form
-        onKeyDown={(e)=>{
-          e.keyCode == 13 && e.preventDefault()
+        onKeyDown={(e) => {
+          e.keyCode == 13 && e.preventDefault();
         }}
         onSubmit={this.handleSearch.bind(this)}
         layout="inline">
@@ -97,16 +122,16 @@ class EmployeeList extends PureComponent {
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="角色">
-              {getFieldDecorator('role')(<Input placeholder="请输入搜索角色"/>)}
+              {getFieldDecorator('roles')(<Input placeholder="请输入搜索角色"/>)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="入职时间">
-              {getFieldDecorator('date')(
+              {getFieldDecorator('entry_date')(
                 <DatePicker
                   format="YYYY-MM-DD"
                   placeholder="请选择入职时间"
-                />
+                />,
               )}
             </FormItem>
           </Col>
@@ -137,7 +162,19 @@ class EmployeeList extends PureComponent {
     const { form } = this.props;
     form.validateFields((err, fieldsValue) => {
       if (!err) {
-        console.log(fieldsValue);
+        fieldsValue.entry_date ? fieldsValue.entry_date = parseFloat(moment(fieldsValue.entry_date).format('X')) : '';
+
+        this.queryEmployeeList({
+          page: 1,
+          page_size: this.state.pageSize,
+          sort_column: 'created_at',
+          sort_mode: 'desc',
+          ...fieldsValue,
+        });
+        this.setState({
+          sortedInfo: {},
+          fieldsValue,
+        });
       }
     });
   }
@@ -147,9 +184,23 @@ class EmployeeList extends PureComponent {
     return expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
   }
 
-  handleTableChange(pagination, filters, sorter) {
-  }
+  addEmployeeInfo = fields => {
+    console.log(fields)
+  };
 
+  handleTableChange(pagination, filters, sorter) {
+    const { fieldsValue } = this.state;
+    this.setState({
+      sortedInfo: sorter,
+    });
+    this.queryEmployeeList({
+      page: pagination.current,
+      page_size: pagination.pageSize,
+      sort_column: sorter.field ? sorter.field : 'created_at',
+      sort_mode: sorter.order === 'ascend' ? 'asc' : 'desc',
+      ...fieldsValue,
+    });
+  }
 
   handleAddModalVisible = flag => {
     this.setState({
@@ -157,31 +208,37 @@ class EmployeeList extends PureComponent {
     });
   };
 
-
   render() {
-    const {addVisible} = this.state
+    const {
+      addVisible,
+      sortedInfo,
+    } = this.state;
+    const {
+      employee: { response },
+      loading,
+    } = this.props;
 
     const columns = [
       {
         title: '照片',
-        dataIndex: 'photo',
-        key: 'photo',
-        render:val=>(
+        dataIndex: 'headimgurl',
+        key: 'headimgurl',
+        render: val => (
           <div className={styles.avatar}>
             <img src={val}/>
           </div>
-        )
+        ),
       },
       {
         title: '姓名',
         dataIndex: 'name',
-        key: 'name'
+        key: 'name',
       },
       {
         title: '性别',
         dataIndex: 'sex',
         key: 'sex',
-        render:val=><span>{val === 1 ? '男' : '女'}</span>
+        render: val => <span>{val === 1 ? '男' : '女'}</span>,
       },
       {
         title: '电话',
@@ -190,72 +247,50 @@ class EmployeeList extends PureComponent {
       },
       {
         title: '工号',
-        dataIndex: 'card_number',
-        key: 'card_number',
-        sorter:true
+        dataIndex: 'job_number',
+        key: 'job_number',
+        sorter: (a, b) => a.job_number - b.job_number,
+        sortOrder: sortedInfo.columnKey === 'job_number' && sortedInfo.order,
       },
       {
         title: '角色',
-        dataIndex: 'role',
-        key: 'role',
-        render: val => <span className={styles.role}>会籍等{val.split(',').length}个角色</span>,
+        dataIndex: 'roles',
+        key: 'roles',
+        render: val => <span className={styles.role}>会籍等{val ? val.length : 0}个角色</span>,
       },
       {
         title: '职称',
-        dataIndex: 'title',
-        key: 'title'
+        dataIndex: 'job',
+        key: 'job',
       },
       {
-        title:'入职时间',
-        dataIndex:'date',
-        key:'date',
-        sorter:true,
-        render:val=><span>{moment(val*1000).format('YYYY-MM-DD')}</span>
+        title: '入职时间',
+        dataIndex: 'entry_date',
+        key: 'entry_date',
+        sorter: (a, b) => a.entry_date - b.entry_date,
+        sortOrder: sortedInfo.columnKey === 'entry_date' && sortedInfo.order,
+        render: val => <span>{val ? moment(val * 1000).format('YYYY-MM-DD') : ''}</span>,
       },
       {
         title: '操作',
         dataIndex: '',
         key: 'x',
-        render: (val, row) => <a href="javascript:;">修改</a> ,
-      },
-    ];
-
-    const dataList = [
-      {
-        uuid: '1111',
-        photo:'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
-        name: '玩你吗',
-        sex: 1,
-        phone: 18303034944,
-        card_number:34442222,
-        role: '李四,王五,占三',
-        title: '五星私人教练',
-        date: 1543829539
-      },
-      {
-        uuid: '3333',
-        photo:'',
-        name: '速度快',
-        sex: 1,
-        phone: 18303034944,
-        card_number:34442222,
-        role: '李四,王五,占三',
-        title: '四星私人教练',
-        date: 1543829539
+        render: (val, row) => <a href="javascript:;">修改</a>,
       },
     ];
 
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
-      current: 1,
-      total: 50,
+      current: response.paginator.page,
+      total: response.paginator.total_count,
     };
 
     const MethodsProps = {
       handleAddModalVisible: this.handleAddModalVisible,
-      addVisible: addVisible
-    }
+      addEmployeeInfo: this.addEmployeeInfo,
+      addVisible: addVisible,
+    };
 
     return (
       <div>
@@ -268,8 +303,9 @@ class EmployeeList extends PureComponent {
             <div className={styles.tableList}>
               <Table
                 rowKey='uuid'
+                loading={loading}
                 pagination={paginationProps}
-                dataSource={dataList}
+                dataSource={response.employees}
                 onChange={this.handleTableChange.bind(this)}
                 columns={columns}/>
             </div>

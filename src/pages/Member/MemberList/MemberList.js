@@ -68,15 +68,15 @@ class AddMemberForm extends PureComponent {
         target: '0',
         template: '0',
         frequency: 'month',
-        photo: '',
-        card: '',
-        membership: [],
-        coach: [],
-        wx: '',
+        headimgurl: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
+        card_number: '',
+        membership_uuid: null,
+        coaches_uuid: [],
+        wechat: '',
         email: '',
-        IDcard: '',
+        id_card: '',
         company: '',
-        channel: '',
+        source_uuid: '',
       },
       currentStep: 0,
     };
@@ -88,7 +88,7 @@ class AddMemberForm extends PureComponent {
   }
 
   handleNext = currentStep => {
-    const { form, handleUpdate } = this.props;
+    const { form, handleAddMember } = this.props;
     const { formVals: oldValue } = this.state;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
@@ -101,7 +101,7 @@ class AddMemberForm extends PureComponent {
           if (currentStep < 3) {
             this.forward();
           } else {
-            console.log(formVals);
+            handleAddMember(formVals)
             //handleUpdate(formVals);
           }
         },
@@ -127,9 +127,9 @@ class AddMemberForm extends PureComponent {
     const { form } = this.props;
     if (currentStep === 1) {
       return [
-        <FormItem key="photo" {...this.formLayout} label="人脸拍照">
-          {form.getFieldDecorator('photo', {
-            initialValue: formVals.photo,
+        <FormItem key="headimgurl" {...this.formLayout} label="人脸拍照">
+          {form.getFieldDecorator('headimgurl', {
+            initialValue: formVals.headimgurl,
           })(
             <div className={styles.operList}>
               <div className={styles.avatar}>
@@ -139,16 +139,17 @@ class AddMemberForm extends PureComponent {
                 <Button type="primary">拍摄</Button>
                 <Button>上传</Button>
               </div>
+              <Input type="hidden"/>
             </div>,
           )}
         </FormItem>,
-        <FormItem key="card" {...this.formLayout} label="实体卡号">
-          {form.getFieldDecorator('card', {
-            initialValue: formVals.card,
+        <FormItem key="card_number" {...this.formLayout} label="实体卡号">
+          {form.getFieldDecorator('card_number', {
+            initialValue: formVals.card_number,
           })(
             <div className={styles.cardInfo}>
               <div className={styles.inp}>
-                <Input defaultValue={formVals.card} placeholder="请输入实体卡号"/>
+                <Input defaultValue={formVals.card_number} placeholder="请输入实体卡号"/>
                 <Button type="primary">刷卡</Button>
               </div>
               <p className={styles.msg}>
@@ -177,9 +178,9 @@ class AddMemberForm extends PureComponent {
     if (currentStep === 2) {
       return [
         <StandardFormRow title="维护会籍" labelCol={5} wrapperCol={15} key="1">
-          <FormItem key="membership">
-            {form.getFieldDecorator('membership', {
-              initialValue: formVals.membership,
+          <FormItem key="membership_uuid">
+            {form.getFieldDecorator('membership_uuid', {
+              initialValue: formVals.membership_uuid,
             })(
               <Select
                 showSearch
@@ -200,9 +201,9 @@ class AddMemberForm extends PureComponent {
           </p>
         </StandardFormRow>,
         <StandardFormRow title="维护教练" labelCol={5} wrapperCol={15} key="2">
-          <FormItem key="coach">
-            {form.getFieldDecorator('coach', {
-              initialValue: formVals.coach,
+          <FormItem key="coaches_uuid">
+            {form.getFieldDecorator('coaches_uuid', {
+              initialValue: formVals.coaches_uuid,
             })(
               <Select
                 mode="multiple"
@@ -225,9 +226,9 @@ class AddMemberForm extends PureComponent {
     }
     if (currentStep === 3) {
       return [
-        <FormItem key="wx" {...this.formLayout} label="微信">
-          {form.getFieldDecorator('wx', {
-            initialValue: formVals.wx,
+        <FormItem key="wechat" {...this.formLayout} label="微信">
+          {form.getFieldDecorator('wechat', {
+            initialValue: formVals.wechat,
           })(<Input placeholder="请输入微信号"/>)}
         </FormItem>,
         <FormItem key="email" {...this.formLayout} label="邮箱">
@@ -235,9 +236,9 @@ class AddMemberForm extends PureComponent {
             initialValue: formVals.email,
           })(<Input placeholder="请输入邮箱号"/>)}
         </FormItem>,
-        <FormItem key="IDcard" {...this.formLayout} label="身份证号">
-          {form.getFieldDecorator('IDcard', {
-            initialValue: formVals.IDcard,
+        <FormItem key="id_card" {...this.formLayout} label="身份证号">
+          {form.getFieldDecorator('id_card', {
+            initialValue: formVals.id_card,
           })(<Input placeholder="请输入身份证号"/>)}
         </FormItem>,
         <FormItem key="company" {...this.formLayout} label="所在单位">
@@ -245,9 +246,9 @@ class AddMemberForm extends PureComponent {
             initialValue: formVals.company,
           })(<Input placeholder="请输入所在单位"/>)}
         </FormItem>,
-        <FormItem key="channel" {...this.formLayout} label="所在单位">
-          {form.getFieldDecorator('channel', {
-            initialValue: formVals.channel,
+        <FormItem key="source_uuid" {...this.formLayout} label="来源渠道">
+          {form.getFieldDecorator('source_uuid', {
+            initialValue: formVals.source_uuid,
           })(<Input placeholder="请输入来源渠道"/>)}
         </FormItem>,
       ];
@@ -983,6 +984,10 @@ class MemberList extends PureComponent {
     });
   }
 
+  handleAddMember(fields){
+    console.log(fields)
+  }
+
   render() {
     const { modalVisible, editModalVisible } = this.state;
     const {
@@ -998,6 +1003,7 @@ class MemberList extends PureComponent {
 
     const addMemberMethods = {
       handleModalVisible: this.handleModalVisible,
+      handleAddMember:this.handleAddMember,
       handleUpdate: this.handleUpdate,
     };
 

@@ -1,4 +1,7 @@
-import { queryNotices } from '@/services/api';
+import {
+  queryNotices,
+  queryRolesList,
+} from '@/services/api';
 
 export default {
   namespace: 'global',
@@ -6,10 +9,11 @@ export default {
   state: {
     collapsed: false,
     notices: [],
+    roles: [],
   },
 
   effects: {
-    *fetchNotices(_, { call, put }) {
+    * fetchNotices(_, { call, put }) {
       const data = yield call(queryNotices);
       yield put({
         type: 'saveNotices',
@@ -20,7 +24,8 @@ export default {
         payload: data.length,
       });
     },
-    *clearNotices({ payload }, { put, select }) {
+
+    * clearNotices({ payload }, { put, select }) {
       yield put({
         type: 'saveClearedNotices',
         payload,
@@ -29,6 +34,15 @@ export default {
       yield put({
         type: 'user/changeNotifyCount',
         payload: count,
+      });
+    },
+
+    //获取角色
+    * fetchRoles({ payload }, { put, call }) {
+      const response = yield call(queryRolesList, payload);
+      yield put({
+        type: 'queryRolesList',
+        payload: response,
       });
     },
   },
@@ -50,6 +64,12 @@ export default {
       return {
         ...state,
         notices: state.notices.filter(item => item.type !== payload),
+      };
+    },
+    queryRolesList(state, { payload }) {
+      return {
+        ...state,
+        ...payload,
       };
     },
   },
