@@ -126,7 +126,7 @@ class MemberEliminate extends PureComponent {
                 dataSource={tableList}
                 columns={this.columns}
               />
-              <Button onClick={()=>router.push('member-list/detail/elimination')}>查看更多已消完&已过期课程 <Icon type="right"/></Button>
+              <Button onClick={()=>router.push('/member/member-list/detail/elimination')}>查看更多已消完&已过期课程 <Icon type="right"/></Button>
             </div> :
             <div className={styles.eliminateBox}>
               <p className={styles.title}>常规私教课 8/32</p>

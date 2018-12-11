@@ -14,6 +14,7 @@ import {
 } from 'antd';
 
 import StandarInfoData from '@/components/StandarInfoData'
+import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from  './EliminateList.less'
 import moment from 'moment'
 
@@ -290,7 +291,7 @@ class EliminateList extends PureComponent {
     };
 
     return (
-      <div>
+      <PageHeaderWrapper>
         <div className={styles.standardList}>
           <Card bordered={false}>
             <Row>
@@ -330,7 +331,7 @@ class EliminateList extends PureComponent {
             </div>
           </div>
         </Card>
-      </div>
+      </PageHeaderWrapper>
     );
   }
 }

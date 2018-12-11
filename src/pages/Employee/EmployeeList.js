@@ -15,6 +15,7 @@ import {
   DatePicker,
 } from 'antd';
 import moment from 'moment';
+import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import AddEmployee from './AddEmployee';
 import styles from './EmployeeList.less';
 
@@ -34,6 +35,7 @@ class EmployeeList extends PureComponent {
     pageSize: 10,
     fieldsValue: [],
     sortedInfo: {},
+    error_response:{}
   };
 
   queryEmployeeList(params) {
@@ -185,7 +187,27 @@ class EmployeeList extends PureComponent {
   }
 
   addEmployeeInfo = fields => {
-    console.log(fields)
+    const {dispatch} = this.props
+    fields.entry_date = moment(fields.entry_date).format('YYYY-MM-DD')
+    dispatch({
+      type:'employee/add',
+      payload: fields,
+      callback:(res)=>{
+        if(res.response){
+          this.handleAddModalVisible(false)
+          this.queryEmployeeList({
+            page: 1,
+            page_size: this.state.pageSize,
+            sort_column: 'created_at',
+            sort_mode: 'desc',
+          });
+        }else {
+          this.setState({
+            error_response:res.error_response
+          })
+        }
+      }
+    })
   };
 
   handleTableChange(pagination, filters, sorter) {
@@ -212,6 +234,7 @@ class EmployeeList extends PureComponent {
     const {
       addVisible,
       sortedInfo,
+      error_response
     } = this.state;
     const {
       employee: { response },
@@ -289,11 +312,12 @@ class EmployeeList extends PureComponent {
     const MethodsProps = {
       handleAddModalVisible: this.handleAddModalVisible,
       addEmployeeInfo: this.addEmployeeInfo,
+      error_response: error_response,
       addVisible: addVisible,
     };
 
     return (
-      <div>
+      <PageHeaderWrapper>
         <Card bordered={false}>
           <div className={styles.tableListForm}>{this.renderForm()}</div>
           <div className={styles.tableListOperator}>
@@ -315,7 +339,7 @@ class EmployeeList extends PureComponent {
         <AddEmployee
           {...MethodsProps}
         />
-      </div>
+      </PageHeaderWrapper>
     );
   }
 }

@@ -13,6 +13,7 @@ import MemberShipForm from '@/components/Member/MemberShipForm'
 import MemberLeave from '@/components/Member/MemberLeave'
 import MemberPayCourse from '@/components/Member/MemberPayCourse'
 import MemberEliminate from '@/components/Member/MemberEliminate'
+import GridContent from '@/components/PageHeaderWrapper/GridContent';
 
 class MemberDetail extends PureComponent{
 
@@ -103,7 +104,7 @@ class MemberDetail extends PureComponent{
     ];
 
     return(
-      <div className={styles.detailCenter}>
+      <GridContent className={styles.detailCenter}>
         <Row gutter={24}>
           <Col className={styles.userInfo} lg={7} md={24}>
             <Card bordered={false}>
@@ -206,7 +207,7 @@ class MemberDetail extends PureComponent{
           {...memberMethods}
           eliminateModelVisible={eliminateModelVisible}
         />
-      </div>
+      </GridContent>
     )
   }
 }

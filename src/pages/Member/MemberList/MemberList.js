@@ -20,11 +20,12 @@ import {
   Radio,
   Divider,
 } from 'antd';
-
-import styles from './MemberList.less';
+import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import StandardFormRow from '@/components/StandardFormRow';
 import StandarInfoData from '@/components/StandarInfoData';
 import AdvancedTable from '@/components/AdvancedTable';
+
+import styles from './MemberList.less';
 
 const FormItem = Form.Item;
 const { Step } = Steps;
@@ -1012,7 +1013,7 @@ class MemberList extends PureComponent {
     };
 
     return (
-      <div className={styles.memberContent}>
+      <PageHeaderWrapper className={styles.memberContent}>
         <div className={styles.standardList}>
           <Card bordered={false}>
             <Row>
@@ -1072,7 +1073,7 @@ class MemberList extends PureComponent {
           {...editMemberMethods}
           editModalVisible={editModalVisible}
         />
-      </div>
+      </PageHeaderWrapper>
     );
   }
 }

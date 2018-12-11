@@ -16,6 +16,7 @@ import {
 import styles from './Potential.less';
 import PotentialForm from './PotentialForm';
 import RecordModalForm from './RecordModalForm';
+import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -384,7 +385,7 @@ class Potential extends PureComponent {
     };
 
     return (
-      <div>
+      <PageHeaderWrapper>
         <Card bordered={false}>
           <div className={styles.tableListForm}>{this.renderForm()}</div>
           <div className={styles.tableListOperator}>
@@ -414,7 +415,7 @@ class Potential extends PureComponent {
         <RecordModalForm
           {...memberMethodsProps}
         />
-      </div>
+      </PageHeaderWrapper>
     );
   }
 }

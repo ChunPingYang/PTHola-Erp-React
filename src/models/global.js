@@ -9,7 +9,10 @@ export default {
   state: {
     collapsed: false,
     notices: [],
-    roles: [],
+    response: {
+      roles: [],
+      paginator: {},
+    },
   },
 
   effects: {

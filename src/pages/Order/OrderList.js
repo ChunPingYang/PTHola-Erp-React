@@ -14,6 +14,7 @@ import {
   Divider,
 } from 'antd';
 
+import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import StandarInfoData from '@/components/StandarInfoData';
 import ShipTimeModal from './ShipTimeModal';
 import PayCourseModal from './PayCourseModal';
@@ -435,7 +436,7 @@ class OrderList extends PureComponent {
 
 
     return (
-      <div>
+      <PageHeaderWrapper>
         <div className={styles.standardList}>
           <Card bordered={false}>
             <Row>
@@ -494,7 +495,7 @@ class OrderList extends PureComponent {
           {...memberMethods}
           amendModalVisible={amendModalVisible}
         />
-      </div>
+      </PageHeaderWrapper>
     );
   }
 }

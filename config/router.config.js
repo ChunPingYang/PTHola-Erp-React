@@ -79,7 +79,21 @@ export default [
         path:'/member-sign',
         name:'memberSignIn',
         icon:'usergroup-add',
-        component:'./MemberSignIn/MemberSignIn'
+        component:'./MemberSignIn/MemberSignIn',
+        routes:[
+          {
+            path: '/member-sign',
+            redirect: '/member-sign/today',
+          },
+          {
+            path:'/member-sign/today',
+            component:"./MemberSignIn/TodayMemberSign"
+          },
+          {
+            path:'/member-sign/record',
+            component:'./MemberSignIn/MemberSignRecord'
+          },
+        ]
       },
       {
         path:'/eliminate-list',

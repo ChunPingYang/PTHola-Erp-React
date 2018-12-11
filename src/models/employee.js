@@ -21,12 +21,13 @@ export default {
         payload: response,
       });
     },
-    * add({ payload }, { call, put }) {
+    * add({ payload, callback }, { call, put }) {
       const response = yield call(addEmployeeInfo, payload);
       yield put({
         type:'addEmployeeInfo',
         payload: response
       })
+      if (callback) callback(response);
     },
   },
 

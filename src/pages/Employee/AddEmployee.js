@@ -1,4 +1,5 @@
-import React,{PureComponent} from 'react'
+import React, { PureComponent } from 'react';
+import { connect } from 'dva';
 import {
   Form,
   Input,
@@ -6,25 +7,29 @@ import {
   Button,
   Modal,
   Steps,
-  DatePicker
+  DatePicker,
 } from 'antd';
-import moment from 'moment'
-import styles from "./EmployeeList.less"
+import moment from 'moment';
+import styles from './EmployeeList.less';
 import StandardFormRow from '@/components/StandardFormRow';
 
 const { Step } = Steps;
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-@Form.create()
-class AddEmployee extends PureComponent{
+@Form.create({
+  onValuesChange(props, changedValues, allValues) {
+    const { error_response } = props;
+    const errors = error_response.content || {};
+    delete errors[Object.keys(changedValues)[0]];
+  },
+})
+class AddEmployee extends PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
-      formVals: {
-
-      },
+      formVals: {},
       currentStep: 0,
     };
 
@@ -32,6 +37,52 @@ class AddEmployee extends PureComponent{
       labelCol: 5,
       wrapperCol: 18,
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { error_response = {}, form: { setFields } } = nextProps;
+    if (this.props.error_response !== nextProps.error_response) {
+      let errors = error_response.content || {};
+      let keys = Object.keys(errors);
+      let arrs = ['name', 'phone', 'job_number', 'account', 'password'];
+      let newKeys = []  //排序后的新顺序
+
+      for(const k of arrs) {
+        if(keys.includes(k)){
+          newKeys.push(k)
+        }
+      }
+      this.checkStepCurrent(newKeys, () => {
+        for (const k of newKeys) {
+          setFields({
+            [k]: {
+              errors: [new Error(errors[k])],
+            },
+          });
+        }
+      });
+    }
+  }
+
+  checkStepCurrent(keys, callback) {
+    for (const k of keys) {
+      if (k === 'name' || k === 'phone') {
+        this.setState({
+          currentStep: 0,
+        }, callback);
+        return
+      } else if (k === 'job_number') {
+        this.setState({
+          currentStep: 1,
+        }, callback);
+        return
+      } else if (k === 'account' || k === 'password') {
+        this.setState({
+          currentStep: 3,
+        }, callback);
+        return
+      }
+    }
   }
 
   handleNext = currentStep => {
@@ -48,7 +99,7 @@ class AddEmployee extends PureComponent{
           if (currentStep < 3) {
             this.forward();
           } else {
-            addEmployeeInfo(formVals)
+            addEmployeeInfo(formVals);
             //handleUpdate(formVals);
           }
         },
@@ -57,55 +108,49 @@ class AddEmployee extends PureComponent{
   };
 
   backward = () => {
-    const { currentStep } = this.state;
-    this.setState({
-      currentStep: currentStep - 1,
-    });
+    this.renderStepDirection(-1);
   };
 
   forward = () => {
-    const { currentStep } = this.state;
-    this.setState({
-      currentStep: currentStep + 1,
-    });
+    this.renderStepDirection(1);
   };
 
+  renderStepDirection(count) {
+    const { currentStep } = this.state;
+    const {
+      form: { setFields },
+      error_response,
+    } = this.props;
+    const errors = error_response.content || {};
+    const keys = Object.keys(errors);
+
+    this.setState({
+      currentStep: currentStep + count,
+    }, () => {
+      for (const k of keys) {
+        setFields({
+          [k]: {
+            errors: [new Error(errors[k])],
+          },
+        });
+      }
+    });
+  }
+
   renderContent = (currentStep, formVals) => {
-    const { form } = this.props;
-    const roles = [
-      {
-        id: 'wzj',
-        name: '我自己',
-      },
-      {
-        id: 'wjh',
-        name: '吴家豪',
-      },
-      {
-        id: 'zxx',
-        name: '周星星',
-      },
-      {
-        id: 'zly',
-        name: '赵丽颖',
-      },
-      {
-        id: 'ym',
-        name: '姚明',
-      },
-    ];
+    const { form, roles } = this.props;
     if (currentStep === 1) {
-      return[
-        <StandardFormRow required={true} key="card_number" title="工号" {...this.formLayout}>
-          <FormItem key="card_number">
+      return [
+        <StandardFormRow required={true} key="job_number" title="工号" {...this.formLayout}>
+          <FormItem key="job_number">
             {form.getFieldDecorator('job_number', {
               rules: [
                 { required: true, message: '请输入员工工号' },
-                {pattern: '^[0-9]*$', message: '请输入数字员工工号'}
+                { pattern: '^[0-9]*$', message: '请输入数字员工工号' },
               ],
               initialValue: formVals.job_number,
             })(
-              <Input placeholder="请输入员工工号"/>
+              <Input placeholder="请输入员工工号"/>,
             )}
           </FormItem>
           <p className={styles.msg}>
@@ -118,7 +163,7 @@ class AddEmployee extends PureComponent{
               rules: [{ required: true, message: '请输入员工职称' }],
               initialValue: formVals.job,
             })(
-              <Input placeholder="请输入员工职称"/>
+              <Input placeholder="请输入员工职称"/>,
             )}
           </FormItem>
           <p className={styles.msg}>
@@ -132,22 +177,22 @@ class AddEmployee extends PureComponent{
               initialValue: formVals.entry_date && moment(moment(formVals.date), 'YYYY-MM-DD'),
             })(
               <DatePicker
-                style={{width:'100%'}}
+                style={{ width: '100%' }}
                 format="YYYY-MM-DD"
                 placeholder="请选择员工入职时间"
-              />
+              />,
             )}
           </FormItem>
-        </StandardFormRow>
-      ]
+        </StandardFormRow>,
+      ];
     }
     if (currentStep === 2) {
-      return[
+      return [
         <StandardFormRow required={true} key="role" title="角色权限" {...this.formLayout}>
           <FormItem>
             {form.getFieldDecorator('roles', {
               rules: [{ required: true, message: '请选择员工角色' }],
-              initialValue: formVals.roles
+              initialValue: formVals.roles,
             })(
               <Select
                 mode="multiple"
@@ -155,13 +200,13 @@ class AddEmployee extends PureComponent{
                 placeholder="请选择员工角色"
               >
                 {
-                  roles.map(item=>{
-                    return(
-                      <Option key={item.id}>{item.name}</Option>
-                    )
+                  roles.map(item => {
+                    return (
+                      <Option key={item.name}>{item.show_name}</Option>
+                    );
                   })
                 }
-              </Select>
+              </Select>,
             )}
           </FormItem>
           <p className={styles.msg}>
@@ -170,18 +215,18 @@ class AddEmployee extends PureComponent{
           <p className={styles.msg}>
             工作室的管理建议每个教练兼具：会籍、教练、前台三个权限
           </p>
-        </StandardFormRow>
-      ]
+        </StandardFormRow>,
+      ];
     }
     if (currentStep === 3) {
-      return[
+      return [
         <StandardFormRow key="account" title="登录账户" {...this.formLayout}>
           <FormItem key="account">
             {form.getFieldDecorator('account', {
               rules: [{ required: true, message: '请输入员工登录账户' }],
-              initialValue:formVals.account
+              initialValue: formVals.account,
             })(
-              <Input placeholder="请输入员工登录账户" addonAfter="@PTHola"/>
+              <Input placeholder="请输入员工登录账户" addonAfter="@PTHola"/>,
             )}
           </FormItem>
           <p className={styles.msg}>
@@ -192,18 +237,18 @@ class AddEmployee extends PureComponent{
           <FormItem key="password">
             {form.getFieldDecorator('password', {
               rules: [{ required: true, message: '请输入员工登录密码' }],
-              initialValue:formVals.password
+              initialValue: formVals.password,
             })(
-              <Input placeholder="请输入员工登录密码"/>
+              <Input placeholder="请输入员工登录密码"/>,
             )}
           </FormItem>
           <p className={styles.msg}>
             员工首次登录密码；首次登录后，会强制员工修改密码
           </p>
-        </StandardFormRow>
-      ]
+        </StandardFormRow>,
+      ];
     }
-    return[
+    return [
       <StandardFormRow required={true} key="name" title="姓名" {...this.formLayout}>
         <FormItem key="membership">
           {form.getFieldDecorator('name', {
@@ -228,7 +273,7 @@ class AddEmployee extends PureComponent{
               <Option key="2" value="2">
                 女
               </Option>
-            </Select>
+            </Select>,
           )}
         </FormItem>
       </StandardFormRow>,
@@ -237,7 +282,7 @@ class AddEmployee extends PureComponent{
           {form.getFieldDecorator('phone', {
             rules: [
               { required: true, message: '请输入员工手机号码' },
-              {pattern: '^1[0-9]{10}$', message: '请输入正确手机号'}
+              { pattern: '^1[0-9]{10}$', message: '请输入正确手机号' },
             ],
             initialValue: formVals.phone,
           })(<Input placeholder="请输入员工手机号码"/>)}
@@ -260,8 +305,8 @@ class AddEmployee extends PureComponent{
             <Input type="hidden"/>,
           )}
         </FormItem>
-      </StandardFormRow>
-    ]
+      </StandardFormRow>,
+    ];
   };
 
   renderFooter = currentStep => {
@@ -330,4 +375,6 @@ class AddEmployee extends PureComponent{
   }
 }
 
-export default AddEmployee;
+export default connect(({ global }) => ({
+  roles: global.response.roles,
+}))(AddEmployee);
